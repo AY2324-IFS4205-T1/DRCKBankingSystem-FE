@@ -1,3 +1,4 @@
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 
 async function handler(req, res) {
@@ -9,29 +10,29 @@ export default function CustomerLogin() {
 
   async function onSubmit(event) {
     event.preventDefault();
-
     const formData = new FormData(event.target);
-    console.log(formData);
-    const response = await fetch("http://localhost:8000/customer/login", {
-      method: "POST",
-      body: formData,
+    const formValues = Object.fromEntries(formData);
+    // const username = formValues.username;
+    // const password = formValues.password;
+    // console.log("TEST FETCH IN LOGIN.JS");
+    // const response = await fetch("http://localhost:8000/customer/login", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     username,
+    //     password,
+    //   }),
+    // });
+
+    console.log("TEST FETCH IN API");
+    const result = await signIn("credentials", {
+      username: formValues.username,
+      password: formValues.password,
+      redirect: true,
+      callbackUrl: "/customer/dashboard",
     });
-
-    console.log("After POST");
-    const data = await response.json();
-    const dataJSON = JSON.parse(JSON.stringify(data));
-
-    console.log(dataJSON);
-    console.log(dataJSON.token);
-    console.log(dataJSON.expiry);
-    console.log(dataJSON.user.username);
-
-    if (dataJSON.token != "") {
-      console.log("inhere");
-      router.push("/customer/dashboard");
-    } else {
-      console.log("outside");
-    }
   }
 
   return (
@@ -53,7 +54,7 @@ export default function CustomerLogin() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" onSubmit={onSubmit} method="POST">
+          <form className="space-y-6" onSubmit={onSubmit}>
             <div>
               <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
                 Username
