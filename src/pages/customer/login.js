@@ -1,36 +1,53 @@
 import { useRouter } from "next/router";
-
-async function handler(req, res) {
-  res.redirect(307, "/customer/dashboard");
-}
+import { useState } from "react";
 
 export default function CustomerLogin() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(null);
 
   async function onSubmit(event) {
     event.preventDefault();
+    setIsLoading(true);
+    setIsError(null); // Clear previous errors when a new request starts
+    try {
+      const formData = new FormData(event.target);
+      const formValues = Object.fromEntries(formData);
+      const username = formValues.username;
+      const password = formValues.password;
 
-    const formData = new FormData(event.target);
-    console.log(formData);
-    const response = await fetch("http://localhost:8000/customer/login", {
-      method: "POST",
-      body: formData,
-    });
+      console.log("before fetch");
 
-    console.log("After POST");
-    const data = await response.json();
-    const dataJSON = JSON.parse(JSON.stringify(data));
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/customer/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
 
-    console.log(dataJSON);
-    console.log(dataJSON.token);
-    console.log(dataJSON.expiry);
-    console.log(dataJSON.user.username);
+      if (!response.ok) {
+        throw new Error("Wrong username/password");
+      }
 
-    if (dataJSON.token != "") {
-      console.log("inhere");
+      const data = await response.json();
+      const dataJSON = JSON.parse(JSON.stringify(data));
+      console.log(dataJSON); //send me another field like auth:pass/fail, and type of user:? so i can check before push
+      // const token = dataJSON.token;
+      // const expiry = dataJSON.expiry;
+      // const user = dataJSON.user.username;
+      event.target.reset();
+      // No error redirect user
       router.push("/customer/dashboard");
-    } else {
-      console.log("outside");
+    } catch (isError) {
+      // Capture the error message to display to the user
+      setIsError(isError.message);
+      console.error(isError);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -42,8 +59,13 @@ export default function CustomerLogin() {
           <img
             className="mx-auto h-10 w-auto"
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
+            alt="DRCK BANKING"
           />
+          {isError && (
+            <div class="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700" role="alert">
+              {isError}
+            </div>
+          )}
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>
@@ -97,8 +119,9 @@ export default function CustomerLogin() {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                disabled={isLoading}
               >
-                Sign in
+                {isLoading ? "Loading..." : "Sign in"}
               </button>
             </div>
           </form>

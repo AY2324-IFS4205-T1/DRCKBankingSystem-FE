@@ -6,7 +6,9 @@ import { usePathname } from "next/navigation";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+// POST to /logout. send the token in header. then i clear the cookies on my frontend.
 
+// "Authorization": "Token <number>"
 export default function Navbar() {
   const pathName = usePathname();
   const navigation = [
@@ -22,7 +24,6 @@ export default function Navbar() {
     },
     { name: "View Tickets", href: "/customer/tickets", current: pathName === "/customer/tickets" },
   ];
-  console.log(pathName);
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
