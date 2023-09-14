@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { setCookie } from "cookies-next";
 
 export default function CustomerLogin() {
   const router = useRouter();
@@ -35,6 +36,8 @@ export default function CustomerLogin() {
 
       const data = await response.json();
       const dataJSON = JSON.parse(JSON.stringify(data));
+      setCookie("token", dataJSON.token);
+      console.log("cookie set");
       console.log(dataJSON); //send me another field like auth:pass/fail, and type of user:? so i can check before push
       // const token = dataJSON.token;
       // const expiry = dataJSON.expiry;

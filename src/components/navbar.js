@@ -2,14 +2,35 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
+import { getCookie, deleteCookie } from "cookies-next";
+import { useRouter } from "next/router";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-// POST to /logout. send the token in header. then i clear the cookies on my frontend.
 
 // "Authorization": "Token <number>"
 export default function Navbar() {
+  const router = useRouter();
+
+  async function handleLogout(event) {
+    event.preventDefault();
+    const token = getCookie("token");
+    const response = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/logout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+    // Check if cookie is deleted by user or response not ok, if so, redirect to /
+    if (!response.ok || token === "") {
+      router.push("/");
+    }
+    // response ok, delete token and redirect
+    deleteCookie("token");
+    router.push("/");
+  }
+
   const pathName = usePathname();
   const navigation = [
     { name: "Home", href: "/customer/dashboard", current: pathName === "/customer/dashboard" },
@@ -108,8 +129,8 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
                             className={classNames(active ? "bg-gray-100" : "", "block px-4 py-2 text-sm text-gray-700")}
+                            onClick={handleLogout}
                           >
                             Sign out
                           </a>
