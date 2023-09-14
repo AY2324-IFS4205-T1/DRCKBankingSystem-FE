@@ -48,7 +48,7 @@ export const authOptions = {
     strategy: "jwt",
   },
   pages: {
-    signIn: "/customer/login",
+    signIn: "/customer/login", //Seems like only 1 login page, maybe cannot use
   },
 };
 
