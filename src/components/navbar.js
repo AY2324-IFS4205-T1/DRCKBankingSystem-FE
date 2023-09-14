@@ -2,12 +2,15 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
+  const { dataSession } = useSession();
+
   const pathName = usePathname();
   const navigation = [
     { name: "Home", href: "/customer/dashboard", current: pathName === "/customer/dashboard" },
@@ -107,7 +110,8 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="#" //TODO: maybe not needed
+                            onClick={() => signOut()}
                             className={classNames(active ? "bg-gray-100" : "", "block px-4 py-2 text-sm text-gray-700")}
                           >
                             Sign out
