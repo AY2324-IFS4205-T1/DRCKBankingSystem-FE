@@ -12,10 +12,10 @@ export default function CustomerLogin() {
     event.preventDefault();
     const formData = new FormData(event.target);
     const formValues = Object.fromEntries(formData);
-    // const username = formValues.username;
-    // const password = formValues.password;
+    const username = formValues.username;
+    const password = formValues.password;
     // console.log("TEST FETCH IN LOGIN.JS");
-    // const response = await fetch("http://localhost:8000/customer/login", {
+    // const response = await fetch(`http://localhost:8000/customer/login`, {
     //   method: "POST",
     //   headers: {
     //     "Content-Type": "application/json",
@@ -25,6 +25,7 @@ export default function CustomerLogin() {
     //     password,
     //   }),
     // });
+    // console.log(response);
 
     console.log("TEST FETCH IN API");
     const result = await signIn("credentials", {
@@ -33,6 +34,8 @@ export default function CustomerLogin() {
       redirect: true,
       callbackUrl: "/customer/dashboard",
     });
+    console.log("FINISH FETCH. RESULT BELOW");
+    console.log(result);
   }
 
   return (

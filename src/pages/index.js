@@ -18,8 +18,7 @@ export default function Home() {
       </Link>
       <Link
         className="mb-2 mr-2 flex justify-center rounded-lg bg-purple-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-        href="/customer/login" //TODO: seems like removable
-        onClick={() => signIn()}
+        href="/customer/login"
       >
         Customer
       </Link>
