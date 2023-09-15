@@ -1,26 +1,38 @@
-import Link from "next/link";
-import { Inter, Libre_Franklin } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
+
   return (
-    <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <h1 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-        Are you a Customer or a Staff?
-      </h1>
-      <Link
-        className="mb-2 mr-2 flex justify-center rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-        href="/staff/login"
-      >
-        Staff
-      </Link>
-      <Link
-        className="mb-2 mr-2 flex justify-center rounded-lg bg-purple-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-        href="/customer/login"
-      >
-        Customer
-      </Link>
+    <div className="h-screen bg-cover bg-[url('/images/bg.jpg')]">
+
+      <div className="relative isolate px-6 pt-14 lg:px-8">
+        <div className="mx-auto py-32 sm:py-48 lg:py-56 max-w-min">  
+          <div className="text-center">
+            <h1 className="text-9xl font-bold tracking-tight text-gray-900 font-JosefinSans">
+              DRCK
+            </h1>
+            <div class="border-t-8 border-red-500"> </div>
+            <div class="border-t-8 border-red-500"> </div>
+
+            <p className="text-4xl font-bold tracking-tight text-gray-900">
+              Your one-stop banking application
+            </p>
+
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <a
+                href="/customer/register"
+                className="rounded-md bg-indigo-600 px-5 py-3 text-xl font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Register
+              </a>
+              <a
+                href="/customer/login"
+                className="rounded-md bg-slate-600 px-5 py-3 text-xl font-semibold text-white shadow-sm hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+              >
+                Sign In
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
