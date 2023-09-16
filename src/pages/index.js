@@ -9,8 +9,8 @@ export default function Home() {
             <h1 className="text-9xl font-bold tracking-tight text-gray-900 font-JosefinSans">
               DRCK
             </h1>
-            <div class="border-t-8 border-red-500"> </div>
-            <div class="border-t-8 border-red-500"> </div>
+            <div className="border-t-8 border-red-500"> </div>
+            <div className="border-t-8 border-red-500"> </div>
 
             <p className="text-4xl font-bold tracking-tight text-gray-900">
               Your one-stop banking application
