@@ -31,10 +31,15 @@ export default function Navbar() {
     router.push("/");
   }
 
-  const pathName = usePathname();
+  const pathName = router.asPath;
+  console.log(pathName);
   const navigation = [
     { name: "Home", href: "/customer/dashboard", current: pathName === "/customer/dashboard" },
-    { name: "Accounts", href: "/customer/accounts", current: pathName === "/customer/accounts" },
+    {
+      name: "Accounts",
+      href: "/customer/accounts",
+      current: pathName.startsWith("/customer/accounts"),
+    },
     { name: "Deposit", href: "/customer/deposit", current: pathName === "/customer/deposit" },
     { name: "Withdraw", href: "/customer/withdraw", current: pathName === "/customer/withdraw" },
     { name: "Transfer", href: "/customer/transfer", current: pathName === "/customer/transfer" },

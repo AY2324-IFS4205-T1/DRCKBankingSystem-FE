@@ -37,6 +37,7 @@ export default function CustomerLogin() {
       const data = await response.json();
       const dataJSON = JSON.parse(JSON.stringify(data));
       setCookie("token", dataJSON.token);
+      setCookie("tokenExpiry", dataJSON.expiry);
       console.log("cookie set");
       console.log(dataJSON); //send me another field like auth:pass/fail, and type of user:? so i can check before push
       // const token = dataJSON.token;

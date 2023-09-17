@@ -2,17 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request) {
   const response = NextResponse.next();
-  response.cookies.set({
-    name: "vercel",
-    value: "whatv",
-    path: "/",
-  });
-  let cookie = request.cookies.get("fast");
-  console.log("GETCOOKIE");
-  console.log(cookie); // => { name: 'vercel', value: 'whatv', Path: '/' }
-  const allCookies = request.cookies.getAll();
-  console.log("ALL COOKIE");
-  console.log(allCookies); // => [{ name: 'vercel', value: 'whatv' }]
+  // response.cookies.set({
+  //   name: "vercel",
+  //   value: "whatv",
+  //   path: "/",
+  // });
+  // let cookie = request.cookies.get("fast");
+  // console.log("GETCOOKIE");
+  // console.log(cookie); // => { name: 'vercel', value: 'whatv', Path: '/' }
+  // const allCookies = request.cookies.getAll();
+  // console.log("ALL COOKIE");
+  // console.log(allCookies); // => [{ name: 'vercel', value: 'whatv' }]
 
   //   const checkUser = fetch(new URL(`${process.env.DJANGO_BASE_URL}/customer/login`).href, {
   //     method: "POST",
@@ -26,6 +26,17 @@ export function middleware(request) {
   //   const data = response.json();
   //   console.log(data);
   //   console.log("afte data");
-
+  console.log("HIHhihih2i");
   return response;
 }
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - customer/login
+     * - staff/login
+     */
+    "/((?!customer/login|staff/login|api|favicon.ico).*)",
+  ],
+};
