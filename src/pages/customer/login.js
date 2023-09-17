@@ -37,7 +37,7 @@ export default function CustomerLogin() {
   return (
     <div className="h-screen bg-cover bg-[url('/images/bg.jpg')]">
       <div className="relative isolate px-6 pt-14 lg:px-8">
-        <div className="mx-auto py-16 sm:py-24 lg:py-28 max-w-min">
+        <div className="mx-auto pt-16 sm:pt-24 lg:pt-28 max-w-min">
           <div className="text-center">
             <h1 className="text-9xl font-bold tracking-tight text-gray-900 font-JosefinSans">
                 DRCK

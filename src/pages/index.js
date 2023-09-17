@@ -4,7 +4,7 @@ export default function Home() {
     <div className="h-screen bg-cover bg-[url('/images/bg.jpg')]">
 
       <div className="relative isolate px-6 pt-14 lg:px-8">
-        <div className="mx-auto py-32 sm:py-48 lg:py-56 max-w-min">  
+        <div className="mx-auto pt-16 sm:pt-24 lg:pt-28 max-w-min">  
           <div className="text-center">
             <h1 className="text-9xl font-bold tracking-tight text-gray-900 font-JosefinSans">
               DRCK
@@ -19,13 +19,13 @@ export default function Home() {
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href="/customer/register"
-                className="rounded-md bg-indigo-600 px-5 py-3 text-xl font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-md bg-indigo-600 px-5 py-3 text-lg font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Register
               </a>
               <a
                 href="/customer/login"
-                className="rounded-md bg-slate-600 px-5 py-3 text-xl font-semibold text-white shadow-sm hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+                className="rounded-md bg-slate-600 px-5 py-3 text-lg font-semibold text-white shadow-sm hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
               >
                 Sign In
               </a>
