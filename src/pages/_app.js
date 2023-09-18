@@ -1,7 +1,10 @@
 import "@/styles/globals.css";
-import 'bootstrap/dist/css/bootstrap.css'
-import 'inctable-react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import { NextUIProvider } from "@nextui-org/react";
 
 export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <NextUIProvider>
+      <Component {...pageProps} />
+    </NextUIProvider>
+  );
 }
