@@ -1,4 +1,4 @@
-import Navbar from "@/components/navbar";
+import Navbar_Staff from "@/components/navbar_staff";
 import React from "react";
 import {
   Table,
@@ -11,7 +11,6 @@ import {
   getKeyValue,
 } from "@nextui-org/react";
 
-let account_no = "12345678-12345678-12345678";
 let products = [
   { id: "1", name: "book", price: "$3" },
   { id: "2", name: "apple", price: "$2" },
@@ -22,7 +21,7 @@ let products = [
 ];
 const columns = ["Product ID", "Product Name", "Product Price"];
 
-export default function AccountId() {
+export default function Tickets() {
   const [page, setPage] = React.useState(1);
   const rowsPerPage = 2;
 
@@ -37,12 +36,12 @@ export default function AccountId() {
 
   return (
     <>
-      <Navbar />
+      <Navbar_Staff />
       <div className="bg-gray-200 h-screen">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8 divide-y-2 divide-slate-400">
           <div className="py-8">
             <div>
-              <h1 className="inline text-3xl">Account {account_no} transactions </h1>
+              <h1 className="inline text-3xl">Tickets</h1>
               <Table
                 aria-label="Example table with client side pagination"
                 bottomContent={

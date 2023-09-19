@@ -30,13 +30,13 @@ export default function Dashboard() {
                   <td>Savings Account</td>
                   <td>12345678-12345678-12345678</td>
                   <td>500.75</td>
-                  <td>View More</td>
+                  <td><a href="/customer/accounts/1">View More</a></td>
                 </tr>
                 <tr>
                   <td>Platinum Account</td>
                   <td>87654321-87654321-87654321</td>
                   <td>9.99</td>
-                  <td>View More</td>
+                  <td><a href="/customer/accounts/2">View More</a></td>
                 </tr>
               </tbody>
             </table>

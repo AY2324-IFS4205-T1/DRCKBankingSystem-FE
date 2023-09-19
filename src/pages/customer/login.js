@@ -82,7 +82,7 @@ export default function CustomerLogin() {
 
           <p className="mt-10 text-center text-lg text-black">
             Not a member?{' '}
-            <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+            <a href="/customer/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
               Register here!
             </a>
           </p>

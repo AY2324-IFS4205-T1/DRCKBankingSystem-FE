@@ -29,13 +29,13 @@ export default function Tickets() {
                   <td>Request for opening bank account</td>
                   <td>Open</td>
                   <td>17-09-2023</td>
-                  <td>View More</td>
+                  <td><a href="/customer/tickets/1">View More</a></td>
                 </tr>
                 <tr>
                   <td>Request for opening bank account</td>
                   <td>Open</td>
                   <td>17-09-2023</td>
-                  <td>View More</td>
+                  <td><a href="/customer/tickets/2">View More</a></td>
                 </tr>
               </tbody>
             </table>
