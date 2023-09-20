@@ -1,52 +1,21 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { getCookie, deleteCookie } from "cookies-next";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() {
-  const router = useRouter();
-
-  async function handleLogout(event) {
-    event.preventDefault();
-    const token = getCookie("token");
-    const response = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/logout`, {
-      method: "POST",
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    });
-    // Check if cookie is deleted by user or response not ok, if so, redirect to /
-    if (!response.ok || token === "") {
-      router.push("/");
-    }
-    // response ok, delete token and redirect
-    deleteCookie("token");
-    router.push("/");
-  }
-
-  const pathName = router.asPath;
-  console.log(pathName);
+export default function Navbar_Staff() {
+  const pathName = usePathname();
   const navigation = [
-    { name: "Home", href: "/customer/dashboard", current: pathName === "/customer/dashboard" },
-    {
-      name: "Accounts",
-      href: "/customer/accounts",
-      current: pathName.startsWith("/customer/accounts"),
-    },
-    { name: "Deposit", href: "/customer/deposit", current: pathName === "/customer/deposit" },
-    { name: "Withdraw", href: "/customer/withdraw", current: pathName === "/customer/withdraw" },
-    { name: "Accounts", href: "/customer/accounts", current: pathName === "/customer/accounts" },
-    { name: "ATM", href: "/customer/atm", current: pathName === "/customer/atm" },
-    { name: "Transfer", href: "/customer/transfer", current: pathName === "/customer/transfer" },
-    { name: "Tickets", href: "/customer/tickets", current: pathName === "/customer/tickets" },
-    // { name: "Profile", href: "/customer/profile", current: pathName === "/customer/profile" },
+    { name: "Home", href: "/staff/dashboard", current: pathName === "/staff/dashboard" },
+    { name: "Tickets", href: "/staff/tickets", current: pathName === "/staff/tickets" },
+    { name: "Anonymization", href: "/staff/anon", current: pathName === "/staff/anon" },
   ];
+
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-rose-950">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
