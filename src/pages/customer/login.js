@@ -17,8 +17,6 @@ export default function CustomerLogin() {
       const username = formValues.username;
       const password = formValues.password;
 
-      console.log("before fetch");
-
       const response = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/customer/login`, {
         method: "POST",
         headers: {
@@ -35,20 +33,13 @@ export default function CustomerLogin() {
       }
 
       const data = await response.json();
-      const dataJSON = JSON.parse(JSON.stringify(data));
-      setCookie("token", dataJSON.token);
-      setCookie("tokenExpiry", dataJSON.expiry);
-      console.log("cookie set");
-      console.log(dataJSON); //send me another field like auth:pass/fail, and type of user:? so i can check before push
-      // const token = dataJSON.token;
-      // const expiry = dataJSON.expiry;
-      // const user = dataJSON.user.username;
-      event.target.reset();
-      // No error redirect user
-      router.push("/customer/dashboard");
+      setCookie("token", data.token); // Set cookie client side
+
+      event.target.reset(); // Reset form fields
+
+      router.push("/customer/dashboard"); // No error redirect user
     } catch (isError) {
-      // Capture the error message to display to the user
-      setIsError(isError.message);
+      setIsError(isError.message); // Capture the error message to display to the user
       console.error(isError);
     } finally {
       setIsLoading(false);

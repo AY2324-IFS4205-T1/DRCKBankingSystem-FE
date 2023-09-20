@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { usePathname } from "next/navigation";
 import { getCookie, deleteCookie } from "cookies-next";
 import { useRouter } from "next/router";
 
@@ -9,7 +8,6 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-// "Authorization": "Token <number>"
 export default function Navbar() {
   const router = useRouter();
 
