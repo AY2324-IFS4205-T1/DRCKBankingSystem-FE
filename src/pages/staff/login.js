@@ -1,13 +1,56 @@
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { setCookie } from "cookies-next";
+
 export default function StaffLogin() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(null);
+
+  async function onSubmit(event) {
+    event.preventDefault();
+    setIsLoading(true);
+    setIsError(null); // Clear previous errors when a new request starts
+    try {
+      const formData = new FormData(event.target);
+      const formValues = Object.fromEntries(formData);
+      const username = formValues.username;
+      const password = formValues.password;
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/staff/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Wrong username/password");
+      }
+
+      const data = await response.json();
+      setCookie("token", data.token); // Set cookie client side
+
+      event.target.reset(); // Reset form fields
+
+      router.push("/customer/dashboard"); // No error redirect user
+    } catch (isError) {
+      setIsError(isError.message); // Capture the error message to display to the user
+      console.error(isError);
+    } finally {
+      setIsLoading(false);
+    }
+  }
   return (
     <>
       {}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="/images/logo_black.png"
-          />
+          <img className="mx-auto h-10 w-auto" src="/images/logo_black.png" />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Staff Portal</h2>
         </div>
 
