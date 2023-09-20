@@ -1,36 +1,48 @@
 import { useRouter } from "next/router";
-
-async function handler(req, res) {
-  res.redirect(307, "/customer/dashboard");
-}
+import { useState } from "react";
+import { setCookie } from "cookies-next";
 
 export default function CustomerLogin() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(null);
 
   async function onSubmit(event) {
     event.preventDefault();
+    setIsLoading(true);
+    setIsError(null); // Clear previous errors when a new request starts
+    try {
+      const formData = new FormData(event.target);
+      const formValues = Object.fromEntries(formData);
+      const username = formValues.username;
+      const password = formValues.password;
 
-    const formData = new FormData(event.target);
-    console.log(formData);
-    const response = await fetch("http://localhost:8000/customer/login", {
-      method: "POST",
-      body: formData,
-    });
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/customer/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
 
-    console.log("After POST");
-    const data = await response.json();
-    const dataJSON = JSON.parse(JSON.stringify(data));
+      if (!response.ok) {
+        throw new Error("Wrong username/password");
+      }
 
-    console.log(dataJSON);
-    console.log(dataJSON.token);
-    console.log(dataJSON.expiry);
-    console.log(dataJSON.user.username);
+      const data = await response.json();
+      setCookie("token", data.token); // Set cookie client side
 
-    if (dataJSON.token != "") {
-      console.log("inhere");
-      router.push("/customer/dashboard");
-    } else {
-      console.log("outside");
+      event.target.reset(); // Reset form fields
+
+      router.push("/customer/dashboard"); // No error redirect user
+    } catch (isError) {
+      setIsError(isError.message); // Capture the error message to display to the user
+      console.error(isError);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -45,8 +57,7 @@ export default function CustomerLogin() {
             <div className="border-t-8 border-red-500"> </div>
             <div className="border-t-8 border-red-500"> </div>
           </div>
-
-          
+         
           <form className="mt-4" action="#" method="POST">
             <div className="my-2">
               <label htmlFor="email" className="block text-xl font-medium leading-6 text-gray-900">
@@ -74,8 +85,9 @@ export default function CustomerLogin() {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-xl font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                disabled={isLoading}
               >
-                Sign in
+                {isLoading ? "Loading..." : "Sign in"}
               </button>
             </div>
           </form>
