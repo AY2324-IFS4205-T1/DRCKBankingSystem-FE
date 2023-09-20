@@ -126,19 +126,27 @@ export default function Home() {
                                         <select name="gender" id="gender"
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         >
-                                            <option defaultValue={"M"}>Male</option>
-                                            <option defaultValue={"F"}>Female</option>
+                                            <option defaultValue={"Male"}>Male</option>
+                                            <option defaultValue={"Female"}>Female</option>
+                                            <option defaultValue={"Others"}>Others</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div className="col-span-6">
-                                    <label htmlFor="nationality" className="block text-xl font-medium leading-6 text-gray-900">
-                                        Nationality
+                                    <label htmlFor="citizenship" className="block text-xl font-medium leading-6 text-gray-900">
+                                        Citizenship
                                     </label>
                                     <div className="mt-2 lg:w-3/5">
-                                        <input type="text" name="nationality" id="nationality" required
+                                        <select name="gender" id="gender"
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        />
+                                        >
+                                            <option defaultValue={"CITIZEN"}>Singaporean Citizen</option>
+                                            <option defaultValue={"PR"}>Singaporean PR</option>
+                                            <option defaultValue={"NON_SINGAPOREAN"}>Non-Singaporean</option>
+                                        </select>
+                                        {/* <input type="text" name="citizenship" id="citizenship" required
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        /> */}
                                     </div>
                                 </div>
                                 <div className="col-span-3">
