@@ -2,6 +2,7 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { getCookie, deleteCookie } from "cookies-next";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -21,11 +22,18 @@ export default function Navbar() {
     });
     // Check if cookie is deleted by user or response not ok, if so, redirect to /
     if (!response.ok || token === "") {
+      toast.error("Something went wrong, Please login again.", {
+        autoClose: 5000,
+      });
       router.push("/");
+    } else {
+      // response ok, delete token and redirect
+      deleteCookie("token");
+      router.push("/");
+      toast.success("Logout successful.", {
+        autoClose: 5000,
+      });
     }
-    // response ok, delete token and redirect
-    deleteCookie("token");
-    router.push("/");
   }
 
   const pathName = router.asPath;

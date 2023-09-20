@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { setCookie } from "cookies-next";
+import { toast } from "react-toastify";
 
 export default function StaffLogin() {
   const router = useRouter();
@@ -14,33 +15,34 @@ export default function StaffLogin() {
     try {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
-      const username = formValues.username;
-      const password = formValues.password;
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/staff/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
+        body: JSON.stringify(formValues),
       });
 
       if (!response.ok) {
         throw new Error("Wrong username/password");
       }
 
-      const data = await response.json();
+      const data = await response.json(); // response ok, parse the data
       setCookie("token", data.token); // Set cookie client side
 
       event.target.reset(); // Reset form fields
 
+      toast.success("Login Successful. Redirecting...", {
+        autoClose: 2000,
+      });
+
       router.push("/staff/dashboard"); // No error redirect user
     } catch (isError) {
       setIsError(isError.message); // Capture the error message to display to the user
-      console.error(isError);
+      toast.error(isError.message, {
+        autoClose: 5000,
+      });
     } finally {
       setIsLoading(false);
     }
