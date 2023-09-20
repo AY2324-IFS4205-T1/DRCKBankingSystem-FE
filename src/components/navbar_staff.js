@@ -6,19 +6,16 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() {
+export default function Navbar_Staff() {
   const pathName = usePathname();
   const navigation = [
-    { name: "Home", href: "/customer/dashboard", current: pathName === "/customer/dashboard" },
-    { name: "Accounts", href: "/customer/accounts", current: pathName === "/customer/accounts" },
-    { name: "ATM", href: "/customer/atm", current: pathName === "/customer/atm" },
-    { name: "Transfer", href: "/customer/transfer", current: pathName === "/customer/transfer" },
-    { name: "Tickets", href: "/customer/tickets", current: pathName === "/customer/tickets" },
-    // { name: "Profile", href: "/customer/profile", current: pathName === "/customer/profile" },
+    { name: "Home", href: "/staff/dashboard", current: pathName === "/staff/dashboard" },
+    { name: "Tickets", href: "/staff/tickets", current: pathName === "/staff/tickets" },
+    { name: "Anonymization", href: "/staff/anon", current: pathName === "/staff/anon" },
   ];
 
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-rose-950">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
