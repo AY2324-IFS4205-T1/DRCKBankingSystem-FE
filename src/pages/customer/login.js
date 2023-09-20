@@ -47,24 +47,30 @@ export default function CustomerLogin() {
   }
 
   return (
-    <div className="h-screen bg-cover bg-[url('/images/bg.jpg')]">
+    <div className="h-screen bg-[url('/images/bg.jpg')] bg-cover">
       <div className="relative isolate px-6 pt-14 lg:px-8">
-        <div className="mx-auto pt-16 sm:pt-24 lg:pt-28 max-w-min">
+        <div className="mx-auto max-w-min pt-16 sm:pt-24 lg:pt-28">
           <div className="text-center">
-            <h1 className="text-9xl font-bold tracking-tight text-gray-900 font-JosefinSans">
-                DRCK
-            </h1>
+            <h1 className="font-JosefinSans text-9xl font-bold tracking-tight text-gray-900">DRCK</h1>
             <div className="border-t-8 border-red-500"> </div>
             <div className="border-t-8 border-red-500"> </div>
           </div>
-         
-          <form className="mt-4" action="#" method="POST">
+          {isError && (
+            <div class="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700" role="alert">
+              {isError}
+            </div>
+          )}
+          <form className="mt-4" onSubmit={onSubmit} method="POST">
             <div className="my-2">
-              <label htmlFor="email" className="block text-xl font-medium leading-6 text-gray-900">
-                Email address
+              <label htmlFor="username" className="block text-xl font-medium leading-6 text-gray-900">
+                Username
               </label>
               <div className="mt-2">
-                <input id="email" name="email" type="email" required
+                <input
+                  id="username"
+                  name="username"
+                  type="name"
+                  required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -75,7 +81,11 @@ export default function CustomerLogin() {
                 Password
               </label>
               <div className="mt-2">
-                <input id="password" name="password" type="password" required
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -93,12 +103,11 @@ export default function CustomerLogin() {
           </form>
 
           <p className="mt-10 text-center text-lg text-black">
-            Not a member?{' '}
+            Not a member?{" "}
             <a href="/customer/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
               Register here!
             </a>
           </p>
-
         </div>
       </div>
     </div>

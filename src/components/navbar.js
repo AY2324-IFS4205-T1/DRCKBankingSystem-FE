@@ -65,10 +65,7 @@ export default function Navbar() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src="/images/logo.png"
-                  />
+                  <img className="h-8 w-auto" src="/images/logo.png" />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
@@ -89,8 +86,9 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <a href="/logout"
-                  className="no-underline text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                <a
+                  onClick={handleLogout}
+                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 no-underline hover:bg-gray-700 hover:text-white"
                 >
                   Logout
                 </a>
