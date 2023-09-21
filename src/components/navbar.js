@@ -13,24 +13,30 @@ export default function Navbar() {
 
   async function handleLogout(event) {
     event.preventDefault();
-    const token = getCookie("token");
-    const response = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/logout`, {
-      method: "POST",
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    });
-    // Check if cookie is deleted by user or response not ok, if so, redirect to /
-    if (!response.ok || token === "") {
-      toast.error("Something went wrong, Please login again.", {
-        autoClose: 5000,
+    try {
+      const token = getCookie("token");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/logout`, {
+        method: "POST",
+        headers: {
+          Authorization: `Token ${token}`,
+        },
       });
-      router.push("/");
-    } else {
-      // response ok, delete token and redirect
-      deleteCookie("token");
-      router.push("/");
-      toast.success("Logout successful.", {
+      // Check if cookie is deleted by user or response not ok, if so, redirect to /
+      if (!response.ok || token === "") {
+        toast.error("Something went wrong, Please login again.", {
+          autoClose: 5000,
+        });
+        router.push("/");
+      } else {
+        // response ok, delete token and redirect
+        deleteCookie("token");
+        router.push("/");
+        toast.success("Logout successful.", {
+          autoClose: 5000,
+        });
+      }
+    } catch (exceptionVar) {
+      toast.error("Something went wrong. Please try again.", {
         autoClose: 5000,
       });
     }
@@ -48,7 +54,6 @@ export default function Navbar() {
     { name: "ATM", href: "/customer/atm", current: pathName === "/customer/atm" },
     { name: "Transfer", href: "/customer/transfer", current: pathName === "/customer/transfer" },
     { name: "Tickets", href: "/customer/tickets", current: pathName === "/customer/tickets" },
-    // { name: "Profile", href: "/customer/profile", current: pathName === "/customer/profile" },
   ];
   return (
     <Disclosure as="nav" className="bg-gray-800">
