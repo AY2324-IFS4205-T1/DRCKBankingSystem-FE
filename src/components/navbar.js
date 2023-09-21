@@ -30,6 +30,7 @@ export default function Navbar() {
       } else {
         // response ok, delete token and redirect
         deleteCookie("token");
+        deleteCookie("userType");
         router.push("/");
         toast.success("Logout successful.", {
           autoClose: 5000,

@@ -30,6 +30,7 @@ export default function CustomerLogin() {
 
       const data = await response.json(); // response ok, parse the data
       setCookie("token", data.token); // Set cookie client side
+      setCookie("userType", data.type);
 
       event.target.reset(); // Reset form fields
 

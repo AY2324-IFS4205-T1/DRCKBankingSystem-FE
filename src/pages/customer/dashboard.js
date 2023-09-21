@@ -1,8 +1,20 @@
 import Navbar from "@/components/navbar";
-
+import { isUserAuthenticated } from "@/middleware";
+import { getCookie } from "cookies-next";
 let first_name = "First";
 let last_name = "Last";
 let last_login = "yesterday";
+
+//on/off switch. Do i put this in all the pages to protect them?
+export async function getServerSideProps() {
+  const token = getCookie("token");
+  const userType = getCookie("userType");
+  // Check if the user is authenticated using the isUserAuthenticated function
+  await isUserAuthenticated(token, userType);
+  return {
+    props: {},
+  };
+}
 
 export default function Dashboard() {
   return (
