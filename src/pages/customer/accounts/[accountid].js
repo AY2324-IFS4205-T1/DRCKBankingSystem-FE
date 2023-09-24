@@ -1,5 +1,6 @@
 import Navbar from "@/components/navbar";
-import React from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { useRouter } from 'next/router';
 import {
   Table,
   TableHeader,
@@ -11,29 +12,64 @@ import {
   getKeyValue,
 } from "@nextui-org/react";
 
-let account_no = "12345678-12345678-12345678";
-let products = [
-  { id: "1", name: "book", price: "$3" },
-  { id: "2", name: "apple", price: "$2" },
-  { id: "3", name: "orange", price: "$1" },
-  { id: "4", name: "book", price: "$3" },
-  { id: "5", name: "apple", price: "$2" },
-  { id: "6", name: "orange", price: "$1" },
+import axiosConfig from "../../../axiosConfig";
+
+const columns = [
+  { key: "transaction", label: "Id" },
+  { key: "transaction_type", label: "Type" },
+  { key: "sender_id", label: "Sender" },
+  { key: "recipient_id", label: "Recipient" },
+  { key: "description", label: "Description" },
+  { key: "date", label: "Date" },
+  { key: "amount", label: "Amount" }
 ];
-const columns = ["Product ID", "Product Name", "Product Price"];
 
 export default function AccountId() {
-  const [page, setPage] = React.useState(1);
-  const rowsPerPage = 2;
+  const router = useRouter();
 
-  const pages = Math.ceil(products.length / rowsPerPage);
+  const [page, setPage] = useState(1);
+  const [acctid, setAccid] = useState(null);
+  const [data, setData] = useState([]);
 
-  const items = React.useMemo(() => {
+  // Table render settings
+  const renderCell = useCallback((item, columnKey) => {
+    const cellValue = item[columnKey];
+
+    if (columnKey == "amount") {
+      return Number(cellValue).toFixed(2);
+    }
+
+    return cellValue;
+  }, []);
+
+  // Table pagination settings
+  const rowsPerPage = 10;
+  const pages = Math.ceil(data.length / rowsPerPage);
+
+  const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    return products.slice(start, end);
-  }, [page, products]);
+    console.log(data.slice(start, end));
+    return data.slice(start, end);
+  }, [page, data]);
+
+  // Get data when the router is ready to get query param
+  useEffect(() => {
+    if (!router.isReady) return;
+    
+    setAccid(router.query.accountid);
+    async function getData() {
+      try {
+        let response = await axiosConfig.get(`/customer/account/${router.query.accountid}`);
+        setData(response.data.transactions);
+
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getData();
+  }, [router.isReady]);
 
   return (
     <>
@@ -42,9 +78,8 @@ export default function AccountId() {
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8 divide-y-2 divide-slate-400">
           <div className="py-8">
             <div>
-              <h1 className="inline text-3xl">Account {account_no} transactions </h1>
+              <h1 className="inline text-3xl">Transactions for Account {acctid}</h1>
               <Table
-                aria-label="Example table with client side pagination"
                 bottomContent={
                   <div className="flex w-full justify-center">
                     <Pagination
@@ -62,14 +97,14 @@ export default function AccountId() {
                   wrapper: "min-h-[222px]",
                 }}
               >
-                <TableHeader>
-                  <TableColumn key="id">ID</TableColumn>
-                  <TableColumn key="name">NAME</TableColumn>
-                  <TableColumn key="price">PRICE</TableColumn>
+                <TableHeader columns={columns}>
+                  {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
                 </TableHeader>
                 <TableBody items={items}>
                   {(item) => (
-                    <TableRow key={item.name}>{(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}</TableRow>
+                    <TableRow key={item.transaction}>
+                      {(columnKey) => <TableCell>{getKeyValue(renderCell(item, columnKey), columnKey)}</TableCell>}
+                    </TableRow>
                   )}
                 </TableBody>
               </Table>

@@ -1,11 +1,23 @@
 import Navbar from "@/components/navbar";
-
-let t_id = "1234456";
-let sender = "12345678-12345678-12345678"
-let recipient = "00000000-00000000-00000000";
-let amount = "500.00";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function Transfer() {
+  const router = useRouter();
+
+  const [transaction, setTransaction] = useState({
+    "amount": null,
+    "date": null,
+    "description": null,
+    "recipient": null,
+    "sender": null,
+    "transaction": null
+  });
+
+  useEffect(() => {
+    setTransaction(JSON.parse(router.query.transaction))
+  }, [router.query]);
+  
   return (
     <>
       <Navbar />
@@ -15,10 +27,12 @@ export default function Transfer() {
             <h1 className="text-3xl">Transfer</h1>
             <h2 className="text-xl">The transaction was successful.</h2>
             <p>
-                Transaction ID: {t_id}<br/>
-                From: {sender}<br/>
-                To: {recipient}<br/>
-                Amount: ${amount}
+                Transaction ID: {transaction.transaction}<br/>
+                Date: {transaction.date}<br/>
+                From: {transaction.sender}<br/>
+                To: {transaction.recipient}<br/>
+                Amount: ${transaction.amount}<br/>
+                Message: {transaction.description}
             </p>
           </div>
         </div>

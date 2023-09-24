@@ -16,34 +16,20 @@ export default function StaffLogin() {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/staff/login`, {
-        method: "POST",
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/staff/login`, JSON.stringify(formValues), {
         headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formValues),
+          "Content-Type": "application/json"
+        }
       });
 
-      if (!response.ok) {
-        throw new Error("Wrong username/password");
-      }
-
-      const data = await response.json(); // response ok, parse the data
-      setCookie("token", data.token); // Set cookie client side
-      setCookie("userType", data.type);
+      etCookie("token", response.data.token); // Set cookie client side
+      setCookie("userType", response.data.type);
 
       event.target.reset(); // Reset form fields
+      router.push("/staff/dashboard");
 
-      toast.success("Login Successful. Redirecting...", {
-        autoClose: 2000,
-      });
-
-      router.push("/staff/dashboard"); // No error redirect user
     } catch (isError) {
       setIsError(isError.message); // Capture the error message to display to the user
-      toast.error(isError.message, {
-        autoClose: 5000,
-      });
     } finally {
       setIsLoading(false);
     }

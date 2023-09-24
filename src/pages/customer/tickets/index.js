@@ -1,5 +1,23 @@
 import Navbar from "@/components/navbar";
+import axiosConfig from "../../../axiosConfig";
+import { useState, useEffect } from "react";
+
 export default function Tickets() {
+  const [tickets, setTickets] = useState([]);
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        // Get accounts
+        let response = await axiosConfig.get('/customer/get_tickets');
+        setTickets(response.data.tickets);
+      } catch (err) {
+
+      }
+    }
+    getData();
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -25,18 +43,16 @@ export default function Tickets() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Request for opening bank account</td>
-                  <td>Open</td>
-                  <td>17-09-2023</td>
-                  <td><a href="/customer/tickets/1">View More</a></td>
-                </tr>
-                <tr>
-                  <td>Request for opening bank account</td>
-                  <td>Open</td>
-                  <td>17-09-2023</td>
-                  <td><a href="/customer/tickets/2">View More</a></td>
-                </tr>
+                {
+                  tickets.map((ticket) =>
+                    <tr key={ticket.ticket}>
+                      <td>{ticket.ticket_type}</td>
+                      <td>{ticket.status}</td>
+                      <td>{ticket.created_date}</td>
+                      <td><a href={`/customer/tickets/${ticket.ticket}`}>View More</a></td>
+                    </tr>
+                  )
+                }
               </tbody>
             </table>
           </div>

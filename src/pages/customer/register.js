@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function Register() {
   const router = useRouter();
@@ -14,42 +15,41 @@ export default function Register() {
     try {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
-      console.log(formValues);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/customer/register`, {
-        method: "POST",
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/customer/register`, JSON.stringify(formValues), {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(formValues),
       });
 
-      if (!response.ok) {
-        const data = await response.json();
-        const errorMessages = [];
-        for (const key in data) {
-          if (data.hasOwnProperty(key)) {
-            const errorText = `${key}: ${data[key].join(", ")}`; // Combine multiple error messages for the same field
-            errorMessages.push(errorText);
-          }
-        }
-        const errorMessage = errorMessages.join("\n"); // Join message in array with a "\n". Use for split later.
-        console.log(data);
-        throw new Error(errorMessage);
-      }
+      // if (!response.ok) {
+      //   const data = await response.json();
+      //   const errorMessages = [];
+      //   for (const key in data) {
+      //     if (data.hasOwnProperty(key)) {
+      //       const errorText = `${key}: ${data[key].join(", ")}`; // Combine multiple error messages for the same field
+      //       errorMessages.push(errorText);
+      //     }
+      //   }
+      //   const errorMessage = errorMessages.join("\n"); // Join message in array with a "\n". Use for split later.
+      //   console.log(data);
+      //   throw new Error(errorMessage);
+      // }
 
       event.target.reset(); // Reset form fields
 
       toast.success("Registration successful. Please log in.", {
         autoClose: 5000,
       });
-
       router.push("/customer/login"); // Redirect the user to the login page
+
     } catch (isError) {
-      setIsError(isError.message); // Capture the error message to display to the user
-      toast.error(isError.message, {
-        autoClose: 5000,
-      });
+      console.log(isError);
+
+      // setIsError(isError.message); // Capture the error message to display to the user
+      // toast.error(isError.message, {
+      //   autoClose: 5000,
+      // });
     } finally {
       setIsLoading(false);
     }

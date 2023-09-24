@@ -1,6 +1,23 @@
 import Navbar from "@/components/navbar";
+import axiosConfig from "../../../axiosConfig";
+import { useState, useEffect } from "react";
 
 export default function Accounts() {
+  const [accounts, setAccounts] = useState([]);
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        // Get accounts
+        let response = await axiosConfig.get('/customer/accounts');
+        setAccounts(response.data.accounts);
+      } catch (err) {
+
+      }
+    }
+    getData();
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -26,18 +43,16 @@ export default function Accounts() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Savings Account</td>
-                  <td>12345678-12345678-12345678</td>
-                  <td>500.75</td>
-                  <td><a href="/customer/accounts/1">View More</a></td>
-                </tr>
-                <tr>
-                  <td>Platinum Account</td>
-                  <td>87654321-87654321-87654321</td>
-                  <td>9.99</td>
-                  <td><a href="/customer/accounts/2">View More</a></td>
-                </tr>
+                {
+                  accounts.map((acct) =>
+                    <tr key={acct.account}>
+                      <td>{acct.acct_type}</td>
+                      <td>{acct.account}</td>
+                      <td>{Number(acct.balance).toFixed(2)}</td>
+                      <td><a href={`/customer/accounts/${acct.account}`}>View More</a></td>
+                    </tr>
+                  )
+                }
               </tbody>
             </table>
           </div>

@@ -44,7 +44,6 @@ export default function Navbar() {
   }
 
   const pathName = router.asPath;
-  console.log(pathName);
   const navigation = [
     { name: "Home", href: "/customer/dashboard", current: pathName === "/customer/dashboard" },
     {
