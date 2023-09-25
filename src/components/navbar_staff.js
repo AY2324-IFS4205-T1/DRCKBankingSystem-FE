@@ -1,14 +1,15 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { getCookie, deleteCookie } from "cookies-next";
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
+import { getCookie, deleteCookie } from "cookies-next";
 import { toast } from "react-toastify";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() {
+export default function Navbar_Staff() {
   const router = useRouter();
 
   async function handleLogout(event) {
@@ -27,15 +28,14 @@ export default function Navbar() {
           autoClose: 5000,
         });
         router.push("/");
-      } else {
-        // response ok, delete token and redirect
-        deleteCookie("token");
-        deleteCookie("userType");
-        router.push("/");
-        toast.success("Logout successful.", {
-          autoClose: 5000,
-        });
       }
+      // response ok, delete token and redirect
+      deleteCookie("token");
+      deleteCookie("userType");
+      router.push("/");
+      toast.success("Logout successful.", {
+        autoClose: 5000,
+      });
     } catch (exceptionVar) {
       toast.error("Something went wrong. Please try again.", {
         autoClose: 5000,
@@ -43,20 +43,15 @@ export default function Navbar() {
     }
   }
 
-  const pathName = router.asPath;
+  const pathName = usePathname();
   const navigation = [
-    { name: "Home", href: "/customer/dashboard", current: pathName === "/customer/dashboard" },
-    {
-      name: "Accounts",
-      href: "/customer/accounts",
-      current: pathName.startsWith("/customer/accounts"),
-    },
-    { name: "ATM", href: "/customer/atm", current: pathName === "/customer/atm" },
-    { name: "Transfer", href: "/customer/transfer", current: pathName === "/customer/transfer" },
-    { name: "Tickets", href: "/customer/tickets", current: pathName === "/customer/tickets" },
+    { name: "Home", href: "/staff/dashboard", current: pathName === "/staff/dashboard" },
+    { name: "Tickets", href: "/staff/tickets", current: pathName === "/staff/tickets" },
+    { name: "Anonymization", href: "/staff/anon", current: pathName === "/staff/anon" },
   ];
+
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-rose-950">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -95,7 +90,7 @@ export default function Navbar() {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 ">
                 <a
                   onClick={handleLogout}
                   className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 no-underline hover:cursor-pointer hover:bg-gray-700 hover:text-white"
