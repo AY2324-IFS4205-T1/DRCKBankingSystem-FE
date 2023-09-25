@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { setCookie } from "cookies-next";
+import axios from "axios";
 import { toast } from "react-toastify";
 
 export default function StaffLogin() {
@@ -22,7 +23,7 @@ export default function StaffLogin() {
         }
       });
 
-      etCookie("token", response.data.token); // Set cookie client side
+      setCookie("token", response.data.token); // Set cookie client side
       setCookie("userType", response.data.type);
 
       event.target.reset(); // Reset form fields

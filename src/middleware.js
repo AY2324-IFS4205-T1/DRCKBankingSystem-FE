@@ -45,6 +45,7 @@ export const config = {
      * - _next/image
      * - favicon.ico
      */
-    "/((?!_next/static|_next/image|images/|/|staff/login|customer/login|customer/register).*)",
+    // "/((?!_next/static|_next/image|images/|/|staff/login|customer/login|customer/register).{1,})",
+    "/((?!_next/static|_next/image|images/|staff/login|customer/login|customer/register).{1,})"
   ],
 };

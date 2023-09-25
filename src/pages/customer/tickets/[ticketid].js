@@ -1,32 +1,57 @@
 import Navbar from "@/components/navbar";
-export default function createTicket() {
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
+
+import axiosConfig from "../../../axiosConfig";
+
+export default function TicketId() {
+  const router = useRouter();
+
+  const [ticket, setTicket] = useState({
+    "ticket": null,
+    "ticket_type": null,
+    "status": null,
+    "value": null,
+    "created_date": null,
+    "closed_by": null,
+    "closed_date": null
+  });
+
+  // Get data when the router is ready to get query param
+  useEffect(() => {
+    if (!router.isReady) return;
+    
+    async function getData() {
+      try {
+        let response = await axiosConfig.get(`/customer/ticket/${router.query.ticketid}`);
+        setTicket(response.data.ticket);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getData();
+  }, [router.isReady]);
+
   return (
     <>
       <Navbar />
       <div className="bg-gray-200 h-screen">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8 divide-y-2 divide-slate-400">
           <div className="py-8">
-            <h1 className="text-3xl">View Ticket</h1>
-            <form className="mt-4">
-              <div className="my-3">
-                <label htmlFor="sender" className="block text-xl font-medium leading-6 text-gray-900">
-                  Type of Request
-                </label>
-                <select disabled name="sender" id="sender"
-                  className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                >
-                  <option defaultValue={"12345678-12345678-12345678"}>Opening a bank account</option>
-                  <option defaultValue={"00000000-00000000-00000000"}>Closing a bank account</option>
-                </select>
-              </div>
-              <div className="my-3">
-                <label htmlFor="recipient" className="block text-xl font-medium leading-6 text-gray-900">
-                  Message
-                </label>
-                <textarea disabled id="message" rows="4" class="block p-2.5 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+            <h1 className="text-3xl">Ticket {ticket.ticket}</h1>
+            <p>
+                Status: {ticket.status}<br/>
+                Type: {ticket.ticket_type}<br/>
 
-              </div>
-            </form>
+                {ticket.ticket_type == 'Opening Account' && 'Type of account to be created: '}
+                {ticket.ticket_type == 'Closing Account' && 'Acconut to be closed: '}
+                {ticket.value}
+                <br/>
+
+                Created Date: {ticket.created_date}<br/>
+                Closed By: {ticket.closed_by}<br/>
+                Closed Date: {ticket.closed_date}
+            </p>
           </div>
         </div>
       </div>

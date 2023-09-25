@@ -9,7 +9,7 @@ export default function Tickets() {
     async function getData() {
       try {
         // Get accounts
-        let response = await axiosConfig.get('/customer/get_tickets');
+        let response = await axiosConfig.get('/customer/tickets');
         setTickets(response.data.tickets);
       } catch (err) {
 
