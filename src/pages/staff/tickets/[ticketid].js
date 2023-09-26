@@ -46,7 +46,6 @@ export default function createTicket() {
   async function approveTicket() {
     try {
       let response = await axiosConfig.post(`/staff/ticket/${ticket.ticket}/approve`);
-      console.log(response.data);
       router.push({
         pathname: '/staff/tickets/'
       });
@@ -57,8 +56,7 @@ export default function createTicket() {
 
   async function rejectTicket() {
     try {
-      let response = await axiosConfig.post('/staff/ticket/reject', { ticket: ticket.ticket });
-      console.log(response.data);
+      let response = await axiosConfig.post(`/staff/ticket/${ticket.ticket}/reject`);
       router.push({
         pathname: '/staff/tickets/'
       });
