@@ -47,7 +47,6 @@ export default function createTicket() {
 
     try {
       let response = await axiosConfig.post('/customer/tickets', data);
-      console.log(response.data);
       router.push({
         pathname: '/customer/tickets'
       });
