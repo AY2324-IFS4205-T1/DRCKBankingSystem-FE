@@ -13,8 +13,9 @@ export async function getServerSideProps() {
   });
   console.log("HTTPS AGENT SERVER SIDE PROPS");
   console.log(httpsAgent);
+  console.log(httpsAgent.cert);
   return {
-    props: JSON.stringify(httpsAgent),
+    props: { httpsAgent: httpsAgent },
   };
 }
 
