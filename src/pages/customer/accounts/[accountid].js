@@ -50,7 +50,6 @@ export default function AccountId() {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    console.log(data.slice(start, end));
     return data.slice(start, end);
   }, [page, data]);
 

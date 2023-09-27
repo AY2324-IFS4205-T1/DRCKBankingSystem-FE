@@ -8,7 +8,6 @@ import {
   TableRow,
   TableCell,
   Pagination,
-  getKeyValue,
 } from "@nextui-org/react";
 
 import axiosConfig from "../../../axiosConfig";
@@ -52,7 +51,7 @@ export default function Tickets() {
     async function getData() {
       try {
         let response = await axiosConfig.get(`/staff/get_open_tickets`);
-        setData(response.data.tickets);
+        setData(response.data.open_tickets);
         console.log(response);
 
       } catch (err) {
