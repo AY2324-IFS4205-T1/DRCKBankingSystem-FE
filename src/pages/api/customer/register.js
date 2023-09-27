@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
-      let server_req = await axios.post('http://localhost:8000/customer/register', req.body, {
+      let server_req = await axios.post('https://ifs4205-23s1-1-2-i.comp.nus.edu.sg:8000/customer/register', req.body, {
         headers: {
           'Content-Type': 'application/json'
         }
