@@ -3,34 +3,30 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-export async function getServerSideProps() {
-  const https = require("https");
-  const fs = require("fs");
-  const httpsAgent = new https.Agent({
-    cert: fs.readFileSync(process.env.NEXT_PUBLIC_CLIENT_CERT),
-    key: fs.readFileSync(process.env.NEXT_PUBLIC_CLIENT_KEY),
-    ca: fs.readFileSync(process.env.NEXT_PUBLIC_CA),
-  });
-  const serializedCert = Array.from(httpsAgent.cert);
-  const serializedKey = Array.from(httpsAgent.key);
-  const serializedCa = Array.from(httpsAgent.ca);
+// export async function getServerSideProps() {
+//   const https = require("https");
+//   const fs = require("fs");
+//   const httpsAgent = new https.Agent({
+//     cert: fs.readFileSync(process.env.NEXT_PUBLIC_CLIENT_CERT),
+//     key: fs.readFileSync(process.env.NEXT_PUBLIC_CLIENT_KEY),
+//     ca: fs.readFileSync(process.env.NEXT_PUBLIC_CA),
+//   });
+//   const serializedHttpsAgent = {
+//     cert: httpsAgent.options.cert,
+//     key: httpsAgent.options.key,
+//     ca: httpsAgent.options.ca,
+//   };
 
-  console.log("HTTPS AGENT SERVER SIDE PROPS");
-  console.log(httpsAgent);
-  console.log("HTTPS SERIALIZED");
-  console.log(serializedHttpsAgent);
-  return {
-    props: {
-      httpsAgent: {
-        cert: serializedCert,
-        key: serializedKey,
-        ca: serializedCa,
-      },
-    },
-  };
-}
+//   console.log("HTTPS AGENT SERVER SIDE PROPS");
+//   console.log(httpsAgent);
+//   console.log("HTTPS SERIALIZED");
+//   console.log(serializedHttpsAgent);
+//   return {
+//     props: { httpsAgent: serializedHttpsAgent },
+//   };
+// }
 
-export default function Register({ httpsAgent }) {
+export default function Register() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(null);
