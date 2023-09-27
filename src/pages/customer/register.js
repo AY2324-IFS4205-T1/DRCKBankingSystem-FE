@@ -7,6 +7,13 @@ export default function Register() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(null);
+  const https = require("node:https");
+  const fs = require("fs");
+  const httpsAgent = new https.Agent({
+    cert: fs.readFileSync(process.env.NEXT_PUBLIC_CLIENT_CERT),
+    key: fs.readFileSync(process.env.NEXT_PUBLIC_CLIENT_KEY),
+    ca: fs.readFileSync(process.env.NEXT_PUBLIC_CA),
+  });
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -16,11 +23,16 @@ export default function Register() {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
 
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/customer/register`, JSON.stringify(formValues), {
-        headers: {
-          "Content-Type": "application/json"
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/customer/register`,
+        JSON.stringify(formValues),
+        {
+          httpsAgent,
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       // if (!response.ok) {
       //   const data = await response.json();
@@ -42,7 +54,6 @@ export default function Register() {
         autoClose: 5000,
       });
       router.push("/customer/login"); // Redirect the user to the login page
-
     } catch (isError) {
       console.log(isError);
 
