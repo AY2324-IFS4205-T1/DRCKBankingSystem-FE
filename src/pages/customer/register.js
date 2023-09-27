@@ -38,7 +38,7 @@ export default function Register() {
     try {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
-      console.log(httpsAgent);
+      // console.log(httpsAgent);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/customer/register`,
         JSON.stringify(formValues),
