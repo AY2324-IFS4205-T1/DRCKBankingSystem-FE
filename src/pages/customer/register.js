@@ -7,7 +7,7 @@ export default function Register() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(null);
-  const https = require("node:https");
+  const https = require("https");
   const fs = require("fs");
   const httpsAgent = new https.Agent({
     cert: fs.readFileSync(process.env.NEXT_PUBLIC_CLIENT_CERT),
