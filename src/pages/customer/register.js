@@ -11,8 +11,10 @@ export async function getServerSideProps() {
     key: fs.readFileSync(process.env.NEXT_PUBLIC_CLIENT_KEY),
     ca: fs.readFileSync(process.env.NEXT_PUBLIC_CA),
   });
+  console.log("HTTPS AGENT SERVER SIDE PROPS");
+  console.log(httpsAgent);
   return {
-    props: { httpsAgent },
+    props: JSON.stringify(httpsAgent),
   };
 }
 
