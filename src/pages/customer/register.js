@@ -3,10 +3,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-export default function Register() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(null);
+export async function getServerSideProps() {
   const https = require("https");
   const fs = require("fs");
   const httpsAgent = new https.Agent({
@@ -14,6 +11,15 @@ export default function Register() {
     key: fs.readFileSync(process.env.NEXT_PUBLIC_CLIENT_KEY),
     ca: fs.readFileSync(process.env.NEXT_PUBLIC_CA),
   });
+  return {
+    props: { httpsAgent },
+  };
+}
+
+export default function Register({ httpsAgent }) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(null);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -22,7 +28,7 @@ export default function Register() {
     try {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
-
+      console.log(httpsAgent);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/customer/register`,
         JSON.stringify(formValues),
