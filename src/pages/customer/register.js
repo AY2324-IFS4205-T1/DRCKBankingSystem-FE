@@ -11,11 +11,18 @@ export async function getServerSideProps() {
     key: fs.readFileSync(process.env.NEXT_PUBLIC_CLIENT_KEY),
     ca: fs.readFileSync(process.env.NEXT_PUBLIC_CA),
   });
+  const serializedHttpsAgent = {
+    cert: httpsAgent.options.cert,
+    key: httpsAgent.options.key,
+    ca: httpsAgent.options.ca,
+  };
+
   console.log("HTTPS AGENT SERVER SIDE PROPS");
   console.log(httpsAgent);
-  console.log(httpsAgent.cert);
+  console.log("HTTPS SERIALIZED");
+  console.log(serializedHttpsAgent);
   return {
-    props: { httpsAgent: httpsAgent },
+    props: { httpsAgent: serializedHttpsAgent },
   };
 }
 
