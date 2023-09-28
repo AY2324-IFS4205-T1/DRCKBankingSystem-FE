@@ -16,7 +16,7 @@ export async function middleware(request) {
   const response = NextResponse.next();
   const { pathname, origin } = request.nextUrl;
 
-  const authToken = request.cookies.get("token")?.value ? request.cookies.get("userType")?.value : "";
+  const authToken = request.cookies.get("token")?.value ? request.cookies.get("token")?.value : "";
   const authUserType = request.cookies.get("userType")?.value ? request.cookies.get("userType")?.value : "";
 
   // Check pathname matches with the cookie userType. Else redirect to main page
