@@ -1,22 +1,12 @@
 import { NextResponse } from "next/server";
-import * as fs from 'fs';
-import * as https from 'https';
-
-const httpsAgent = new https.Agent({
-  ca: fs.readFileSync(`${process.env.CA}`),
-  cert: fs.readFileSync(`${process.env.CLIENT_CERT}`),
-  key: fs.readFileSync(`${process.env.CLIENT_KEY}`),
-});
 
 async function checkUserAuthentication(authToken, authUserType) {
-  const res = await fetch(`${process.env.DJANGO_BASE_URL}/auth_check`, {
+  const res = await fetch('http://localhost:3000/api/auth_check', {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Token ${authToken}`,
+      Authorization: authToken,
       Type: authUserType,
-    },
-    agent: httpsAgent
+    }
   });
 
   return res.status;
