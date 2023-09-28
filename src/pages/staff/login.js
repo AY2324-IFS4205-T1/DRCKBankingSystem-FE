@@ -17,7 +17,7 @@ export default function StaffLogin() {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
 
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/staff/login`, JSON.stringify(formValues), {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/staff/login`, JSON.stringify(formValues), {
         headers: {
           "Content-Type": "application/json"
         }

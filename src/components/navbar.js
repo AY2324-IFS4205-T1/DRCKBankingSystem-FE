@@ -15,7 +15,7 @@ export default function Navbar() {
     event.preventDefault();
     try {
       const token = getCookie("token");
-      const response = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/logout`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/logout`, {
         method: "POST",
         headers: {
           Authorization: `Token ${token}`,

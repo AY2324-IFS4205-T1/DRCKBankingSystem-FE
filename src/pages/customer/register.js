@@ -16,9 +16,10 @@ export default function Register() {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
 
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/customer/register`, JSON.stringify(formValues), {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/customer/register`, JSON.stringify(formValues), {
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "x-middleware-cache": "no-cache"
         },
       });
 

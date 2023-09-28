@@ -12,7 +12,7 @@ export default function setupTwoFA() {
   useEffect(() => {
     async function getData() {
       try {
-        let response = await axiosConfig.get('/setup_2FA', {responseType: 'arraybuffer'});
+        let response = await axiosConfig.get('/setup_2FA');
         setDataImage(Buffer.from(response.data, 'binary').toString('base64'));
       } catch (err) {
 

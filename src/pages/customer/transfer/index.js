@@ -35,7 +35,6 @@ export default function Transfer() {
     };
     try {
       let response = await axiosConfig.post('/customer/transfer', data);
-      console.log(response.data);
       router.push({
         pathname: '/customer/transfer/confirm',
         query: { transaction: JSON.stringify(response.data) }
