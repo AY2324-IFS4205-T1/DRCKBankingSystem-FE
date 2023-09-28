@@ -1,14 +1,6 @@
 import Navbar_Staff from "@/components/navbar_staff";
 import { useState, useEffect, useMemo, useCallback } from "react";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Pagination,
-} from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from "@nextui-org/react";
 
 import axiosConfig from "../../../axiosConfig";
 
@@ -16,7 +8,7 @@ const columns = [
   { key: "status", label: "Status" },
   { key: "ticket_type", label: "Type" },
   { key: "created_date", label: "Created Date" },
-  { key: "details", label: "View Details" }
+  { key: "details", label: "View Details" },
 ];
 
 export default function Tickets() {
@@ -28,9 +20,7 @@ export default function Tickets() {
     const cellValue = item[columnKey];
 
     if (columnKey == "details") {
-      return (
-        <a href={`/staff/tickets/${item.ticket}`}>View More</a>
-      );
+      return <a href={`/staff/tickets/${item.ticket}`}>View More</a>;
     }
 
     return cellValue;
@@ -53,7 +43,6 @@ export default function Tickets() {
         let response = await axiosConfig.get(`/staff/get_open_tickets`);
         setData(response.data.open_tickets);
         console.log(response);
-
       } catch (err) {
         console.log(err);
       }
@@ -64,8 +53,8 @@ export default function Tickets() {
   return (
     <>
       <Navbar_Staff />
-      <div className="bg-gray-200 h-screen">
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8 divide-y-2 divide-slate-400">
+      <div className="h-screen bg-gray-200">
+        <div className="mx-auto max-w-7xl divide-y-2 divide-slate-400 px-2 py-8 sm:px-6 lg:px-8">
           <div className="py-8">
             <div>
               <h1 className="inline text-3xl">Tickets</h1>

@@ -9,11 +9,9 @@ export default function Accounts() {
     async function getData() {
       try {
         // Get accounts
-        let response = await axiosConfig.get('/customer/accounts');
+        let response = await axiosConfig.get("/customer/accounts");
         setAccounts(response.data.accounts);
-      } catch (err) {
-
-      }
+      } catch (err) {}
     }
     getData();
   }, []);
@@ -21,8 +19,8 @@ export default function Accounts() {
   return (
     <>
       <Navbar />
-      <div className="bg-gray-200 h-screen">
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8 divide-y-2 divide-slate-400">
+      <div className="h-screen bg-gray-200">
+        <div className="mx-auto max-w-7xl divide-y-2 divide-slate-400 px-2 py-8 sm:px-6 lg:px-8">
           <div className="py-8">
             <div>
               <h1 className="inline text-3xl">Accounts</h1>
@@ -33,7 +31,7 @@ export default function Accounts() {
                 Request New Account
               </a> */}
             </div>
-            <table className="table-auto w-full border border-slate-500 border-collapse my-8">
+            <table className="my-8 w-full table-auto border-collapse border border-slate-500">
               <thead>
                 <tr>
                   <th className="border border-slate-500">Type</th>
@@ -43,16 +41,16 @@ export default function Accounts() {
                 </tr>
               </thead>
               <tbody>
-                {
-                  accounts.map((acct) =>
-                    <tr key={acct.account}>
-                      <td>{acct.acct_type}</td>
-                      <td>{acct.account}</td>
-                      <td>{Number(acct.balance).toFixed(2)}</td>
-                      <td><a href={`/customer/accounts/${acct.account}`}>View More</a></td>
-                    </tr>
-                  )
-                }
+                {accounts.map((acct) => (
+                  <tr key={acct.account}>
+                    <td>{acct.acct_type}</td>
+                    <td>{acct.account}</td>
+                    <td>{Number(acct.balance).toFixed(2)}</td>
+                    <td>
+                      <a href={`/customer/accounts/${acct.account}`}>View More</a>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

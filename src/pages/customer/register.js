@@ -16,12 +16,16 @@ export default function Register() {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
 
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/customer/register`, JSON.stringify(formValues), {
-        headers: {
-          "Content-Type": "application/json",
-          "x-middleware-cache": "no-cache"
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_API_URL}/customer/register`,
+        JSON.stringify(formValues),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-middleware-cache": "no-cache",
+          },
         },
-      });
+      );
 
       // if (!response.ok) {
       //   const data = await response.json();
@@ -43,7 +47,6 @@ export default function Register() {
         autoClose: 5000,
       });
       router.push("/customer/login"); // Redirect the user to the login page
-
     } catch (isError) {
       console.log(isError);
 

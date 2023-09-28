@@ -1,6 +1,6 @@
 import Navbar_Staff from "@/components/navbar_staff";
 import { useState, useEffect } from "react";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 import axiosConfig from "../../../axiosConfig";
 
@@ -8,22 +8,22 @@ export default function createTicket() {
   const router = useRouter();
 
   const [ticket, setTicket] = useState({
-    "ticket": null,
-    "ticket_type": null,
-    "created_date": null,
-    "status": null,
-    "value": null,
+    ticket: null,
+    ticket_type: null,
+    created_date: null,
+    status: null,
+    value: null,
   });
   const [customer, setCustomer] = useState({
-    "first_name": null,
-    "last_name": null,
-    "email": null,
-    "phone_no": null,
-    "birth_date": null,
-    "gender": null,
-    "citizenship": null,
-    "address": null,
-    "postal_code": null,
+    first_name: null,
+    last_name: null,
+    email: null,
+    phone_no: null,
+    birth_date: null,
+    gender: null,
+    citizenship: null,
+    address: null,
+    postal_code: null,
   });
 
   useEffect(() => {
@@ -35,7 +35,6 @@ export default function createTicket() {
         console.log(response);
         setTicket(response.data.ticket);
         setCustomer(response.data.customer);
-
       } catch (err) {
         console.log(err);
       }
@@ -47,7 +46,7 @@ export default function createTicket() {
     try {
       let response = await axiosConfig.post(`/staff/ticket/${ticket.ticket}/approve`);
       router.push({
-        pathname: '/staff/tickets/'
+        pathname: "/staff/tickets/",
       });
     } catch (err) {
       console.log(err);
@@ -58,7 +57,7 @@ export default function createTicket() {
     try {
       let response = await axiosConfig.post(`/staff/ticket/${ticket.ticket}/reject`);
       router.push({
-        pathname: '/staff/tickets/'
+        pathname: "/staff/tickets/",
       });
     } catch (err) {
       console.log(err);
@@ -68,19 +67,21 @@ export default function createTicket() {
   return (
     <>
       <Navbar_Staff />
-      <div className="bg-gray-200 h-screen">
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 divide-y-2 divide-slate-400">
+      <div className="h-screen bg-gray-200">
+        <div className="mx-auto max-w-7xl divide-y-2 divide-slate-400 px-2 sm:px-6 lg:px-8">
           <div className="py-8">
             <div>
               <h1 className="text-3xl">Approve Ticket</h1>
               <div className="float-right">
-                <button type="submit"
-                  className="rounded-md bg-indigo-600 px-3 py-2 mr-4 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                <button
+                  type="submit"
+                  className="mr-4 rounded-md bg-indigo-600 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   onClick={approveTicket}
                 >
                   Approve
                 </button>
-                <button type="submit"
+                <button
+                  type="submit"
                   className="rounded-md bg-indigo-600 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   onClick={rejectTicket}
                 >
@@ -91,18 +92,22 @@ export default function createTicket() {
             <div className="mt-4">
               <div className="my-3">
                 <p className="block text-xl font-medium leading-6 text-gray-900">Requested by</p>
-                <p className="block text-base leading-6">{customer.first_name} {customer.last_name}</p>
+                <p className="block text-base leading-6">
+                  {customer.first_name} {customer.last_name}
+                </p>
               </div>
               <div className="my-3">
                 <label htmlFor="request_type" className="block text-xl font-medium leading-6 text-gray-900">
                   Type of Request
                 </label>
-                <p name="request_type"
+                <p
+                  name="request_type"
                   className="rounded-md py-1.5 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                 >
-                  {ticket.ticket_type}<br />
-                  {ticket.ticket_type == 'Opening Account' && 'Type of account to be created: '}
-                  {ticket.ticket_type == 'Closing Account' && 'Acconut to be closed: '}
+                  {ticket.ticket_type}
+                  <br />
+                  {ticket.ticket_type == "Opening Account" && "Type of account to be created: "}
+                  {ticket.ticket_type == "Closing Account" && "Acconut to be closed: "}
                   {ticket.value}
                 </p>
               </div>
@@ -117,7 +122,9 @@ export default function createTicket() {
             <div className="mt-4 grid grid-cols-2 gap-3">
               <div className="col-span-1">
                 <p className="block text-xl font-medium leading-6 text-gray-900">Full Name</p>
-                <p className="block text-base leading-6">{customer.first_name} {customer.last_name}</p>
+                <p className="block text-base leading-6">
+                  {customer.first_name} {customer.last_name}
+                </p>
               </div>
               <div className="col-span-1">
                 <p className="block text-xl font-medium leading-6 text-gray-900">Email</p>

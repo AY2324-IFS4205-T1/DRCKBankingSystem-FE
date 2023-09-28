@@ -1,20 +1,14 @@
 export default function Home() {
-
   return (
-    <div className="h-screen bg-cover bg-[url('/images/bg.jpg')]">
-
+    <div className="h-screen bg-[url('/images/bg.jpg')] bg-cover">
       <div className="relative isolate px-6 pt-14 lg:px-8">
-        <div className="mx-auto pt-16 sm:pt-24 lg:pt-28 max-w-min">  
+        <div className="mx-auto max-w-min pt-16 sm:pt-24 lg:pt-28">
           <div className="text-center">
-            <h1 className="text-9xl font-bold tracking-tight text-gray-900 font-JosefinSans">
-              DRCK
-            </h1>
+            <h1 className="font-JosefinSans text-9xl font-bold tracking-tight text-gray-900">DRCK</h1>
             <div className="border-t-8 border-red-500"> </div>
             <div className="border-t-8 border-red-500"> </div>
 
-            <p className="text-4xl font-bold tracking-tight text-gray-900">
-              Your one-stop banking application
-            </p>
+            <p className="text-4xl font-bold tracking-tight text-gray-900">Your one-stop banking application</p>
 
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
@@ -34,5 +28,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }
