@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-const fs = require("fs");
-const https = require("https");
+import * as fs from 'fs';
+import * as https from 'https';
 
 const httpsAgent = new https.Agent({
   ca: fs.readFileSync(`${process.env.CA}`),
