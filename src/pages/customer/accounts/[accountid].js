@@ -1,6 +1,6 @@
 import Navbar from "@/components/navbar";
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 import {
   Table,
   TableHeader,
@@ -21,7 +21,7 @@ const columns = [
   { key: "recipient_id", label: "Recipient" },
   { key: "description", label: "Description" },
   { key: "date", label: "Date" },
-  { key: "amount", label: "Amount" },
+  { key: "amount", label: "Amount" }
 ];
 
 export default function AccountId() {
@@ -56,12 +56,13 @@ export default function AccountId() {
   // Get data when the router is ready to get query param
   useEffect(() => {
     if (!router.isReady) return;
-
+    
     setAccid(router.query.accountid);
     async function getData() {
       try {
         let response = await axiosConfig.get(`/customer/account/${router.query.accountid}`);
         setData(response.data.transactions);
+
       } catch (err) {
         console.log(err);
       }
@@ -72,8 +73,8 @@ export default function AccountId() {
   return (
     <>
       <Navbar />
-      <div className="h-screen bg-gray-200">
-        <div className="mx-auto max-w-7xl divide-y-2 divide-slate-400 px-2 py-8 sm:px-6 lg:px-8">
+      <div className="bg-gray-200 h-screen">
+        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8 divide-y-2 divide-slate-400">
           <div className="py-8">
             <div>
               <h1 className="inline text-3xl">Transactions for Account {acctid}</h1>

@@ -4,22 +4,24 @@ import { useState, useEffect } from "react";
 
 export default function Dashboard() {
   const [welcome, setWelcome] = useState({
-    first_name: null,
-    last_name: null,
-    last_login: null,
+    "first_name": null,
+    "last_name": null,
+    "last_login": null
   });
 
   useEffect(() => {
     async function getData() {
       try {
         // Get welcome message
-        let response = await axiosConfig.get("/staff/welcome");
+        let response = await axiosConfig.get('/staff/welcome');
         setWelcome({
-          first_name: response.data.first_name,
-          last_name: response.data.last_name,
-          last_login: response.data.last_login,
+          "first_name": response.data.first_name,
+          "last_name": response.data.last_name,
+          "last_login": response.data.last_login,
         });
-      } catch (err) {}
+      } catch (err) {
+
+      }
     }
     getData();
   }, []);
