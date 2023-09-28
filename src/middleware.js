@@ -1,12 +1,22 @@
 import { NextResponse } from "next/server";
+const fs = require("fs");
+const https = require("https");
+
+const httpsAgent = new https.Agent({
+  ca: fs.readFileSync(`${process.env.CA}`),
+  cert: fs.readFileSync(`${process.env.CLIENT_CERT}`),
+  key: fs.readFileSync(`${process.env.CLIENT_KEY}`),
+});
 
 async function checkUserAuthentication(authToken, authUserType) {
-  const res = await fetch(`${process.env.BASE_API_URL}/auth_check`, {
+  const res = await fetch(`${process.env.DJANGO_BASE_URL}/auth_check`, {
     method: "GET",
     headers: {
-      Authorization: authToken,
-      usertype: authUserType,
+      "Content-Type": "application/json",
+      Authorization: `Token ${authToken}`,
+      Type: authUserType,
     },
+    agent: httpsAgent
   });
 
   return res.status;
@@ -21,7 +31,7 @@ export async function middleware(request) {
 
   // Check pathname matches with the cookie userType. Else redirect to main page
   if (pathname.split("/")[1] != authUserType.toLowerCase()) {
-    return NextResponse.redirect(`${origin}`);
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   // Check if the token is still valid
@@ -31,11 +41,11 @@ export async function middleware(request) {
   } else if (status === 401) {
     // Unauthorised, if the userType cookie exists, redirect based on the portal
     if (authUserType == "Customer") {
-      return NextResponse.redirect(`${origin}/customer/login`);
+      return NextResponse.redirect(new URL('/customer/login', request.url));
     } else if (authUserType == "Staff") {
-      return NextResponse.redirect(`${origin}/staff/login`);
+      return NextResponse.redirect(new URL('/staff/login', request.url));
     } else {
-      return NextResponse.redirect(`${origin}`);
+      return NextResponse.redirect(new URL('/', request.url));
     }
   } else {
     console.log(`Error expected with unhandled status ${status}`);
