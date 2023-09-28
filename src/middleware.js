@@ -2,11 +2,11 @@ import { NextResponse } from "next/server";
 
 async function checkUserAuthentication(authToken, authUserType) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth_check`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Authorization': authToken,
-      'usertype': authUserType
-    }
+      Authorization: authToken,
+      usertype: authUserType,
+    },
   });
 
   return res.status;
@@ -14,13 +14,13 @@ async function checkUserAuthentication(authToken, authUserType) {
 
 export async function middleware(request) {
   const response = NextResponse.next();
-  const {pathname, origin} = request.nextUrl;
+  const { pathname, origin } = request.nextUrl;
 
-  const authToken = request.cookies.get('token')?.value;
-  const authUserType = request.cookies.get('userType')?.value;
-  
+  const authToken = request.cookies.get("token")?.value;
+  const authUserType = request.cookies.get("userType")?.value;
+
   // Check pathname matches with the cookie userType. Else redirect to main page
-  if (pathname.split('/')[1] != authUserType.toLowerCase()) {
+  if (pathname.split("/")[1] != authUserType.toLowerCase()) {
     return NextResponse.redirect(`${origin}`);
   }
 
@@ -30,9 +30,9 @@ export async function middleware(request) {
     return response;
   } else if (status === 401) {
     // Unauthorised, if the userType cookie exists, redirect based on the portal
-    if (authUserType == 'Customer') {
+    if (authUserType == "Customer") {
       return NextResponse.redirect(`${origin}/customer/login`);
-    } else if (authUserType == 'Staff') {
+    } else if (authUserType == "Staff") {
       return NextResponse.redirect(`${origin}/staff/login`);
     } else {
       return NextResponse.redirect(`${origin}`);
@@ -41,7 +41,7 @@ export async function middleware(request) {
     console.log(`Error expected with unhandled status ${status}`);
     return response;
   }
-};
+}
 
 export const config = {
   matcher: [
@@ -53,6 +53,6 @@ export const config = {
      * - favicon.ico
      */
     // "/((?!_next/static|_next/image|images/|/|staff/login|customer/login|customer/register).{1,})",
-    "/((?!_next/static|_next/image|images/|favicon.ico|staff/login|customer/login|customer/register|api/).{1,})"
+    "/((?!_next/static|_next/image|images/|favicon.ico|staff/login|customer/login|customer/register|api/).{1,})",
   ],
 };

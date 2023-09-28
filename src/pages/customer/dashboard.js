@@ -15,9 +15,9 @@ import { useState, useEffect } from "react";
 
 export default function Dashboard() {
   const [welcome, setWelcome] = useState({
-    "first_name": null,
-    "last_name": null,
-    "last_login": null
+    first_name: null,
+    last_name: null,
+    last_login: null,
   });
   const [accounts, setAccounts] = useState([]);
 
@@ -25,19 +25,17 @@ export default function Dashboard() {
     async function getData() {
       try {
         // Get welcome message
-        let response = await axiosConfig.get('/customer/welcome');
+        let response = await axiosConfig.get("/customer/welcome");
         setWelcome({
-          "first_name": response.data.first_name,
-          "last_name": response.data.last_name,
-          "last_login": response.data.last_login,
+          first_name: response.data.first_name,
+          last_name: response.data.last_name,
+          last_login: response.data.last_login,
         });
 
         // Get accounts
-        response = await axiosConfig.get('/customer/accounts');
+        response = await axiosConfig.get("/customer/accounts");
         setAccounts(response.data.accounts);
-      } catch (err) {
-
-      }
+      } catch (err) {}
     }
     getData();
   }, []);
@@ -65,16 +63,16 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                {
-                  accounts.map((acct) =>
-                    <tr key={acct.account}>
-                      <td>{acct.acct_type}</td>
-                      <td>{acct.account}</td>
-                      <td>{Number(acct.balance).toFixed(2)}</td>
-                      <td><a href={`/customer/accounts/${acct.account}`}>View More</a></td>
-                    </tr>
-                  )
-                }
+                {accounts.map((acct) => (
+                  <tr key={acct.account}>
+                    <td>{acct.acct_type}</td>
+                    <td>{acct.account}</td>
+                    <td>{Number(acct.balance).toFixed(2)}</td>
+                    <td>
+                      <a href={`/customer/accounts/${acct.account}`}>View More</a>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
