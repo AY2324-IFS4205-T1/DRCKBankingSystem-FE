@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 async function checkUserAuthentication(authToken, authUserType) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth_check`, {
+  const res = await fetch(`${process.env.BASE_API_URL}/auth_check`, {
     method: "GET",
     headers: {
       Authorization: authToken,
