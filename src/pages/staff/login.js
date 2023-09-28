@@ -48,7 +48,7 @@ export default function StaffLogin() {
             <div className="border-t-8 border-red-500"> </div>
           </div>
           {isError && (
-            <div class="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700" role="alert">
+            <div className="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700" role="alert">
               {isError}
             </div>
           )}
