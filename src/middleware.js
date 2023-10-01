@@ -5,7 +5,7 @@ async function checkUserAuthentication(authToken, authUserType) {
     method: "GET",
     headers: {
       Authorization: authToken,
-      Type: authUserType,
+      Usertype: authUserType,
     }
   });
 
