@@ -16,18 +16,22 @@ export default function CustomerLogin() {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
 
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_DJANGO_BASE_URL}/customer/login`, JSON.stringify(formValues), {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_API_URL}/customer/login`,
+        JSON.stringify(formValues),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-middleware-cache": "no-cache",
+          },
+        },
+      );
 
       setCookie("token", response.data.token); // Set cookie client side
       setCookie("userType", response.data.type);
 
       event.target.reset(); // Reset form fields
       router.push("/customer/dashboard");
-
     } catch (isError) {
       setIsError(isError.message);
     } finally {
@@ -45,7 +49,7 @@ export default function CustomerLogin() {
             <div className="border-t-8 border-red-500"> </div>
           </div>
           {isError && (
-            <div class="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700" role="alert">
+            <div className="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700" role="alert">
               {isError}
             </div>
           )}
