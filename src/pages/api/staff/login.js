@@ -8,6 +8,9 @@ export default async function handler(req, res) {
           "Content-Type": "application/json",
         },
       });
+
+      server_req.data.type = 'staff';
+
       res.status(server_req.status).json(server_req.data);
     } catch (server_req_err) {
       res.status(server_req_err.response.status).json(server_req_err.response.data);
