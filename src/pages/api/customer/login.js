@@ -9,11 +9,12 @@ export default async function handler(req, res) {
         },
       });
 
-      server_req.data.type = 'customer';
+      server_req.data.type = "customer";
 
       res.status(server_req.status).json(server_req.data);
     } catch (server_req_err) {
-      res.status(server_req_err.response.status).json(server_req_err.response.data);
+      const errorMessage = "Wrong Username/Password";
+      res.status(server_req_err.response.status).json({ error: errorMessage });
     }
   } else {
     // Method not allowed
