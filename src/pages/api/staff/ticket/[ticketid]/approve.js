@@ -6,8 +6,8 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
       let server_req = await api_axiosConfig.post(
-        `/staff/ticket/${ticketid}/approve`,
-        {},
+        `/staff/approve`,
+        { ticket_id: ticketid },
         {
           headers: {
             Authorization: req.headers.authorization,

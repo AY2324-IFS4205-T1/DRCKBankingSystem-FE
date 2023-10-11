@@ -7,11 +7,11 @@ export const page_permissions = {
     '/customer/tickets': 'Customer',
     '/customer/transfer': 'Customer',
 
-    '/staff/dashboard:': 'Staff',
-    '/staff/setup:': 'Staff',
-    '/staff/verify:': 'Staff',
-    '/staff/anon:': 'Auditor',
-    '/staff/tickets:': 'Ticket Reviewer',
+    '/staff/dashboard': 'Staff',
+    '/staff/setup': 'Staff',
+    '/staff/verify': 'Staff',
+    '/staff/anon': 'Auditor',
+    '/staff/tickets': 'Ticket Reviewer',
 };
 
 /*

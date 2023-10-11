@@ -17,13 +17,7 @@ export default async function handler(req, res) {
         return;
       }
 
-      // Send 200 back if user is authenticated and authorised. Else, send 403 Forbidden
-      if (server_req.data.authenticated && server_req.data.authorised) {
-        res.status(HttpStatusCode.Ok).json();
-        return;
-      } else {
-        res.status(HttpStatusCode.Forbidden).json(server_req.data);
-      }
+      res.status(server_req.status).json(server_req.data);
 
     } catch (server_req_err) {
       res.status(server_req_err.response.status).json(server_req_err.response.data);

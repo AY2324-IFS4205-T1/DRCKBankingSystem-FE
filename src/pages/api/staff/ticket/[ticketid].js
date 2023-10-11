@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     try {
-      let server_req = await api_axiosConfig.get(`/staff/ticket/${ticketid}`, {
+      let server_req = await api_axiosConfig.post(`/staff/ticket_details`, { ticket_id: ticketid }, {
         headers: {
           "Content-Type": "application/json",
           Authorization: req.headers.authorization,
