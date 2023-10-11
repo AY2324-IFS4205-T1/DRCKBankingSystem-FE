@@ -26,6 +26,8 @@ export default function Navbar() {
         toast.error("Something went wrong, Please login again.", {
           autoClose: 5000,
         });
+        deleteCookie("token");
+        deleteCookie("userType");
         router.push("/");
       } else {
         // response ok, delete token and redirect
