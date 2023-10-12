@@ -9,7 +9,8 @@ export default async function handler(req, res) {
       console.log(detectedIp);
 
       let server_req = await api_axiosConfig.get("/ip", {});
-      res.status(server_req.status).json({ clientIp: detectedIp });
+
+      res.status(server_req.status).json({ clientIp: detectedIp }).json(server_req.response.data);
     } catch (server_req_err) {
       res.status(server_req_err.response.status).json(server_req_err.response.data);
     }
