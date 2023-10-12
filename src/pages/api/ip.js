@@ -8,7 +8,12 @@ export default async function handler(req, res) {
       const detectedIp = requestIp.getClientIp(req);
       console.log(detectedIp);
 
-      let server_req = await api_axiosConfig.get("/ip", {});
+      let server_req = await api_axiosConfig.get("/ip", {
+        headers: {
+          "Content-Type": "application/json",
+          "Client-IP": detectedIp,
+        },
+      });
 
       const combinedData = {
         frontendClientIpData: detectedIp,
