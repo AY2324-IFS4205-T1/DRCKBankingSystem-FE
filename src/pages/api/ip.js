@@ -3,6 +3,7 @@ import api_axiosConfig from "./api_axiosConfig";
 export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
+      console.log('?');
       let server_req = await api_axiosConfig.get("/ip", {
       });
       res.status(server_req.status).json(server_req.data);

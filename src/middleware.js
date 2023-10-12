@@ -53,6 +53,6 @@ export const config = {
      * - favicon.ico
      */
     // "/((?!_next/static|_next/image|images/|/|staff/login|customer/login|customer/register).{1,})",
-    "/((?!_next/static|_next/image|images/|favicon.ico|staff/login|customer/login|customer/register|api/).{1,})",
+    "/((?!_next/static|_next/image|images/|favicon.ico|staff/login|customer/login|customer/register|api/|ip).{1,})",
   ],
 };
