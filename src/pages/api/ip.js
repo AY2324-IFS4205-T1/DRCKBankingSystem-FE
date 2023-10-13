@@ -1,16 +1,26 @@
-import api_axiosConfig from "../api_axiosConfig";
+import api_axiosConfig from "./api_axiosConfig";
 import requestIp from "request-ip";
+
 export default async function handler(req, res) {
-  if (req.method === "POST") {
+  if (req.method === "GET") {
     try {
+      console.log("?");
       const detectedIp = requestIp.getClientIp(req);
-      let server_req = await api_axiosConfig.post("/customer/register", req.body, {
+      console.log(detectedIp);
+
+      let server_req = await api_axiosConfig.get("/ip", {
         headers: {
           "Content-Type": "application/json",
           "Client-IP": detectedIp,
         },
       });
-      res.status(server_req.status).json(server_req.data);
+
+      const combinedData = {
+        frontendClientIpData: detectedIp,
+        backendGETData: server_req.data,
+      };
+      console.log(combinedData);
+      res.status(server_req.status).json(combinedData);
     } catch (server_req_err) {
       res.status(server_req_err.response.status).json(server_req_err.response.data);
     }
