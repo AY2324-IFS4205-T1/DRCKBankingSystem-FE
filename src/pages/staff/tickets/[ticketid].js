@@ -6,9 +6,9 @@ import axiosConfig from "../../../axiosConfig";
 
 export default function createTicket() {
   const router = useRouter();
+  const { ticketid } = router.query;
 
   const [ticket, setTicket] = useState({
-    ticket: null,
     ticket_type: null,
     created_date: null,
     status: null,
@@ -20,21 +20,19 @@ export default function createTicket() {
     email: null,
     phone_no: null,
     birth_date: null,
-    gender: null,
     citizenship: null,
-    address: null,
-    postal_code: null,
   });
+  const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
     if (!router.isReady) return;
 
     async function getData() {
       try {
-        let response = await axiosConfig.get(`/staff/ticket/${router.query.ticketid}`);
-        console.log(response);
+        let response = await axiosConfig.get(`/staff/ticket/${ticketid}`);
         setTicket(response.data.ticket);
         setCustomer(response.data.customer);
+        setAccounts(response.data.accounts);
       } catch (err) {
         console.log(err);
       }
@@ -44,7 +42,7 @@ export default function createTicket() {
 
   async function approveTicket() {
     try {
-      let response = await axiosConfig.post(`/staff/ticket/${ticket.ticket}/approve`);
+      let response = await axiosConfig.post(`/staff/ticket/${ticketid}/approve`);
       router.push({
         pathname: "/staff/tickets/",
       });
@@ -55,7 +53,7 @@ export default function createTicket() {
 
   async function rejectTicket() {
     try {
-      let response = await axiosConfig.post(`/staff/ticket/${ticket.ticket}/reject`);
+      let response = await axiosConfig.post(`/staff/ticket/${ticketid}/reject`);
       router.push({
         pathname: "/staff/tickets/",
       });
@@ -67,9 +65,9 @@ export default function createTicket() {
   return (
     <>
       <Navbar_Staff />
-      <div className="h-screen bg-gray-200">
+      <div className="h-screen bg-gray-200 pt-8">
         <div className="mx-auto max-w-7xl divide-y-2 divide-slate-400 px-2 sm:px-6 lg:px-8">
-          <div className="py-8">
+          <div className="mb-8">
             <div>
               <h1 className="text-3xl">Approve Ticket</h1>
               <div className="float-right">
@@ -117,7 +115,7 @@ export default function createTicket() {
               </div>
             </div>
           </div>
-          <div className="py-8">
+          <div className="my-8">
             <h1 className="text-3xl">Customer Details</h1>
             <div className="mt-4 grid grid-cols-2 gap-3">
               <div className="col-span-1">
@@ -138,22 +136,35 @@ export default function createTicket() {
                 <p className="block text-xl font-medium leading-6 text-gray-900">Date of Birth</p>
                 <p className="block text-base leading-6">{customer.birth_date}</p>
               </div>
-              <div className="col-span-1">
-                <p className="block text-xl font-medium leading-6 text-gray-900">Gender</p>
-                <p className="block text-base leading-6">{customer.gender}</p>
-              </div>
               <div className="col-span-2">
                 <p className="block text-xl font-medium leading-6 text-gray-900">Citizenship</p>
                 <p className="block text-base leading-6">{customer.citizenship}</p>
               </div>
-              <div className="col-span-1">
-                <p className="block text-xl font-medium leading-6 text-gray-900">Address</p>
-                <p className="block text-base leading-6">{customer.address}</p>
-              </div>
-              <div className="col-span-1">
-                <p className="block text-xl font-medium leading-6 text-gray-900">Postal Code</p>
-                <p className="block text-base leading-6">{customer.postal_code}</p>
-              </div>
+            </div>
+          </div>
+          <div className="my-8">
+            <h1 className="text-3xl">Owned Accounts</h1>
+            <div className="mt-4">
+              <table className="w-full table-auto border-collapse border border-slate-500">
+                <thead>
+                  <tr>
+                    <th className="border border-slate-500">Type</th>
+                    <th className="border border-slate-500">Status</th>
+                    <th className="border border-slate-500">Date Created</th>
+                    <th className="border border-slate-500">Balance (SGD)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {accounts.map((acct, index) => (
+                    <tr key={acct.index}>
+                      <td>{acct.type}</td>
+                      <td>{acct.status}</td>
+                      <td>{acct.date_created}</td>
+                      <td>{Number(acct.balance).toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

@@ -1,16 +1,18 @@
 import api_axiosConfig from "../../../api_axiosConfig";
+import requestIp from "request-ip";
 
 export default async function handler(req, res) {
   const { ticketid } = req.query;
 
   if (req.method === "POST") {
     try {
-      console.log(req.headers.authorization);
       let server_req = await api_axiosConfig.post(
-        `/staff/ticket/${ticketid}/reject`,
-        {},
+        `/staff/reject`,
+        { ticket_id: ticketid },
         {
           headers: {
+            "Content-Type": "application/json",
+            "Client-IP": requestIp(req),
             Authorization: req.headers.authorization,
           },
         },

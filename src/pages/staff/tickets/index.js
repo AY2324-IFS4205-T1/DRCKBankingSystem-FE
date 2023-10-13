@@ -41,7 +41,7 @@ export default function Tickets() {
     async function getData() {
       try {
         let response = await axiosConfig.get(`/staff/get_open_tickets`);
-        setData(response.data.open_tickets);
+        setData(response.data.tickets);
         console.log(response);
       } catch (err) {
         console.log(err);

@@ -34,21 +34,19 @@ export default function Tickets() {
             <table className="my-8 w-full table-auto border-collapse border border-slate-500">
               <thead>
                 <tr>
+                <th className="border border-slate-500">Ref No</th>
                   <th className="border border-slate-500">Type</th>
                   <th className="border border-slate-500">Status</th>
                   <th className="border border-slate-500">Created Date</th>
-                  <th className="border border-slate-500">Details</th>
                 </tr>
               </thead>
               <tbody>
                 {tickets.map((ticket) => (
                   <tr key={ticket.ticket}>
+                    <td>{ticket.ticket}</td>
                     <td>{ticket.ticket_type}</td>
                     <td>{ticket.status}</td>
                     <td>{ticket.created_date}</td>
-                    <td>
-                      <a href={`/customer/tickets/${ticket.ticket}`}>View More</a>
-                    </td>
                   </tr>
                 ))}
               </tbody>

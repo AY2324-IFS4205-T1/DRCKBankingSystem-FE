@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { setCookie } from "cookies-next";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 export default function CustomerLogin() {
@@ -15,7 +16,6 @@ export default function CustomerLogin() {
     try {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
-
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_API_URL}/customer/login`,
         JSON.stringify(formValues),
@@ -31,9 +31,15 @@ export default function CustomerLogin() {
       setCookie("userType", response.data.type);
 
       event.target.reset(); // Reset form fields
+      toast.success("Login Successful. Redirecting...", {
+        autoClose: 2000,
+      });
       router.push("/customer/dashboard");
     } catch (isError) {
-      setIsError(isError.message);
+      setIsError(isError.response.data.error);
+      toast.error(isError.response.data.error, {
+        autoClose: 5000,
+      });
     } finally {
       setIsLoading(false);
     }

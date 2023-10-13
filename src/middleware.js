@@ -1,45 +1,71 @@
 import { NextResponse } from "next/server";
+import { page_permissions } from "./page_permissions";
+import { HttpStatusCode } from "axios";
 
-async function checkUserAuthentication(authToken, authUserType) {
+async function checkUserAuthentication(authToken, required_role) {
   const res = await fetch('http://localhost:3000/api/auth_check', {
-    method: "GET",
+    method: "POST",
     headers: {
-      Authorization: authToken,
-      Usertype: authUserType,
-    }
+      Authorization: authToken
+    },
+    body: JSON.stringify({ page_type: required_role })
   });
 
-  return res.status;
+  return res;
 }
 
 export async function middleware(request) {
   const response = NextResponse.next();
-  const { pathname, origin } = request.nextUrl;
 
   const authToken = request.cookies.get("token")?.value ? request.cookies.get("token")?.value : "";
-  const authUserType = request.cookies.get("userType")?.value ? request.cookies.get("userType")?.value : "";
+  const userType = request.cookies.get("userType")?.value ? request.cookies.get("userType")?.value : "";
 
-  // Check pathname matches with the cookie userType. Else redirect to main page
-  if (pathname.split("/")[1] != authUserType.toLowerCase()) {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
+  const { pathname } = request.nextUrl;
+  const requested_path = pathname.split('/', 3).join('/');
+  const required_role = page_permissions[requested_path];
 
-  // Check if the token is still valid
-  const status = await checkUserAuthentication(authToken, authUserType);
-  if (status === 200) {
+  // To redirect portal type when authentication failed
+  let res = await checkUserAuthentication(authToken, required_role);
+  let status = res.status;
+
+  if (status == HttpStatusCode.Ok) {
     return response;
-  } else if (status === 401) {
-    // Unauthorised, if the userType cookie exists, redirect based on the portal
-    if (authUserType == "Customer") {
-      return NextResponse.redirect(new URL('/customer/login', request.url));
-    } else if (authUserType == "Staff") {
-      return NextResponse.redirect(new URL('/staff/login', request.url));
-    } else {
+
+  } else if (status == HttpStatusCode.Unauthorized) {
+    // Invalid or no token
+    if (userType === "") {
       return NextResponse.redirect(new URL('/', request.url));
     }
+
+    return NextResponse.redirect(new URL(`/${userType}/login`, request.url));
+
+  } else if (status == HttpStatusCode.Forbidden) {
+    // Not authorised or 2FA authenticated
+    let data = await res.json();
+
+    if (!data.authorised) {
+      // no authorisation page?
+      return NextResponse.redirect(new URL(`/${userType}/dashboard`, request.url));
+
+    } else if (!data.authenticated) {
+      // If page is setup/verify 2FA, allow the user to perform 2FA first
+      if (pathname == `/${userType}/setup` || pathname == `/${userType}/verify`) {
+        return response;
+      }
+
+      if (data.authenticated_message == "User does not have 2FA set up.") {
+        return NextResponse.redirect(new URL(`/${userType}/setup`, request.url));
+
+      } else if (data.authenticated_message == "The session has changed, 2FA needs to be verified again." ||
+        data.authenticated_message == "2FA has not been verified." ||
+        data.authenticated_message == "2FA timeout, 2FA needs to be verified again."
+      ) {
+        return NextResponse.redirect(new URL(`/${userType}/verify`, request.url));
+      }
+    }
   } else {
+    // unknown err page?
     console.log(`Error expected with unhandled status ${status}`);
-    return response;
   }
 }
 
