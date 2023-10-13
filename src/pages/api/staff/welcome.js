@@ -7,7 +7,7 @@ export default async function handler(req, res) {
       let server_req = await api_axiosConfig.get("/staff/welcome", {
         headers: {
           "Content-Type": "application/json",
-          "Client-IP": requestIp(req),
+          "Client-IP": requestIp.getClientIp(req),
           Authorization: req.headers.authorization,
         },
       });

@@ -12,7 +12,7 @@ export default async function handler(req, res) {
         {
           headers: {
             "Content-Type": "application/json",
-            "Client-IP": requestIp(req),
+            "Client-IP": requestIp.getClientIp(req),
             Authorization: req.headers.authorization,
           },
         },

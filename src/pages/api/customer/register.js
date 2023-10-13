@@ -7,7 +7,7 @@ export default async function handler(req, res) {
       let server_req = await api_axiosConfig.post("/customer/register", req.body, {
         headers: {
           "Content-Type": "application/json",
-          "Client-IP": requestIp(req)
+          "Client-IP": requestIp.getClientIp(req)
         },
       });
       res.status(server_req.status).json(server_req.data);
