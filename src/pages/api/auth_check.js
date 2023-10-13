@@ -1,5 +1,6 @@
 import { HttpStatusCode } from "axios";
 import api_axiosConfig from "./api_axiosConfig";
+import requestIp from "request-ip";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -7,6 +8,7 @@ export default async function handler(req, res) {
       let server_req = await api_axiosConfig.post("/auth_check", req.body, {
         headers: {
           "Content-Type": "application/json",
+          "Client-IP": requestIp.getClientIp(req),
           Authorization: `Token ${req.headers.authorization}`,
         },
       });
