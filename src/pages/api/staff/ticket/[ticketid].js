@@ -1,4 +1,5 @@
 import api_axiosConfig from "../../api_axiosConfig";
+import requestIp from "request-ip";
 
 export default async function handler(req, res) {
   const { ticketid } = req.query;
@@ -8,6 +9,7 @@ export default async function handler(req, res) {
       let server_req = await api_axiosConfig.post(`/staff/ticket_details`, { ticket_id: ticketid }, {
         headers: {
           "Content-Type": "application/json",
+          "Client-IP": requestIp(req),
           Authorization: req.headers.authorization,
         },
       });

@@ -1,4 +1,5 @@
 import api_axiosConfig from "../api_axiosConfig";
+import requestIp from "request-ip";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
@@ -6,6 +7,7 @@ export default async function handler(req, res) {
       let server_req = await api_axiosConfig.get("/customer/tickets", {
         headers: {
           "Content-Type": "application/json",
+          "Client-IP": requestIp(req),
           Authorization: req.headers.authorization,
         },
       });
