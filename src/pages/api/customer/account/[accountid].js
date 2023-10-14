@@ -1,4 +1,5 @@
 import api_axiosConfig from "../../api_axiosConfig";
+import requestIp from "request-ip";
 
 export default async function handler(req, res) {
   const { accountid } = req.query;
@@ -11,6 +12,7 @@ export default async function handler(req, res) {
         {
           headers: {
             "Content-Type": "application/json",
+            "Client-IP": requestIp.getClientIp(req),
             Authorization: req.headers.authorization,
           },
         });
