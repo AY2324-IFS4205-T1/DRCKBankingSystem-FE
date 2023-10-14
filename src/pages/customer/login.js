@@ -29,6 +29,7 @@ export default function CustomerLogin() {
 
       setCookie("token", response.data.token); // Set cookie client side
       setCookie("userType", response.data.type);
+      setCookie("csrftoken", response.data.csrftoken);
 
       event.target.reset(); // Reset form fields
       toast.success("Login Successful. Redirecting...", {

@@ -28,11 +28,13 @@ export default function Navbar() {
         });
         deleteCookie("token");
         deleteCookie("userType");
+        deleteCookie("csrftoken");
         router.push("/");
       } else {
         // response ok, delete token and redirect
         deleteCookie("token");
         deleteCookie("userType");
+        deleteCookie("csrftoken");
         router.push("/");
         toast.success("Logout successful.", {
           autoClose: 5000,

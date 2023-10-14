@@ -27,11 +27,15 @@ export default function Navbar_Staff() {
         toast.error("Something went wrong, Please login again.", {
           autoClose: 5000,
         });
+        deleteCookie("token");
+        deleteCookie("userType");
+        deleteCookie("csrftoken");
         router.push("/");
       }
       // response ok, delete token and redirect
       deleteCookie("token");
       deleteCookie("userType");
+      deleteCookie("csrftoken");
       router.push("/");
       toast.success("Logout successful.", {
         autoClose: 5000,

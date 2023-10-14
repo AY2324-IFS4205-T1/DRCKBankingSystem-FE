@@ -8,6 +8,7 @@ export default async function handler(req, res) {
         headers: {
           "Content-Type": "application/json",
           "Client-IP": requestIp.getClientIp(req),
+          HTTP_X_CSRFTOKEN: req.headers.csrftoken,
           Authorization: req.headers.authorization,
         },
       });

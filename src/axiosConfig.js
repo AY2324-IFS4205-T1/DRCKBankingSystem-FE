@@ -12,6 +12,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use((config) => {
   config.headers.Authorization = `Token ${getCookie("token")}`;
+  config.headers.csrftoken = getCookie("csrftoken");
 
   return config;
 });
