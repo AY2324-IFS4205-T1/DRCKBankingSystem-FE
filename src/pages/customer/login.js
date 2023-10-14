@@ -38,8 +38,8 @@ export default function CustomerLogin() {
       router.push("/customer/dashboard");
     } catch (isError) {
       console.log("TEST: " + isError.message);
-      setIsError(isError.response.data);
-      toast.error(isError.response.data, {
+      setIsError(isError.message);
+      toast.error(isError.message, {
         autoClose: 5000,
       });
     } finally {
