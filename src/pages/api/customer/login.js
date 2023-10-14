@@ -31,11 +31,13 @@ export default async function handler(req, res) {
       console.log("COOKIE HEADER****************************************");
       console.log(server_req.headers["set-cookie"]);
       console.log("COOKIE VALUE USING GET COOKIE************************");
-      const csrftoken = getCookie("csrftoken");
+      const csrftoken = getCookie("csrftoken", { req, res });
       console.log(csrftoken);
       console.log("SessionID*********************************************");
-      const sessionid = getCookie("sessionid");
+      const sessionid = getCookie("sessionid", { req, res });
       console.log(sessionid);
+      console.log("GET ALL COOKIES***************************************");
+      const allcookies = getCookies({ req, res });
       console.log("DATA******************************************");
       console.log(server_req.data);
 
