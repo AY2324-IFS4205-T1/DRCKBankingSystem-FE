@@ -12,28 +12,21 @@ export default async function handler(req, res) {
       });
 
       const cookieHeader = server_req.headers["set-cookie"];
-      if (cookieHeader) {
-        const cookiesArray = cookieHeader[0].split("; ");
+      const cookiesArray = cookieHeader[0].split("; ");
 
-        // Find the "csrftoken" cookie
-        const csrfTokenCookie = cookiesArray.find((cookie) => cookie.startsWith("csrftoken="));
+      // Find the "csrftoken" cookie
+      const csrfTokenCookie = cookiesArray.find((cookie) => cookie.startsWith("csrftoken="));
 
-        if (csrfTokenCookie) {
-          // Extract the csrf token value
-          const csrfToken = csrfTokenCookie.split("=")[1];
-          // Append to data
-          server_req.data.csrftoken = csrfToken;
-          console.log("CSRF Token:", csrfToken);
-        } else {
-          console.log("No CSRF token found in the headers.");
-        }
-      } else {
-        console.log("No set-cookie header found in the response headers.");
-      }
-
-      res.status(server_req.status).json(server_req.data);
+      // Extract the csrf token value
+      const csrfToken = {
+        csrftoken: csrfTokenCookie.split("=")[1],
+      };
+      // Append to data
+      //server_req.data.csrftoken = csrfToken;
+      console.log("CSRF Token:", csrfToken);
+      res.status(server_req.status).json(csrfToken);
     } catch (server_req_err) {
-      res.status(server_req_err.response.status).json(server_req_err.response.data);
+      res.status(server_req_err.status).json(server_req_err.data);
     }
   } else {
     // Method not allowed
