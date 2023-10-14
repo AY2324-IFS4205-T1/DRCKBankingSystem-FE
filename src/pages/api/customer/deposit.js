@@ -1,5 +1,6 @@
 import api_axiosConfig from "../api_axiosConfig";
 import requestIp from "request-ip";
+import { getCookie } from "cookies-next";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -8,7 +9,7 @@ export default async function handler(req, res) {
         headers: {
           "Content-Type": "application/json",
           "Client-IP": requestIp.getClientIp(req),
-          HTTP_X_CSRFTOKEN: req.headers.csrftoken,
+          HTTP_X_CSRFTOKEN: getCookie("csrftoken"),
           Authorization: req.headers.authorization,
         },
       });
