@@ -35,12 +35,13 @@ export default async function handler(req, res) {
 
       res.status(server_req.status).json(server_req.data);
     } catch (server_req_err) {
-      if (server_req_err.response.status === 400) {
-        const errorMessage = "Wrong Username/Password";
-        res.status(server_req_err.response.status).json({ error: errorMessage });
-      } else {
-        res.status(server_req_err.response.status).json(server_req_err.response.data);
-      }
+      res.status(server_req_err.response.status).json(server_req_err.response.data);
+      // if (server_req_err.response.status === 400) {
+      //   const errorMessage = "Wrong Username/Password";
+      //   res.status(server_req_err.response.status).json({ error: errorMessage });
+      // } else {
+      //   res.status(server_req_err.response.status).json(server_req_err.response.data);
+      // }
     }
   } else {
     // Method not allowed
