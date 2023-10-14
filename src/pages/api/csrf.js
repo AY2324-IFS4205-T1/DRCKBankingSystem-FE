@@ -1,19 +1,15 @@
-import api_axiosConfig from "../api_axiosConfig";
+import api_axiosConfig from "./api_axiosConfig";
 import requestIp from "request-ip";
-import { getCookie } from "cookies-next";
 
 export default async function handler(req, res) {
-  if (req.method === "POST") {
+  if (req.method === "GET") {
     try {
-      let server_req = await api_axiosConfig.post("/customer/login", req.body, {
+      let server_req = await api_axiosConfig.get("/csrf", {
         headers: {
           "Content-Type": "application/json",
           "Client-IP": requestIp.getClientIp(req),
-          "X-CSRFToken": getCookie("csrftoken"),
         },
       });
-
-      server_req.data.type = "customer";
 
       const cookieHeader = server_req.headers["set-cookie"];
       if (cookieHeader) {
@@ -38,13 +34,6 @@ export default async function handler(req, res) {
       res.status(server_req.status).json(server_req.data);
     } catch (server_req_err) {
       res.status(server_req_err.response.status).json(server_req_err.response.data);
-      console.log("ERRMSG: " + server_req_err.response.data);
-      // if (server_req_err.response.status === 400) {
-      //   const errorMessage = "Wrong Username/Password";
-      //   res.status(server_req_err.response.status).json({ error: errorMessage });
-      // } else {
-      //   res.status(server_req_err.response.status).json(server_req_err.response.data);
-      // }
     }
   } else {
     // Method not allowed

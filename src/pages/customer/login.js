@@ -4,10 +4,22 @@ import { setCookie } from "cookies-next";
 import { toast } from "react-toastify";
 import axios from "axios";
 
+async function getCsrfToken() {
+  try {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/csrf`);
+    console.log(response);
+    setCookie("csrftoken", response.data.csrftoken);
+  } catch (isError) {
+    console.log(isError.message);
+  }
+}
+
 export default function CustomerLogin() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(null);
+
+  getCsrfToken();
 
   async function onSubmit(event) {
     event.preventDefault();
