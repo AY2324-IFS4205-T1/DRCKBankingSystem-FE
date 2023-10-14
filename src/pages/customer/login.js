@@ -37,6 +37,7 @@ export default function CustomerLogin() {
       });
       router.push("/customer/dashboard");
     } catch (isError) {
+      console.log("IN ERROR");
       setIsError(isError.response.data.error);
       toast.error(isError.response.data.error, {
         autoClose: 5000,
