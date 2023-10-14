@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       // console.log("SessionID*********************************************");
       // const sessionid = getCookie("sessionid", { req, res });
       // console.log(sessionid);
-      console.log("DATA******************************************");
+      console.log("DATA BEFORE APPEND******************************************");
       console.log(server_req.data);
 
       const cookieHeader = server_req.headers["set-cookie"];
@@ -56,12 +56,18 @@ export default async function handler(req, res) {
       } else {
         console.log("No set-cookie header found in the response headers.");
       }
-
+      server_req.data.csrfToken = csrfToken;
+      console.log("DATA AFTER APPEND******************************************");
+      console.log(server_req.data);
       res.status(server_req.status).json(server_req.data);
     } catch (server_req_err) {
       console.log(server_req_err);
-      const errorMessage = "Wrong Username/Password";
-      res.status(server_req_err.response.status).json({ error: errorMessage });
+      if (server_req.status === "400") {
+        const errorMessage = "Wrong Username/Password";
+        res.status(server_req_err.response.status).json({ error: errorMessage });
+      } else {
+        res.status(server_req_err.response.status).json(server_req_err.response.data);
+      }
     }
   } else {
     // Method not allowed
