@@ -4,12 +4,13 @@ import { getCookie } from "cookies-next";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
+    console.log("CSRF TOKEN: " + getCookie("csrftoken"));
     try {
       let server_req = await api_axiosConfig.post("/customer/deposit", req.body, {
         headers: {
           "Content-Type": "application/json",
           "Client-IP": requestIp.getClientIp(req),
-          HTTP_X_CSRFTOKEN: getCookie("csrftoken"),
+          "X-CSRFToken": getCookie("csrftoken"),
           Authorization: req.headers.authorization,
         },
       });
