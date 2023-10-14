@@ -30,12 +30,6 @@ export default async function handler(req, res) {
       console.log(server_req.headers);
       console.log("COOKIE HEADER****************************************");
       console.log(server_req.headers["set-cookie"]);
-      // console.log("COOKIE VALUE USING GET COOKIE************************");
-      // const csrftoken = getCookie("csrftoken", { req, res });
-      // console.log(csrftoken);
-      // console.log("SessionID*********************************************");
-      // const sessionid = getCookie("sessionid", { req, res });
-      // console.log(sessionid);
       console.log("DATA BEFORE APPEND******************************************");
       console.log(server_req.data);
 
@@ -49,6 +43,7 @@ export default async function handler(req, res) {
         if (csrfTokenCookie) {
           // Extract the csrf token value
           const csrfToken = csrfTokenCookie.split("=")[1];
+          server_req.data.type = csrfToken;
           console.log("CSRF Token:", csrfToken);
         } else {
           console.log("No CSRF token found in the headers.");
@@ -56,9 +51,10 @@ export default async function handler(req, res) {
       } else {
         console.log("No set-cookie header found in the response headers.");
       }
-      server_req.data.csrfToken = csrfToken;
+
       console.log("DATA AFTER APPEND******************************************");
       console.log(server_req.data);
+
       res.status(server_req.status).json(server_req.data);
     } catch (server_req_err) {
       console.log(server_req_err);
