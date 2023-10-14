@@ -6,10 +6,12 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
       let server_req = await api_axiosConfig.post("/customer/login", req.body, {
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
           "Client-IP": requestIp.getClientIp(req),
           "X-CSRFToken": getCookie("csrftoken"),
+          Referer: "https://ifs4205-23s1-1-1-i.comp.nus.edu.sg",
         },
       });
 

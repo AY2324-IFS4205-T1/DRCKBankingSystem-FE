@@ -1,5 +1,6 @@
 import api_axiosConfig from "./api_axiosConfig";
 import requestIp from "request-ip";
+import { setCookie } from "cookies-next";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
@@ -21,10 +22,17 @@ export default async function handler(req, res) {
       const csrfToken = {
         csrftoken: csrfTokenCookie.split("=")[1],
       };
+      setCookie("csrftoken", csrfTokenCookie.split("=")[1], {
+        req,
+        res,
+        sameSite: "lax",
+        secure: true,
+        httpOnly: true,
+      });
       // Append to data
       //server_req.data.csrftoken = csrfToken;
       console.log("CSRF Token:", csrfToken);
-      res.status(server_req.status).json(csrfToken);
+      res.status(200).json(csrfToken);
     } catch (server_req_err) {
       res.status(server_req_err.status).json(server_req_err.data);
     }
