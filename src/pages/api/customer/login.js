@@ -43,7 +43,7 @@ export default async function handler(req, res) {
         if (csrfTokenCookie) {
           // Extract the csrf token value
           const csrfToken = csrfTokenCookie.split("=")[1];
-          server_req.data.type = csrfToken;
+          server_req.data.csrftoken = csrfToken;
           console.log("CSRF Token:", csrfToken);
         } else {
           console.log("No CSRF token found in the headers.");
