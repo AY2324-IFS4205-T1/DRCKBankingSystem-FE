@@ -5,12 +5,13 @@ import { getCookie } from "cookies-next";
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
+      console.log("COOKIE SENT TO BACKEND: " + getCookie("csrftoken", { req, res }));
       let server_req = await api_axiosConfig.post("/customer/login", req.body, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
           "Client-IP": requestIp.getClientIp(req),
-          "X-CSRFToken": getCookie("csrftoken"),
+          "X-CSRFToken": getCookie("csrftoken", { req, res }),
           Referer: "https://ifs4205-23s1-1-1-i.comp.nus.edu.sg",
         },
       });
