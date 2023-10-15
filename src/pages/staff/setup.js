@@ -1,4 +1,4 @@
-import NavbarStaff from "@/components/navbar_staff";
+import Navbar_Staff from "@/components/navbar_staff";
 import axiosConfig from "../../axiosConfig";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
