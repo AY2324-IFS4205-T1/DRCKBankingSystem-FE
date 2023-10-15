@@ -4,22 +4,22 @@ import { setCookie } from "cookies-next";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-// async function getCsrfToken() {
-//   try {
-//     const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/csrf`);
-//     console.log(response);
-//     //setCookie("csrftoken", response.data.csrftoken);
-//   } catch (isError) {
-//     console.log(isError.message);
-//   }
-// }
+async function getCsrfToken() {
+  try {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/csrf`);
+    console.log(response);
+    //setCookie("csrftoken", response.data.csrftoken);
+  } catch (isError) {
+    console.log(isError.message);
+  }
+}
 
 export default function CustomerLogin() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(null);
 
-  //  getCsrfToken();
+  getCsrfToken();
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -41,7 +41,7 @@ export default function CustomerLogin() {
 
       setCookie("token", response.data.token); // Set cookie client side
       setCookie("userType", response.data.type);
-      // setCookie("csrftoken", response.data.csrftoken);
+      setCookie("csrftoken", response.data.csrftoken);
 
       event.target.reset(); // Reset form fields
       toast.success("Login Successful. Redirecting...", {

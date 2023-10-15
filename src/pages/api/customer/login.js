@@ -2,29 +2,16 @@ import api_axiosConfig from "../api_axiosConfig";
 import requestIp from "request-ip";
 import { getCookie } from "cookies-next";
 
-async function getCsrfToken() {
-  try {
-    const response = await axios.get(`${process.env.NEXT_BASE_API_URL}/csrf`);
-    console.log(response);
-    //setCookie("csrftoken", response.data.csrftoken);
-  } catch (isError) {
-    console.log(isError.message);
-  }
-}
-
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      const csrfToken = getCsrfToken();
-
-      // console.log("COOKIE SENT TO BACKEND: " + getCookie("csrftoken", { req, res }));
-      console.log("COOKIE SENT TO BACKEND: " + csrfToken.data.csrftoken);
+      console.log("COOKIE SENT TO BACKEND: " + getCookie("csrftoken", { req, res }));
       let server_req = await api_axiosConfig.post("/customer/login", req.body, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
           "Client-IP": requestIp.getClientIp(req),
-          "X-CSRFToken": csrfToken.data.csrftoken,
+          "X-CSRFToken": getCookie("csrftoken", { req, res }),
           Referer: "https://ifs4205-23s1-1-1-i.comp.nus.edu.sg",
         },
       });
