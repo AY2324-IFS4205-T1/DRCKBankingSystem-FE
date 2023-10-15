@@ -27,8 +27,10 @@ export async function middleware(request) {
   // To redirect portal type when authentication failed
   let res = await checkUserAuthentication(authToken, required_role);
   let status = res.status;
+  let data = await res.json();
 
   if (status == HttpStatusCode.Ok) {
+    response.headers.set('X-NAVCONTROL', data.user_authorisation)
     return response;
 
   } else if (status == HttpStatusCode.Unauthorized) {
@@ -41,7 +43,6 @@ export async function middleware(request) {
 
   } else if (status == HttpStatusCode.Forbidden) {
     // Not authorised or 2FA authenticated
-    let data = await res.json();
 
     if (!data.authorised) {
       // no authorisation page?

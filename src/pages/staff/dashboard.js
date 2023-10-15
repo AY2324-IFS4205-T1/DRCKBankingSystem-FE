@@ -2,7 +2,7 @@ import Navbar_Staff from "@/components/navbar_staff";
 import axiosConfig from "../../axiosConfig";
 import { useState, useEffect } from "react";
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   const [welcome, setWelcome] = useState({
     first_name: null,
     last_name: null,
@@ -26,7 +26,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Navbar_Staff />
+      <Navbar_Staff props={props}/>
       <div className="h-screen bg-gray-200">
         <div className="mx-auto max-w-7xl divide-y-2 divide-slate-400 px-2 py-8 sm:px-6 lg:px-8">
           <div className="py-8">
@@ -40,3 +40,5 @@ export default function Dashboard() {
     </>
   );
 }
+
+export { default as getServerSideProps } from "../../serverProps";
