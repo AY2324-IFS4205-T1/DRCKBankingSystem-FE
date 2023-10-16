@@ -40,42 +40,42 @@ export default function Authorization() {
         let status = res.status;
         console.log("Status: " + status);
 
-        // if (status === HttpStatusCode.Ok) {
-        //   router.push(originalPath);
-        // } else if (status === HttpStatusCode.Unauthorized) {
-        //   // Invalid or no token
-        //   if (userType === "") {
-        //     router.push("/");
-        //   } else {
-        //     router.push(`/${userType}/login`);
-        //   }
-        // } else if (status === HttpStatusCode.Forbidden) {
-        //   // Not authorized or 2FA authenticated
-        //   let data = await res.json();
+        if (status === HttpStatusCode.Ok) {
+          router.push(requested_path);
+        } else if (status === HttpStatusCode.Unauthorized) {
+          // Invalid or no token
+          if (userType === "") {
+            router.push("/");
+          } else {
+            router.push(`/${userType}/login`);
+          }
+        } else if (status === HttpStatusCode.Forbidden) {
+          // Not authorized or 2FA authenticated
+          let data = await res.json();
 
-        //   if (!data.authorised) {
-        //     // no authorization page?
-        //     router.push(`/${userType}/dashboard`);
-        //   } else if (!data.authenticated) {
-        //     // If the page is setup/verify 2FA, allow the user to perform 2FA first
-        //     if (originalPath === `/${userType}/setup` || originalPath === `/${userType}/verify`) {
-        //       router.push(originalPath);
-        //     }
+          if (!data.authorised) {
+            // no authorization page?
+            router.push(`/${userType}/dashboard`);
+          } else if (!data.authenticated) {
+            // If the page is setup/verify 2FA, allow the user to perform 2FA first
+            if (originalPath === `/${userType}/setup` || originalPath === `/${userType}/verify`) {
+              router.push(originalPath);
+            }
 
-        //     if (data.authenticated_message === "User does not have 2FA set up.") {
-        //       router.push(`/${userType}/setup`);
-        //     } else if (
-        //       data.authenticated_message === "The session has changed, 2FA needs to be verified again." ||
-        //       data.authenticated_message === "2FA has not been verified." ||
-        //       data.authenticated_message === "2FA timeout, 2FA needs to be verified again."
-        //     ) {
-        //       router.push(`/${userType}/verify`);
-        //     }
-        //   }
-        // } else {
-        //   // unknown error page?
-        //   console.log(`Error expected with unhandled status ${status}`);
-        // }
+            if (data.authenticated_message === "User does not have 2FA set up.") {
+              router.push(`/${userType}/setup`);
+            } else if (
+              data.authenticated_message === "The session has changed, 2FA needs to be verified again." ||
+              data.authenticated_message === "2FA has not been verified." ||
+              data.authenticated_message === "2FA timeout, 2FA needs to be verified again."
+            ) {
+              router.push(`/${userType}/verify`);
+            }
+          }
+        } else {
+          // unknown error page?
+          console.log(`Error expected with unhandled status ${status}`);
+        }
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
