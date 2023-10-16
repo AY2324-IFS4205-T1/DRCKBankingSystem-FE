@@ -64,4 +64,12 @@ export default async function Authorization() {
     // unknown err page?
     console.log(`Error expected with unhandled status ${status}`);
   }
+
+  return (
+    <>
+      <div>
+        <p>Checking authorization.....</p>
+      </div>
+    </>
+  );
 }
