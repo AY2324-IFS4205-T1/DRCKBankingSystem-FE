@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { setCookie } from "cookies-next";
 import { toast } from "react-toastify";
 import axios from "axios";
 
@@ -27,8 +26,8 @@ export default function CustomerLogin() {
         },
       );
 
-      setCookie("token", response.data.token); // Set cookie client side
-      setCookie("userType", response.data.type);
+      sessionStorage.setItem("token", response.data.token);
+      sessionStorage.setItem("userType", response.data.type);
 
       event.target.reset(); // Reset form fields
       toast.success("Login Successful. Redirecting...", {

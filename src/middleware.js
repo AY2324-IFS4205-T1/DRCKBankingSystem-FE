@@ -3,12 +3,12 @@ import { page_permissions } from "./page_permissions";
 import { HttpStatusCode } from "axios";
 
 async function checkUserAuthentication(authToken, required_role) {
-  const res = await fetch('http://localhost:3000/api/auth_check', {
+  const res = await fetch("http://localhost:3000/api/auth_check", {
     method: "POST",
     headers: {
-      Authorization: authToken
+      Authorization: authToken,
     },
-    body: JSON.stringify({ page_type: required_role })
+    body: JSON.stringify({ page_type: required_role }),
   });
 
   return res;
@@ -17,11 +17,13 @@ async function checkUserAuthentication(authToken, required_role) {
 export async function middleware(request) {
   const response = NextResponse.next();
 
+  console.log(request.headers);
+
   const authToken = request.cookies.get("token")?.value ? request.cookies.get("token")?.value : "";
   const userType = request.cookies.get("userType")?.value ? request.cookies.get("userType")?.value : "";
 
   const { pathname } = request.nextUrl;
-  const requested_path = pathname.split('/', 3).join('/');
+  const requested_path = pathname.split("/", 3).join("/");
   const required_role = page_permissions[requested_path];
 
   // To redirect portal type when authentication failed
@@ -30,15 +32,13 @@ export async function middleware(request) {
 
   if (status == HttpStatusCode.Ok) {
     return response;
-
   } else if (status == HttpStatusCode.Unauthorized) {
     // Invalid or no token
     if (userType === "") {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL("/", request.url));
     }
 
     return NextResponse.redirect(new URL(`/${userType}/login`, request.url));
-
   } else if (status == HttpStatusCode.Forbidden) {
     // Not authorised or 2FA authenticated
     let data = await res.json();
@@ -46,7 +46,6 @@ export async function middleware(request) {
     if (!data.authorised) {
       // no authorisation page?
       return NextResponse.redirect(new URL(`/${userType}/dashboard`, request.url));
-
     } else if (!data.authenticated) {
       // If page is setup/verify 2FA, allow the user to perform 2FA first
       if (pathname == `/${userType}/setup` || pathname == `/${userType}/verify`) {
@@ -55,8 +54,8 @@ export async function middleware(request) {
 
       if (data.authenticated_message == "User does not have 2FA set up.") {
         return NextResponse.redirect(new URL(`/${userType}/setup`, request.url));
-
-      } else if (data.authenticated_message == "The session has changed, 2FA needs to be verified again." ||
+      } else if (
+        data.authenticated_message == "The session has changed, 2FA needs to be verified again." ||
         data.authenticated_message == "2FA has not been verified." ||
         data.authenticated_message == "2FA timeout, 2FA needs to be verified again."
       ) {

@@ -4,14 +4,13 @@
 
 import axios from "axios";
 import Router from "next/router";
-import { getCookie } from "cookies-next";
 
 const instance = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BASE_API_URL}`,
 });
 
 instance.interceptors.request.use((config) => {
-  config.headers.Authorization = `Token ${getCookie("token")}`;
+  config.headers.Authorization = `Token ${sessionStorage.getItem("token")}`;
 
   return config;
 });

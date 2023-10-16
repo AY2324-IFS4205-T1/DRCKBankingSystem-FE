@@ -1,6 +1,5 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { getCookie, deleteCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 
@@ -14,25 +13,25 @@ export default function Navbar() {
   async function handleLogout(event) {
     event.preventDefault();
     try {
-      const token = getCookie("token");
+      const token = sessionStorage.getItem("token");
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/logout`, {
         method: "POST",
         headers: {
           Authorization: `Token ${token}`,
         },
       });
-      // Check if cookie is deleted by user or response not ok, if so, redirect to /
+      // Check if token is deleted by user or response not ok, if so, redirect to /
       if (!response.ok || token === "") {
         toast.error("Something went wrong, Please login again.", {
           autoClose: 5000,
         });
-        deleteCookie("token");
-        deleteCookie("userType");
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("userType");
         router.push("/");
       } else {
         // response ok, delete token and redirect
-        deleteCookie("token");
-        deleteCookie("userType");
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("userType");
         router.push("/");
         toast.success("Logout successful.", {
           autoClose: 5000,
