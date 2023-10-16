@@ -1,6 +1,6 @@
 // Axios config for client browser to front end API
 // This provides the default configuration for base URL and
-// retrieving the auth token from cookies
+// retrieving the auth token from sessionStorage
 
 import axios from "axios";
 import Router from "next/router";
