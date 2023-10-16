@@ -17,7 +17,10 @@ async function checkUserAuthentication(authToken, required_role) {
 export async function middleware(request) {
   const response = NextResponse.next();
 
+  console.log("**********************MIDDLEWARE********************");
   console.log(request.headers);
+  console.log("*******************SESSION STORAGE*******************");
+  console.log(sessionStorage.getItem("token"));
 
   const authToken = request.cookies.get("token")?.value ? request.cookies.get("token")?.value : "";
   const userType = request.cookies.get("userType")?.value ? request.cookies.get("userType")?.value : "";

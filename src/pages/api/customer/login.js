@@ -20,7 +20,7 @@ export default async function handler(req, res) {
         const errorMessage = "Wrong Username/Password";
         res.status(server_req_err.response.status).json({ error: errorMessage });
       } else {
-        res.status(server_req_err.response.status.json(server_req.err.response.data));
+        res.status(server_req_err.response.status).json(server_req_err.response.data);
       }
     }
   } else {
