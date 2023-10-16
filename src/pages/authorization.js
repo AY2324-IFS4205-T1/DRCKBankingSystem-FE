@@ -58,8 +58,8 @@ export default function Authorization() {
             router.push(`/${userType}/dashboard`);
           } else if (!data.authenticated) {
             // If the page is setup/verify 2FA, allow the user to perform 2FA first
-            if (originalPath === `/${userType}/setup` || originalPath === `/${userType}/verify`) {
-              router.push(originalPath);
+            if (requested_path === `/${userType}/setup` || requested_path === `/${userType}/verify`) {
+              router.push(requested_path);
             }
 
             if (data.authenticated_message === "User does not have 2FA set up.") {
