@@ -7,7 +7,7 @@ export default async function handler(req, res) {
       let server_req = await api_axiosConfig.post("/customer/login", req.body, {
         headers: {
           "Content-Type": "application/json",
-          "Client-IP": requestIp.getClientIp(req)
+          "Client-IP": requestIp.getClientIp(req),
         },
       });
 
@@ -16,8 +16,12 @@ export default async function handler(req, res) {
       res.status(server_req.status).json(server_req.data);
     } catch (server_req_err) {
       console.log(server_req_err);
-      const errorMessage = "Wrong Username/Password";
-      res.status(server_req_err.response.status).json({ error: errorMessage });
+      if (server_req_err.response.status === 400) {
+        const errorMessage = "Wrong Username/Password";
+        res.status(server_req_err.response.status).json({ error: errorMessage });
+      } else {
+        res.status(server_req_err.response.status).json(server_req_err.response.data);
+      }
     }
   } else {
     // Method not allowed

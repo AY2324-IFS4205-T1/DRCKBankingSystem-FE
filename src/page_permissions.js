@@ -1,17 +1,22 @@
 export const page_permissions = {
-    '/customer/dashboard': 'Customer',
-    '/customer/atm': 'Customer',
-    '/customer/setup': 'Customer',
-    '/customer/verify': 'Customer',
-    '/customer/accounts': 'Customer',
-    '/customer/tickets': 'Customer',
-    '/customer/transfer': 'Customer',
+  '/': '',
+  '/customer/register': '',
+  '/customer/login': '',
+  '/staff/login': '',
 
-    '/staff/dashboard': 'Staff',
-    '/staff/setup': 'Staff',
-    '/staff/verify': 'Staff',
-    '/staff/anon': 'Auditor',
-    '/staff/tickets': 'Ticket Reviewer',
+  '/customer/dashboard': 'Customer',
+  '/customer/atm': 'Customer',
+  '/customer/setup': 'Customer',
+  '/customer/verify': 'Customer',
+  '/customer/accounts': 'Customer',
+  '/customer/tickets': 'Customer',
+  '/customer/transfer': 'Customer',
+
+  '/staff/dashboard': 'Staff',
+  '/staff/setup': 'Staff',
+  '/staff/verify': 'Staff',
+  '/staff/anon': 'Auditor',
+  '/staff/tickets': 'Ticket Reviewer',
 };
 
 /*

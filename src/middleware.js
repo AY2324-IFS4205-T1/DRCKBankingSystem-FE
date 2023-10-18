@@ -2,18 +2,6 @@ import { NextResponse } from "next/server";
 // import { page_permissions } from "./page_permissions";
 // import { HttpStatusCode } from "axios";
 
-async function checkUserAuthentication(authToken, required_role) {
-  const res = await fetch("http://localhost:3000/api/auth_check", {
-    method: "POST",
-    headers: {
-      Authorization: authToken,
-    },
-    body: JSON.stringify({ page_type: required_role }),
-  });
-
-  return res;
-}
-
 export async function middleware(request) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const cspHeader = `
