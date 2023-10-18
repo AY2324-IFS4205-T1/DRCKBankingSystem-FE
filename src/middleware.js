@@ -1,7 +1,3 @@
-import { NextResponse } from "next/server";
-// import { page_permissions } from "./page_permissions";
-// import { HttpStatusCode } from "axios";
-
 export async function middleware(request) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const cspHeader = `
@@ -15,8 +11,8 @@ export async function middleware(request) {
   form-action 'self';
   frame-ancestors 'none';
   block-all-mixed-content;
-  upgrade-insecure-requests;
-`;
+  upgrade-insecure-requests;`;
+
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
   requestHeaders.set(

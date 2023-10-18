@@ -21,6 +21,6 @@ export default async function handler(req, res) {
     }
   } else {
     // Method not allowed
-    res.status(405);
+    res.status(405).json();
   }
 }

@@ -25,7 +25,6 @@ export default async function handler(req, res) {
       res.status(server_req_err.response.status).json(server_req_err.response.data);
     }
   } else {
-    // Method not allowed
-    res.status(405);
+    res.status(405).json();
   }
 }
