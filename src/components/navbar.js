@@ -26,12 +26,10 @@ export default function Navbar() {
           autoClose: 5000,
         });
         sessionStorage.removeItem("token");
-        sessionStorage.removeItem("userType");
         router.push("/");
       } else {
         // response ok, delete token and redirect
         sessionStorage.removeItem("token");
-        sessionStorage.removeItem("userType");
         router.push("/");
         toast.success("Logout successful.", {
           autoClose: 5000,

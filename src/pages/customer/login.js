@@ -27,7 +27,6 @@ export default function CustomerLogin() {
       );
 
       sessionStorage.setItem("token", response.data.token);
-      sessionStorage.setItem("userType", response.data.type);
 
       event.target.reset(); // Reset form fields
       toast.success("Login Successful. Redirecting...", {

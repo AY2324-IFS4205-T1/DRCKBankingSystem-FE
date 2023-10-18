@@ -27,7 +27,6 @@ export default function StaffLogin() {
       );
 
       sessionStorage.setItem("token", response.data.token);
-      sessionStorage.setItem("userType", response.data.type);
 
       event.target.reset(); // Reset form fields
       router.push("/staff/dashboard");
