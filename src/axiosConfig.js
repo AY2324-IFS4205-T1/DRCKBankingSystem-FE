@@ -15,17 +15,17 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
-instance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response.data.detail == "User does not have 2FA set up." ||
-      error.response.data.detail == "The session has changed, 2FA needs to be verified again." ||
-      error.response.data.detail == "2FA has not been verified." ||
-      error.response.data.detail == "2FA timeout, 2FA needs to be verified again."
-    ) {
-      Router.reload();
-    }
-  },
-);
+// instance.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (error.response.data.detail == "User does not have 2FA set up." ||
+//       error.response.data.detail == "The session has changed, 2FA needs to be verified again." ||
+//       error.response.data.detail == "2FA has not been verified." ||
+//       error.response.data.detail == "2FA timeout, 2FA needs to be verified again."
+//     ) {
+//       // Router.reload();
+//     }
+//   },
+// );
 
 export default instance;
