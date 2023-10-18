@@ -18,7 +18,7 @@ export async function middleware(request) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const cspHeader = `
   default-src 'self' https://ifs4205-23s1-1-1.comp.nus.edu.sg/;
-  script-src 'self' 'nonce-${nonce}';
+  script-src 'nonce-${nonce}' 'strict-dynamic';
   style-src 'self' 'nonce-${nonce}' ;
   img-src 'self' blob: data:;
   font-src 'self';
