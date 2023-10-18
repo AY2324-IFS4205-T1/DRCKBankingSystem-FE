@@ -10,7 +10,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  config.headers.Authorization = `Token ${sessionStorage.getItem("token")}`;
+  config.headers.Authorization = sessionStorage.getItem("token");
 
   return config;
 });
