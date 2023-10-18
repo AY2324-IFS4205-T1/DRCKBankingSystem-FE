@@ -9,7 +9,7 @@ export default async function handler(req, res) {
         headers: {
           "Content-Type": "application/json",
           "Client-IP": requestIp.getClientIp(req),
-          Authorization: `Token ${req.headers.authorization}`,
+          Authorization: req.headers.authorization,
         },
       });
 
