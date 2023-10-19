@@ -1,6 +1,7 @@
 import Navbar_Staff from "@/components/navbar_staff";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from "@nextui-org/react";
+import moment from 'moment';
 
 import axiosConfig from "../../../axiosConfig";
 
@@ -21,6 +22,8 @@ export default function Tickets() {
 
     if (columnKey == "details") {
       return <a href={`/staff/tickets/${item.ticket}`}>View More</a>;
+    } else if (columnKey == "created_date") {
+      return moment(cellValue).format('DD/MM/YYYY HH:mm:ss')
     }
 
     return cellValue;

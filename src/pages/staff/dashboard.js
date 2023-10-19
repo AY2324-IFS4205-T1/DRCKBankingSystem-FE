@@ -1,6 +1,7 @@
 import Navbar_Staff from "@/components/navbar_staff";
 import axiosConfig from "../../axiosConfig";
 import { useState, useEffect } from "react";
+import moment from 'moment';
 
 export default function Dashboard() {
   const [welcome, setWelcome] = useState({
@@ -33,7 +34,7 @@ export default function Dashboard() {
             <h1 className="text-5xl">
               Welcome back, {welcome.first_name} {welcome.last_name}
             </h1>
-            <h2 className="text-xl">Your last login was on {welcome.last_login}</h2>
+            <h2 className="text-xl">Your last login was on {moment(welcome.last_login).format('DD/MM/YYYY HH:mm:ss')}</h2>
           </div>
         </div>
       </div>

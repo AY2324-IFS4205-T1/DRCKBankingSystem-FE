@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { NextUIProvider } from "@nextui-org/react";
 
 import { useState, useEffect } from "react";
-import { usePathname } from 'next/navigation';
+import { useRouter } from "next/router";
 import { page_permissions } from "@/page_permissions";
 import { HttpStatusCode } from "axios";
 import axios from "@/axiosConfig";
@@ -46,7 +46,7 @@ async function checkUserAuthentication(required_role, pathname, setLoading) {
 
 export default function App({ Component, pageProps }) {
   const [loading, setLoading] = useState(true);
-  const pathname = usePathname();
+  const pathname = useRouter().pathname;
 
   useEffect(() => {
     setLoading(true);

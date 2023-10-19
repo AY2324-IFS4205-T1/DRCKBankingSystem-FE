@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import moment from 'moment';
 
 export default function Transfer() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function Transfer() {
             <p>
               Transaction ID: {transaction.transaction}
               <br />
-              Date: {transaction.date}
+              Date: {moment(transaction.date).format('DD/MM/YYYY HH:mm:ss')}
               <br />
               From: {transaction.sender}
               <br />

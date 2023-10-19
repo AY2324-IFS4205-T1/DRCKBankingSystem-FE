@@ -11,6 +11,7 @@ import {
   Pagination,
   getKeyValue,
 } from "@nextui-org/react";
+import moment from 'moment';
 
 import axiosConfig from "../../../axiosConfig";
 
@@ -37,6 +38,8 @@ export default function AccountId() {
 
     if (columnKey == "amount") {
       return Number(cellValue).toFixed(2);
+    } else if (columnKey == "date") {
+      return moment(cellValue).format('DD/MM/YYYY HH:mm:ss');
     }
 
     return cellValue;
