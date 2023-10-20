@@ -16,6 +16,7 @@ export const page_permissions = {
   '/staff/setup': 'Staff',
   '/staff/verify': 'Staff',
   '/staff/anon': 'Auditor',
+  '/staff/logs': 'Auditor',
   '/staff/tickets': 'Ticket Reviewer',
 };
 

@@ -1,17 +1,7 @@
 import Navbar from "@/components/navbar";
 import axiosConfig from "../../axiosConfig";
 import { useState, useEffect } from "react";
-
-//on/off switch. Do i put this in all the pages to protect them?
-// export async function getServerSideProps() {
-//   const token = getCookie("token");
-//   const userType = getCookie("userType");
-//   // Check if the user is authenticated using the isUserAuthenticated function
-//   await isUserAuthenticated(token, userType);
-//   return {
-//     props: {},
-//   };
-// }
+import moment from 'moment';
 
 export default function Dashboard() {
   const [welcome, setWelcome] = useState({
@@ -49,7 +39,7 @@ export default function Dashboard() {
             <h1 className="text-5xl">
               Welcome back, {welcome.first_name} {welcome.last_name}
             </h1>
-            <h2 className="text-xl">Your last login was on {welcome.last_login}</h2>
+            <h2 className="text-xl">Your last login was on {moment(welcome.last_login).format('DD/MM/YYYY HH:mm:ss')}</h2>
           </div>
           <div className="py-8">
             <h1 className="text-3xl">Quick Summary</h1>

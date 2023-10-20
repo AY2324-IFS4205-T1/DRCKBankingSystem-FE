@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar";
 import axiosConfig from "../../../axiosConfig";
 import { useState, useEffect } from "react";
+import moment from 'moment';
 
 export default function Tickets() {
   const [tickets, setTickets] = useState([]);
@@ -46,7 +47,7 @@ export default function Tickets() {
                     <td>{ticket.ticket}</td>
                     <td>{ticket.ticket_type}</td>
                     <td>{ticket.status}</td>
-                    <td>{ticket.created_date}</td>
+                    <td>{moment(ticket.created_date).format('DD/MM/YYYY HH:mm:ss')}</td>
                   </tr>
                 ))}
               </tbody>

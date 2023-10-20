@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { NextUIProvider } from "@nextui-org/react";
 
 import { useState, useEffect } from "react";
-import { usePathname } from 'next/navigation';
+import { useRouter } from "next/router";
 import { page_permissions } from "@/page_permissions";
 import { HttpStatusCode } from "axios";
 import axios from "@/axiosConfig";
@@ -11,8 +11,12 @@ import axios from "@/axiosConfig";
 import { ToastContainer } from "react-toastify";
 
 async function checkUserAuthentication(required_role, pathname, setLoading) {
+  // used for nav bar access control
+  let role;
+
   try {
-    await axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth_check`, { page_type: required_role });
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth_check`, { page_type: required_role });
+    role = response.data.user_role;
     setLoading(false);
   } catch (err) {
     if (err.response.status == HttpStatusCode.Unauthorized) {
@@ -37,16 +41,20 @@ async function checkUserAuthentication(required_role, pathname, setLoading) {
         ) {
           window.location.href = `../${data.user_authorisation.toLowerCase()}/verify`;
         }
+      } else if (!data.authorised) {
+        window.location.href = `../${data.user_authorisation.toLowerCase()}/dashboard`;
       }
 
+      role = data.user_role;
     }
   }
 
+  return role;
 }
 
 export default function App({ Component, pageProps }) {
   const [loading, setLoading] = useState(true);
-  const pathname = usePathname();
+  const pathname = useRouter().pathname;
 
   useEffect(() => {
     setLoading(true);
@@ -64,7 +72,11 @@ export default function App({ Component, pageProps }) {
       window.location.href = "/";
     }
 
-    checkUserAuthentication(required_role, pathname, setLoading);
+    const getAuth = async() => {
+      pageProps['role'] = await checkUserAuthentication(required_role, pathname, setLoading);
+    }
+    getAuth();
+    
   }, [pathname]);
 
   return (

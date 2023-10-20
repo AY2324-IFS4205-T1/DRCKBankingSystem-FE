@@ -1,6 +1,7 @@
 import Navbar_Staff from "@/components/navbar_staff";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from "@nextui-org/react";
+import moment from 'moment';
 
 import axiosConfig from "../../../axiosConfig";
 
@@ -11,7 +12,7 @@ const columns = [
   { key: "details", label: "View Details" },
 ];
 
-export default function Tickets() {
+export default function Tickets(props) {
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
 
@@ -21,6 +22,8 @@ export default function Tickets() {
 
     if (columnKey == "details") {
       return <a href={`/staff/tickets/${item.ticket}`}>View More</a>;
+    } else if (columnKey == "created_date") {
+      return moment(cellValue).format('DD/MM/YYYY HH:mm:ss')
     }
 
     return cellValue;
@@ -52,7 +55,7 @@ export default function Tickets() {
 
   return (
     <>
-      <Navbar_Staff />
+      <Navbar_Staff role={props.role} />
       <div className="h-screen bg-gray-200">
         <div className="mx-auto max-w-7xl divide-y-2 divide-slate-400 px-2 py-8 sm:px-6 lg:px-8">
           <div className="py-8">

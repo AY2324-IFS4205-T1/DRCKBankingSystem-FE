@@ -3,7 +3,7 @@ import axiosConfig from "../../axiosConfig";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-export default function verifyTwoFA() {
+export default function verifyTwoFA(props) {
   const router = useRouter();
 
   const [otp, setOtp] = useState();
@@ -20,7 +20,7 @@ export default function verifyTwoFA() {
 
   return (
     <>
-      <NavbarStaff />
+      <Navbar_Staff role={props.role} />
       <div className="h-screen bg-gray-200">
         <div className="mx-auto max-w-7xl px-2 py-8 sm:px-6 lg:px-8">
           <div className="py-8">
