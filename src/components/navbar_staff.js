@@ -8,7 +8,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar_Staff() {
+export default function Navbar_Staff(props) {
   const router = useRouter();
 
   async function handleLogout(event) {
@@ -46,9 +46,15 @@ export default function Navbar_Staff() {
   const pathName = usePathname();
   const navigation = [
     { name: "Home", href: "/staff/dashboard", current: pathName === "/staff/dashboard" },
-    { name: "Tickets", href: "/staff/tickets", current: pathName === "/staff/tickets" },
-    { name: "Anonymization", href: "/staff/anon", current: pathName === "/staff/anon" },
   ];
+
+  // Add the navigation based on title
+  if (props.role === "Ticket Reviewer") {
+    navigation.push({ name: "Tickets", href: "/staff/tickets", current: pathName === "/staff/tickets" });
+  } else if (props.role === "Auditor") {
+    navigation.push({ name: "Anonymization", href: "/staff/anon", current: pathName === "/staff/anon" });
+    navigation.push({ name: "Logs", href: "/staff/logs", current: pathName === "/staff/logs" });
+  }
 
   return (
     <Disclosure as="nav" className="bg-rose-950">

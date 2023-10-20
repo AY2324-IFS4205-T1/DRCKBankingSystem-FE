@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import axiosConfig from "../../../axiosConfig";
 
-export default function createTicket() {
+export default function createTicket(props) {
   const router = useRouter();
   const { ticketid } = router.query;
 
@@ -65,7 +65,7 @@ export default function createTicket() {
 
   return (
     <>
-      <Navbar_Staff />
+      <Navbar_Staff role={props.role} />
       <div className="h-screen bg-gray-200 pt-8">
         <div className="mx-auto max-w-7xl divide-y-2 divide-slate-400 px-2 sm:px-6 lg:px-8">
           <div className="mb-8">

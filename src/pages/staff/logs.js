@@ -173,7 +173,7 @@ export default function Logs(props) {
 
   return (
     <>
-      <Navbar_Staff props={props} />
+      <Navbar_Staff role={props.role} />
       <div className="min-h-screen bg-gray-200">
         <div className="mx-auto max-w-7xl px-2 py-8 sm:px-6 lg:px-8">
           <div className="py-8">
