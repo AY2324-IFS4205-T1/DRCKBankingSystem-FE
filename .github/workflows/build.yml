@@ -9,7 +9,7 @@ on:
 
 jobs:
   ci:
-    name: Start SonarScan
+    name: DRCK Frontend Workflow CI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
