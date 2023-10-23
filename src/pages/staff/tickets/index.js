@@ -2,8 +2,8 @@ import Navbar_Staff from "@/components/navbar_staff";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from "@nextui-org/react";
 import moment from 'moment';
-
 import axiosConfig from "../../../axiosConfig";
+import { toast } from "react-toastify";
 
 const columns = [
   { key: "status", label: "Status" },
@@ -58,10 +58,9 @@ export default function Tickets(props) {
         setOpenData(openResponse.data.tickets);
 
         let closedResponse = await axiosConfig.get(`/staff/get_closed_tickets`);
-        console.log(closedResponse);
         setClosedData(closedResponse.data.tickets);
       } catch (err) {
-        console.log(err);
+        toast.error(err.response.data);
       }
     }
     getData();

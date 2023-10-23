@@ -4,7 +4,6 @@ import requestIp from "request-ip";
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      console.log(req);
       let server_req = await api_axiosConfig.post("/staff/query_results", req.body, {
         headers: {
           "Content-Type": "application/json",

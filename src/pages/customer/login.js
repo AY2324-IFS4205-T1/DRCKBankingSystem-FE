@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 
 export default function CustomerLogin() {
   const router = useRouter();
@@ -12,6 +12,7 @@ export default function CustomerLogin() {
     event.preventDefault();
     setIsLoading(true);
     setIsError(null); // Clear previous errors when a new request starts
+
     try {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
@@ -34,10 +35,14 @@ export default function CustomerLogin() {
       });
       router.push("/customer/dashboard");
     } catch (isError) {
-      setIsError(isError.response.data.error);
-      toast.error(isError.response.data.error, {
-        autoClose: 5000,
-      });
+      if (isError.response.status == HttpStatusCode.InternalServerError) {
+        toast.error("Server error.");
+      } else {
+        setIsError(isError.response.data.error);
+        toast.error(isError.response.data.error, {
+          autoClose: 5000,
+        });
+      }
     } finally {
       setIsLoading(false);
     }

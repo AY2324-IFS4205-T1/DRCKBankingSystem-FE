@@ -23,11 +23,7 @@ export default function verifyTwoFA(props) {
 
       router.push("/staff/dashboard");
     } catch (err) {
-      if (err.response.data['non_field_errors'].length > 0) {
-        toast.error(err.response.data['non_field_errors'][0]);
-      } else {
-        toast.error(err.response.data);
-      }
+      toast.error(err.response.data);
     }
   };
 
@@ -55,9 +51,6 @@ export default function verifyTwoFA(props) {
               >
                 Submit
               </button>
-              <p>
-                Lost your OTP? Click <a href="/staff/setup">here</a> to setup again.
-              </p>
             </div>
           </div>
         </div>

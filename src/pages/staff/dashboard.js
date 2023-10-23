@@ -2,6 +2,7 @@ import Navbar_Staff from "@/components/navbar_staff";
 import axiosConfig from "../../axiosConfig";
 import { useState, useEffect } from "react";
 import moment from 'moment';
+import { toast } from "react-toastify";
 
 export default function Dashboard(props) {
   const [welcome, setWelcome] = useState({
@@ -20,7 +21,9 @@ export default function Dashboard(props) {
           last_name: response.data.last_name,
           last_login: response.data.last_login,
         });
-      } catch (err) {}
+      } catch (err) {
+        toast.error(err.response.data);
+      }
     }
     getData();
   }, []);

@@ -2,9 +2,9 @@ import api_axiosConfig from "../../api_axiosConfig";
 import requestIp from "request-ip";
 
 export default async function handler(req, res) {
-  if (req.method === "POST") {
+  if (req.method === "GET") {
     try {
-      let server_req = await api_axiosConfig.post("/staff/get_anon_data", req.body, {
+      let server_req = await api_axiosConfig.get("/staff/get_anon_data", {
         headers: {
           "Content-Type": "application/json",
           "Client-IP": requestIp.getClientIp(req),

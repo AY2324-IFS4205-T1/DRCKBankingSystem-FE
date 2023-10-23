@@ -1,7 +1,7 @@
 import Navbar_Staff from "@/components/navbar_staff";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import moment from 'moment';
+import { toast } from "react-toastify";
 
 import axiosConfig from "../../../axiosConfig";
 
@@ -35,7 +35,7 @@ export default function createTicket(props) {
         setCustomer(response.data.customer);
         setAccounts(response.data.accounts);
       } catch (err) {
-        console.log(err);
+        toast.error(err.response.data);
       }
     }
     getData();
@@ -43,23 +43,23 @@ export default function createTicket(props) {
 
   async function approveTicket() {
     try {
-      let response = await axiosConfig.post(`/staff/ticket/${ticketid}/approve`);
+      await axiosConfig.post(`/staff/ticket/${ticketid}/approve`);
       router.push({
         pathname: "/staff/tickets/",
       });
     } catch (err) {
-      console.log(err);
+      toast.error(err.response.data);
     }
   }
 
   async function rejectTicket() {
     try {
-      let response = await axiosConfig.post(`/staff/ticket/${ticketid}/reject`);
+      await axiosConfig.post(`/staff/ticket/${ticketid}/reject`);
       router.push({
         pathname: "/staff/tickets/",
       });
     } catch (err) {
-      console.log(err);
+      toast.error(err.response.data);
     }
   }
 

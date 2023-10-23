@@ -15,7 +15,7 @@ export default function setupTwoFA() {
       try {
         let response = await axiosConfig.get("/setup_2FA");
         setDataImage(Buffer.from(response.data, "binary").toString("base64"));
-      } catch (err) {}
+      } catch (err) { }
     }
     getData();
   }, [router.isReady]);
@@ -33,12 +33,7 @@ export default function setupTwoFA() {
 
       router.push("/customer/dashboard");
     } catch (err) {
-      // Only one possible error if field is invalid
-      if (err.response.data['non_field_errors'].length > 0) {
-        toast.error(err.response.data['non_field_errors'][0]);
-      } else {
-        toast.error(err.response.data);
-      }
+      toast.error(err.response.data);
     }
   };
 
@@ -51,7 +46,7 @@ export default function setupTwoFA() {
             <h1 className="text-5xl">Welcome</h1>
             <h2 className="text-xl">Please setup your Two-Factor Authentication</h2>
             <p>
-              You can use Google Authenticator, Microsoft Authenticator or any authenticator app of your own choice.
+              We highly recommend using Google or Aegis Authenticator, as other authenticator apps <b>may not be supported.</b>
             </p>
           </div>
           <div className="py-8">

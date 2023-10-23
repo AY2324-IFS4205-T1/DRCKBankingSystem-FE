@@ -28,7 +28,9 @@ export default function createTicket() {
         // Get accounts that user have
         response = await axiosConfig.get("/customer/accounts");
         setAccounts(response.data.accounts);
-      } catch (err) {}
+      } catch (err) {
+        toast.error(err.response.data);
+      }
     }
     getData();
   }, []);
@@ -45,17 +47,12 @@ export default function createTicket() {
 
     try {
       await axiosConfig.post("/customer/tickets", data);
-      
+
       router.push({
         pathname: "/customer/tickets",
       });
     } catch (err) {
-      // Only one possible error if field is invalid
-      if (err.response.data['non_field_errors'].length > 0) {
-        toast.error(err.response.data['non_field_errors'][0]);
-      } else {
-        toast.error(err.response.data);
-      }
+      toast.error(err.response.data);
     }
   };
 

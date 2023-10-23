@@ -22,7 +22,6 @@ instance.interceptors.response.use (
     } else if (error.response.status == HttpStatusCode.InternalServerError) {
       error.response.data = "Server error.";
     } else if (error.response.status == HttpStatusCode.BadRequest) {
-      console.log(error);
       if (error.response.data.non_field_errors instanceof Array) {
         error.response.data = error.response.data.non_field_errors.join("\n");
       }

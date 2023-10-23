@@ -4,29 +4,30 @@ import { NextUIProvider } from "@nextui-org/react";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { page_permissions } from "@/page_permissions";
+import { page_exceptions } from "@/page_exceptions";
 import { HttpStatusCode } from "axios";
 import axios from "@/axiosConfig";
 
 import { ToastContainer } from "react-toastify";
 
-async function checkUserAuthentication(required_role, pathname, setLoading) {
+async function checkUserAuthentication(pathname, setLoading) {
   // used for nav bar access control
   let role;
 
   try {
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth_check`, { page_type: required_role });
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth_check`, { page_name: pathname });
     role = response.data.user_role;
     setLoading(false);
   } catch (err) {
-    if (err.response.status == HttpStatusCode.Unauthorized) {
+    // If user is not login, or page_name provided is invalid
+    if (err.response.status == HttpStatusCode.Unauthorized || err.response.data == HttpStatusCode.BadRequest) {
       window.location.href = "/";
     } else if (err.response.status == HttpStatusCode.Forbidden) {
       const { data } = err.response;
 
       if (!data.authenticated) {
         // If the page is setup/verify 2FA, allow the user to perform 2FA first
-        if (pathname == `/${data.user_authorisation.toLowerCase()}/setup` ||
+        if ((pathname == `/${data.user_authorisation.toLowerCase()}/setup` && data.authenticated_message === "User does not have 2FA set up.") ||
           pathname == `/${data.user_authorisation.toLowerCase()}/verify`) {
           setLoading(false);
           return;
@@ -34,11 +35,7 @@ async function checkUserAuthentication(required_role, pathname, setLoading) {
 
         if (data.authenticated_message === "User does not have 2FA set up.") {
           window.location.href = `../${data.user_authorisation.toLowerCase()}/setup`;
-        } else if (
-          data.authenticated_message === "The session has changed, 2FA needs to be verified again." ||
-          data.authenticated_message === "2FA has not been verified." ||
-          data.authenticated_message === "2FA timeout, 2FA needs to be verified again."
-        ) {
+        } else if (data.authenticated_message === "2FA has not been verified.") {
           window.location.href = `../${data.user_authorisation.toLowerCase()}/verify`;
         }
       } else if (!data.authorised) {
@@ -61,19 +58,15 @@ export default function App({ Component, pageProps }) {
 
     // Get the required role from permissions
     const requested_path = pathname.split('/', 3).join('/');
-    const required_role = page_permissions[requested_path];
 
-    if (required_role === "") {
+    if (page_exceptions.includes(requested_path)) {
       // Exception to pages not requiring roles
       setLoading(false);
       return;
-    } else if (required_role === undefined) {
-      // Undefined pages. Should go to 404.
-      window.location.href = "/";
-    }
+    } 
 
     const getAuth = async() => {
-      pageProps['role'] = await checkUserAuthentication(required_role, pathname, setLoading);
+      pageProps['role'] = await checkUserAuthentication(requested_path, setLoading);
     }
     getAuth();
     

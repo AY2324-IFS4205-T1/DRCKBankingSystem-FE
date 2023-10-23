@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { toast } from "react-toastify";
 
 export default function StaffLogin() {
@@ -34,11 +34,14 @@ export default function StaffLogin() {
       });
       router.push("/staff/dashboard");
     } catch (isError) {
-      console.log(isError);
-      setIsError(isError.response.data.error);
-      toast.error(isError.response.data.error, {
-        autoClose: 5000,
-      });
+      if (isError.response.status == HttpStatusCode.InternalServerError) {
+        toast.error("Server error.");
+      } else {
+        setIsError(isError.response.data.error);
+        toast.error(isError.response.data.error, {
+          autoClose: 5000,
+        });
+      }
     } finally {
       setIsLoading(false);
     }

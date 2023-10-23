@@ -53,8 +53,10 @@ export default function Navbar_Staff(props) {
     navigation.push({ name: "Tickets", href: "/staff/tickets", current: pathName === "/staff/tickets" });
   } else if (props.role === "Auditor") {
     navigation.push({ name: "Logs", href: "/staff/logs", current: pathName === "/staff/logs" });
-  } else if (props.role === "Anonymity Officer" || props.role === "Researcher") {
+  } else if (props.role === "Anonymity Officer") {
     navigation.push({ name: "Anonymization", href: "/staff/anon", current: pathName === "/staff/anon" });
+  } else if (props.role === "Researcher") {
+    navigation.push({ name: "Research", href: "/staff/research", current: pathName === "/staff/research" });
   }
 
   return (

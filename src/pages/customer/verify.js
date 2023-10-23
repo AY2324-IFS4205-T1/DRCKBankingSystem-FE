@@ -23,12 +23,7 @@ export default function verifyTwoFA() {
 
       router.push("/customer/dashboard");
     } catch (err) {
-      // Only one possible error if field is invalid
-      if (err.response.data['non_field_errors'].length > 0) {
-        toast.error(err.response.data['non_field_errors'][0]);
-      } else {
-        toast.error(err.response.data);
-      }
+      toast.error(err.response.data);
     }
   };
 
@@ -56,9 +51,6 @@ export default function verifyTwoFA() {
               >
                 Submit
               </button>
-              <p>
-                Lost your OTP? Click <a href="/customer/setup">here</a> to setup again.
-              </p>
             </div>
           </div>
         </div>

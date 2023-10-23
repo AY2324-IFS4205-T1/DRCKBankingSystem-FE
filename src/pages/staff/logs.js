@@ -15,6 +15,7 @@ import moment from 'moment';
 
 import "react-datetime/css/react-datetime.css";
 import Datetime from 'react-datetime';
+import { toast } from "react-toastify";
 
 const log_types = [
   { key: "", label: "Please select" },
@@ -79,7 +80,7 @@ const loginColumns = [
 
 const accessColumns = [
   { key: "severity", label: "Severity"},
-  { key: "user", label: "User" },
+  { key: "user_id", label: "User ID" },
   { key: "user_permission_type", label: "User type" },
   { key: "api_permission_type", label: "API type" },
   { key: "api_view_name", label: "View" },
@@ -147,7 +148,7 @@ export default function Logs(props) {
       });
       setData(response.data[logType]);
     } catch (err) {
-      console.log(err);
+      toast.error(err.response.data);
     }
   }
 
