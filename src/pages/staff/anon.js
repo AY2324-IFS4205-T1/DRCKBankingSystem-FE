@@ -27,13 +27,18 @@ export default function Anonymization(props) {
   const [graphImage, setGraphImage] = useState("");
   const [kValue, setKValue] = useState("");
 
+  const [generateMessage, setGenerateMessage] = useState("Regenerate Data");
+
   async function regenerateData() {
     try {
+      setGenerateMessage("Loading...");
       let response = await axiosConfig.get("/staff/anon/calculate_anon");
       await renderGraph();
       toast.success(response.data.success);
     } catch (err) {
       toast.error(err.response.data);
+    } finally {
+      setGenerateMessage("Regenerate Data");
     }
   }
 
@@ -92,8 +97,10 @@ export default function Anonymization(props) {
                   If it has been a while since the statistics were last updated, click "Regenerate Data" below to derive new statistics. <br />
                   You should do this so that new transaction data will be added into the anonymity dataset and statistics.
                 </p>
-                <button className="bg-slate-300 hover:bg-slate-400 text-black py-1 px-2 rounded" onClick={regenerateData}>
-                  Regenerate Data
+                <button className="bg-slate-300 hover:bg-slate-400 text-black py-1 px-2 rounded" onClick={regenerateData}
+                  disabled={generateMessage === "Loading..."}
+                >
+                  {generateMessage}
                 </button>
               </div>
               <div className="mt-2">

@@ -16,12 +16,12 @@ export async function middleware(request) {
   upgrade-insecure-requests;
 `;
   const requestHeaders = new Headers(request.headers);
-  // requestHeaders.set("x-nonce", nonce);
-  // requestHeaders.set(
-  //   "Content-Security-Policy",
-  //   // Replace newline characters and spaces
-  //   cspHeader.replace(/\s{2,}/g, " ").trim(),
-  // );
+  requestHeaders.set("x-nonce", nonce);
+  requestHeaders.set(
+    "Content-Security-Policy",
+    // Replace newline characters and spaces
+    cspHeader.replace(/\s{2,}/g, " ").trim(),
+  );
 
   return NextResponse.next({
     headers: requestHeaders,
