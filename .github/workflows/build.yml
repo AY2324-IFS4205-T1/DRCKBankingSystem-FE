@@ -41,5 +41,5 @@ jobs:
     - name: Run Ansible playbooks
       working-directory: /home/sadm/DRCK-Ansible
       run: |
-        ansible-playbook playbooks/cleanup_nextjs.yaml -i inventory.yaml -e "ansible_become_pass=$SUDO_PASSWORD"
-        ansible-playbook playbooks/deploy_nextjs.yaml -i inventory.yaml -e "ansible_become_pass=$SUDO_PASSWORD"
+        ansible-playbook playbooks/cleanup_frontend.yaml -i inventory.yaml -e "ansible_become_pass=$SUDO_PASSWORD"
+        ansible-playbook playbooks/deploy_frontend.yaml -i inventory.yaml -e "ansible_become_pass=$SUDO_PASSWORD"
