@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import axiosConfig from "../../axiosConfig";
 import { useState, useEffect } from "react";
 import moment from 'moment';
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
   const [welcome, setWelcome] = useState({
@@ -25,7 +26,9 @@ export default function Dashboard() {
         // Get accounts
         response = await axiosConfig.get("/customer/accounts");
         setAccounts(response.data.accounts);
-      } catch (err) {}
+      } catch (err) {
+        toast.error(err.response.data);
+      }
     }
     getData();
   }, []);

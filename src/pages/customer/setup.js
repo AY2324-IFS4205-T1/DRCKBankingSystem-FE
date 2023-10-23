@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import axiosConfig from "../../axiosConfig";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export default function setupTwoFA() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function setupTwoFA() {
       try {
         let response = await axiosConfig.get("/setup_2FA");
         setDataImage(Buffer.from(response.data, "binary").toString("base64"));
-      } catch (err) {}
+      } catch (err) { }
     }
     getData();
   }, [router.isReady]);
@@ -25,8 +26,15 @@ export default function setupTwoFA() {
         otp: otp,
       };
       let response = await axiosConfig.post("/verify_2FA", data);
+      if (!response.data["2FA success"]) {
+        toast.error("One-time password do not match.");
+        return;
+      }
+
       router.push("/customer/dashboard");
-    } catch (err) {}
+    } catch (err) {
+      toast.error(err.response.data);
+    }
   };
 
   return (
@@ -38,7 +46,7 @@ export default function setupTwoFA() {
             <h1 className="text-5xl">Welcome</h1>
             <h2 className="text-xl">Please setup your Two-Factor Authentication</h2>
             <p>
-              You can use Google Authenticator, Microsoft Authenticator or any authenticator app of your own choice.
+              We highly recommend using Google or Aegis Authenticator, as other authenticator apps <b>may not be supported.</b>
             </p>
           </div>
           <div className="py-8">

@@ -1,9 +1,21 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import axios, { HttpStatusCode } from "axios";
 import { toast } from "react-toastify";
 
 export default function StaffLogin() {
+  useEffect(() => {
+    // If there is authorization token in session storage, clear it
+    if (sessionStorage.getItem('token')) {
+      fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/logout`, {
+        method: "POST",
+        headers: {
+          Authorization: `Token ${sessionStorage.getItem('token')}`,
+        },
+      }).finally(() => sessionStorage.clear());
+    }
+  }, []);
+
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(null);
@@ -15,13 +27,13 @@ export default function StaffLogin() {
     try {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
-
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_API_URL}/staff/login`,
         JSON.stringify(formValues),
         {
           headers: {
             "Content-Type": "application/json",
+            "x-middleware-cache": "no-cache",
           },
         },
       );
@@ -29,9 +41,19 @@ export default function StaffLogin() {
       sessionStorage.setItem("token", response.data.token);
 
       event.target.reset(); // Reset form fields
+      toast.success("Login Successful. Redirecting...", {
+        autoClose: 2000,
+      });
       router.push("/staff/dashboard");
     } catch (isError) {
-      setIsError(isError.message); // Capture the error message to display to the user
+      if (isError.response.status == HttpStatusCode.InternalServerError) {
+        toast.error("Server error.");
+      } else {
+        setIsError(isError.response.data.error);
+        toast.error(isError.response.data.error, {
+          autoClose: 5000,
+        });
+      }
     } finally {
       setIsLoading(false);
     }

@@ -1,7 +1,7 @@
 import Navbar_Staff from "@/components/navbar_staff";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import moment from 'moment';
+import { toast } from "react-toastify";
 
 import axiosConfig from "../../../axiosConfig";
 
@@ -35,7 +35,7 @@ export default function createTicket(props) {
         setCustomer(response.data.customer);
         setAccounts(response.data.accounts);
       } catch (err) {
-        console.log(err);
+        toast.error(err.response.data);
       }
     }
     getData();
@@ -43,23 +43,23 @@ export default function createTicket(props) {
 
   async function approveTicket() {
     try {
-      let response = await axiosConfig.post(`/staff/ticket/${ticketid}/approve`);
+      await axiosConfig.post(`/staff/ticket/${ticketid}/approve`);
       router.push({
         pathname: "/staff/tickets/",
       });
     } catch (err) {
-      console.log(err);
+      toast.error(err.response.data);
     }
   }
 
   async function rejectTicket() {
     try {
-      let response = await axiosConfig.post(`/staff/ticket/${ticketid}/reject`);
+      await axiosConfig.post(`/staff/ticket/${ticketid}/reject`);
       router.push({
         pathname: "/staff/tickets/",
       });
     } catch (err) {
-      console.log(err);
+      toast.error(err.response.data);
     }
   }
 
@@ -71,7 +71,8 @@ export default function createTicket(props) {
           <div className="mb-8">
             <div>
               <h1 className="text-3xl">Approve Ticket</h1>
-              <div className="float-right">
+              { ticket.status === 'Open' &&
+                <div className="float-right">
                 <button
                   type="submit"
                   className="mr-4 rounded-md bg-indigo-600 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -87,6 +88,7 @@ export default function createTicket(props) {
                   Reject
                 </button>
               </div>
+              }
             </div>
             <div className="mt-4">
               <div className="my-3">

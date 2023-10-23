@@ -12,6 +12,7 @@ import {
   getKeyValue,
 } from "@nextui-org/react";
 import moment from 'moment';
+import { toast } from "react-toastify";
 
 import axiosConfig from "../../../axiosConfig";
 
@@ -66,7 +67,7 @@ export default function AccountId() {
         let response = await axiosConfig.get(`/customer/account/${router.query.accountid}`);
         setData(response.data.transactions);
       } catch (err) {
-        console.log(err);
+        toast.error(err.response.data);
       }
     }
     getData();

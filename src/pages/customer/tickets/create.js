@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import axiosConfig from "../../../axiosConfig";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const ticket_types = [
   { key: "", label: "Select Request" },
@@ -27,7 +28,9 @@ export default function createTicket() {
         // Get accounts that user have
         response = await axiosConfig.get("/customer/accounts");
         setAccounts(response.data.accounts);
-      } catch (err) {}
+      } catch (err) {
+        toast.error(err.response.data);
+      }
     }
     getData();
   }, []);
@@ -43,12 +46,13 @@ export default function createTicket() {
     };
 
     try {
-      let response = await axiosConfig.post("/customer/tickets", data);
+      await axiosConfig.post("/customer/tickets", data);
+
       router.push({
         pathname: "/customer/tickets",
       });
     } catch (err) {
-      console.log(err);
+      toast.error(err.response.data);
     }
   };
 

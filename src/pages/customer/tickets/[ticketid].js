@@ -1,8 +1,8 @@
 import Navbar from "@/components/navbar";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-
 import axiosConfig from "../../../axiosConfig";
+import { toast } from "react-toastify";
 
 export default function TicketId() {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function TicketId() {
         let response = await axiosConfig.get(`/customer/ticket/${router.query.ticketid}`);
         setTicket(response.data.ticket);
       } catch (err) {
-        console.log(err);
+        toast.error(err.response.data);
       }
     }
     getData();

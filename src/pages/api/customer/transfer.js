@@ -11,7 +11,6 @@ export default async function handler(req, res) {
           Authorization: req.headers.authorization,
         },
       });
-      console.log(server_req.data);
       res.status(server_req.status).json(server_req.data);
     } catch (server_req_err) {
       res.status(server_req_err.response.status).json(server_req_err.response.data);

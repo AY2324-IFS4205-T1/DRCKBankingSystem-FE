@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 
 export default function Register() {
   const router = useRouter();
@@ -16,7 +16,11 @@ export default function Register() {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
 
-      const response = await axios.post(
+      if (formValues.password !== formValues.password2) {
+        throw { response: { data: { key: ["Passwords do not match. "] } } };
+      }
+
+      await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_API_URL}/customer/register`,
         JSON.stringify(formValues),
         {
@@ -34,19 +38,24 @@ export default function Register() {
       });
       router.push("/customer/login"); // Redirect the user to the login page
     } catch (isError) {
-      const errorMessages = [];
-      const data = isError.response.data;
-      for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-          const errorText = `${key}: ${data[key].join(", ")}`; // Combine multiple error messages for the same field
-          errorMessages.push(errorText);
+      if (isError.response.status == HttpStatusCode.InternalServerError) {
+        toast.error("Server error.");
+      } else {
+
+        const errorMessages = [];
+        const data = isError.response.data;
+
+        for (const key in data) {
+          if (data.hasOwnProperty(key)) {
+            const errorText = `${data[key].join(", ")}`; // Combine multiple error messages for the same field
+            errorMessages.push(errorText);
+          }
         }
+
+        const errorMessage = errorMessages.join("\n"); // Join message in array with a "\n". Use for split later.
+        setIsError(errorMessage); // Capture the error message to display to the user
+        window.scrollTo(0, 0);
       }
-      const errorMessage = errorMessages.join("\n"); // Join message in array with a "\n". Use for split later.
-      setIsError(errorMessage); // Capture the error message to display to the user
-      toast.error(errorMessage, {
-        autoClose: 5000,
-      });
     } finally {
       setIsLoading(false);
     }
@@ -62,7 +71,7 @@ export default function Register() {
           </div>
         </div>
         {isError && (
-          <div className="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700" role="alert">
+          <div className="relative rounded border border-red-400 bg-red-100 px-4 py-3 mt-3 text-red-700" role="alert">
             {isError.split("\n").map((errorMessage) => (
               <p key={errorMessage}>{errorMessage}</p>
             ))}

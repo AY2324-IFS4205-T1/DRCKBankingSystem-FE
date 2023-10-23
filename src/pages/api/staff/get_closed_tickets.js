@@ -1,10 +1,10 @@
-import api_axiosConfig from "../../api_axiosConfig";
+import api_axiosConfig from "../api_axiosConfig";
 import requestIp from "request-ip";
 
 export default async function handler(req, res) {
-  if (req.method === "POST") {
+  if (req.method === "GET") {
     try {
-      let server_req = await api_axiosConfig.post("/staff/set_k", req.body, {
+      let server_req = await api_axiosConfig.get("/staff/get_closed_tickets", {
         headers: {
           "Content-Type": "application/json",
           "Client-IP": requestIp.getClientIp(req),
@@ -17,6 +17,6 @@ export default async function handler(req, res) {
     }
   } else {
     // Method not allowed
-    res.status(405);
+    res.status(405).json();
   }
 }

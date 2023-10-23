@@ -1,7 +1,8 @@
 import Navbar_Staff from "@/components/navbar_staff";
 import axiosConfig from "../../axiosConfig";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export default function verifyTwoFA(props) {
   const router = useRouter();
@@ -14,8 +15,16 @@ export default function verifyTwoFA(props) {
         otp: otp,
       };
       let response = await axiosConfig.post("/verify_2FA", data);
+      if (!response.data["2FA success"]) {
+        toast.error("One-time password do not match.");
+        setOtp("");
+        return;
+      }
+
       router.push("/staff/dashboard");
-    } catch (err) {}
+    } catch (err) {
+      toast.error(err.response.data);
+    }
   };
 
   return (
@@ -42,9 +51,6 @@ export default function verifyTwoFA(props) {
               >
                 Submit
               </button>
-              <p>
-                Lost your OTP? Click <a href="/customer/setup">here</a> to setup again.
-              </p>
             </div>
           </div>
         </div>

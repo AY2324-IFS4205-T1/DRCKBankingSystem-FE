@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar";
 import axiosConfig from "../../../axiosConfig";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default function Accounts() {
   const [accounts, setAccounts] = useState([]);
@@ -11,7 +12,9 @@ export default function Accounts() {
         // Get accounts
         let response = await axiosConfig.get("/customer/accounts");
         setAccounts(response.data.accounts);
-      } catch (err) {}
+      } catch (err) {
+        toast.error(err.response.data);
+      }
     }
     getData();
   }, []);
@@ -24,12 +27,6 @@ export default function Accounts() {
           <div className="py-8">
             <div>
               <h1 className="inline text-3xl">Accounts</h1>
-              {/* <a
-                href="/customer/accounts/request"
-                className="rounded-md bg-indigo-600 p-2 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 float-right no-underline"
-              >
-                Request New Account
-              </a> */}
             </div>
             <table className="my-8 w-full table-auto border-collapse border border-slate-500">
               <thead>

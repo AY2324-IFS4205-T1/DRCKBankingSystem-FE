@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import axiosConfig from "../../../axiosConfig";
 import { useState, useEffect } from "react";
 import moment from 'moment';
+import { toast } from "react-toastify";
 
 export default function Tickets() {
   const [tickets, setTickets] = useState([]);
@@ -12,7 +13,9 @@ export default function Tickets() {
         // Get accounts
         let response = await axiosConfig.get("/customer/tickets");
         setTickets(response.data.tickets);
-      } catch (err) {}
+      } catch (err) {
+        toast.error(err.response.data);
+      }
     }
     getData();
   }, []);
