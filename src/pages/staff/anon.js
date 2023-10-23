@@ -2,6 +2,7 @@ import Navbar_Staff from "@/components/navbar_staff";
 import axiosConfig from "../../axiosConfig";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export default function Anonymization(props) {
   const router = useRouter();
@@ -25,45 +26,67 @@ export default function Anonymization(props) {
   });
 
   async function regenerateData() {
-    let response = await axiosConfig.get("/staff/anon/calculate_anon");
-    // need toast
+    try {
+      await axiosConfig.get("/staff/anon/calculate_anon");
+      toast.success("Data generated successfully.");
+    } catch (err) {
+      toast.error(err.response.data['non_field_errors'][0]);
+    }
   }
 
   async function renderGraph() {
-    setShowGraph(true);
-    let response = await axiosConfig.get("/staff/anon/view_anon");
-    setGraphImage(Buffer.from(response.data, "binary").toString("base64"));
+    try {
+      let response = await axiosConfig.get("/staff/anon/view_anon");
+      setGraphImage(Buffer.from(response.data, "binary").toString("base64"));
+      setShowGraph(true);
+    } catch (err) {
+      toast.error(err.response.data['non_field_errors'][0]);
+    }
+
   }
 
   async function updateKValue() {
-    let response = await axiosConfig.post("/staff/anon/set_k", { k_value: kValue });
-    // need toast
+    try {
+      let response = await axiosConfig.post("/staff/anon/set_k", { k_value: kValue });
+      toast.success(response.data.success);
+    } catch (err) {
+      toast.error(err.response.data['non_field_errors'][0]);
+    }
   }
 
   async function queryResult() {
-    let response = await axiosConfig.post("/staff/anon/query_results", { query: queryValue });
-    setQueryData(response.data);
+    try {
+      let response = await axiosConfig.post("/staff/anon/query_results", { query: queryValue });
+      setQueryData(response.data);
+    } catch (err) {
+      toast.error(err.response.data['non_field_errors'][0]);
+    }
+
   }
 
   async function downloadData() {
-    let response = await axiosConfig.post("/staff/anon/data", { query: queryValue });
+    try {
+      let response = await axiosConfig.post("/staff/anon/data", { query: queryValue });
 
-    // create "a" HTML element with href to file & click
-    const href = URL.createObjectURL(response.data);
-    const link = document.createElement('a');
-    link.href = href;
-    link.setAttribute('download', 'output.csv');
-    link.click();
+      // create "a" HTML element with href to file & click
+      const href = URL.createObjectURL(new Blob([response.data], { type: "text/csv" }));
+      const link = document.createElement('a');
+      link.href = href;
+      link.setAttribute('download', 'output.csv');
+      link.click();
 
-    // clean up "a" element & remove ObjectURL
-    document.body.removeChild(link);
-    URL.revokeObjectURL(href);
+      // clean up "a" element & remove ObjectURL
+      link.remove();
+      URL.revokeObjectURL(href);
+    } catch (err) {
+      toast.error(err.response.data['non_field_errors'][0]);
+    }
   }
 
   return (
     <>
       <Navbar_Staff role={props.role} />
-      <div className="h-screen bg-gray-200">
+      <div className="min-h-screen bg-gray-200">
         <div className="mx-auto max-w-7xl divide-y-2 divide-slate-400 px-2 py-8 sm:px-6 lg:px-8">
           <div className="py-8">
             <h1 className="text-5xl">Anonymization Data</h1>
@@ -101,7 +124,7 @@ export default function Anonymization(props) {
                       name="kvalue"
                       id="kvalue"
                       required
-                      className="mx-1.5 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       onChange={(e) => {
                         setKValue(e.currentTarget.value);
                       }}
@@ -141,7 +164,7 @@ export default function Anonymization(props) {
                   <option value="1">Query Result 1</option>
                   <option value="2">Query Result 2</option>
                 </select>
-                { props.role == "Researcher" &&
+                {props.role == "Researcher" &&
                   <button
                     type="submit"
                     className="ml-1 rounded-md bg-indigo-600 px-2 py-1.5 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
