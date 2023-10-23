@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import axiosConfig from "../../axiosConfig";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export default function setupTwoFA() {
   const router = useRouter();
@@ -25,8 +26,20 @@ export default function setupTwoFA() {
         otp: otp,
       };
       let response = await axiosConfig.post("/verify_2FA", data);
+      if (!response.data["2FA success"]) {
+        toast.error("One-time password do not match.");
+        return;
+      }
+
       router.push("/customer/dashboard");
-    } catch (err) {}
+    } catch (err) {
+      // Only one possible error if field is invalid
+      if (err.response.data['non_field_errors'].length > 0) {
+        toast.error(err.response.data['non_field_errors'][0]);
+      } else {
+        toast.error(err.response.data);
+      }
+    }
   };
 
   return (

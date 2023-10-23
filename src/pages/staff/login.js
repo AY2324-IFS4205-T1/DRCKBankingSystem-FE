@@ -15,13 +15,13 @@ export default function StaffLogin() {
     try {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
-
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_API_URL}/staff/login`,
         JSON.stringify(formValues),
         {
           headers: {
             "Content-Type": "application/json",
+            "x-middleware-cache": "no-cache",
           },
         },
       );
@@ -29,9 +29,16 @@ export default function StaffLogin() {
       sessionStorage.setItem("token", response.data.token);
 
       event.target.reset(); // Reset form fields
+      toast.success("Login Successful. Redirecting...", {
+        autoClose: 2000,
+      });
       router.push("/staff/dashboard");
     } catch (isError) {
-      setIsError(isError.message); // Capture the error message to display to the user
+      console.log(isError);
+      setIsError(isError.response.data.error);
+      toast.error(isError.response.data.error, {
+        autoClose: 5000,
+      });
     } finally {
       setIsLoading(false);
     }

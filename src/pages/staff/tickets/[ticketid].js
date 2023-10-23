@@ -71,7 +71,8 @@ export default function createTicket(props) {
           <div className="mb-8">
             <div>
               <h1 className="text-3xl">Approve Ticket</h1>
-              <div className="float-right">
+              { ticket.status === 'Open' &&
+                <div className="float-right">
                 <button
                   type="submit"
                   className="mr-4 rounded-md bg-indigo-600 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -87,6 +88,7 @@ export default function createTicket(props) {
                   Reject
                 </button>
               </div>
+              }
             </div>
             <div className="mt-4">
               <div className="my-3">

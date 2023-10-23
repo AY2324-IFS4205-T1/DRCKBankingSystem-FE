@@ -2,8 +2,7 @@
 // This provides the default configuration for base URL and
 // retrieving the auth token from sessionStorage
 
-import axios from "axios";
-import Router from "next/router";
+import axios, { HttpStatusCode } from "axios";
 
 const instance = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BASE_API_URL}`,
@@ -15,17 +14,22 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
-// instance.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (error.response.data.detail == "User does not have 2FA set up." ||
-//       error.response.data.detail == "The session has changed, 2FA needs to be verified again." ||
-//       error.response.data.detail == "2FA has not been verified." ||
-//       error.response.data.detail == "2FA timeout, 2FA needs to be verified again."
-//     ) {
-//       // Router.reload();
-//     }
-//   },
-// );
+instance.interceptors.response.use (
+  (response) => response,
+  (error) => {
+    if (error.response.status == HttpStatusCode.TooManyRequests) {
+      error.response.data = "You have too many requests. Please try again in a few minutes.";
+    } else if (error.response.status == HttpStatusCode.InternalServerError) {
+      error.response.data = "Server error.";
+    } else if (error.response.status == HttpStatusCode.BadRequest) {
+      console.log(error);
+      if (error.response.data.non_field_errors instanceof Array) {
+        error.response.data = error.response.data.non_field_errors.join("\n");
+      }
+    }
+    
+    return Promise.reject(error);
+  },
+);
 
 export default instance;

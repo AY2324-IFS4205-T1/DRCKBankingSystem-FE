@@ -15,7 +15,8 @@ export const page_permissions = {
   '/staff/dashboard': 'Staff',
   '/staff/setup': 'Staff',
   '/staff/verify': 'Staff',
-  '/staff/anon': 'Staff',
+  '/staff/anon': 'Anonymity Officer',
+  '/staff/research': 'Researcher',
   '/staff/logs': 'Auditor',
   '/staff/tickets': 'Ticket Reviewer',
 };

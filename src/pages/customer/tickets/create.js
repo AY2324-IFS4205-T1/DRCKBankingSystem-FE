@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import axiosConfig from "../../../axiosConfig";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const ticket_types = [
   { key: "", label: "Select Request" },
@@ -43,12 +44,18 @@ export default function createTicket() {
     };
 
     try {
-      let response = await axiosConfig.post("/customer/tickets", data);
+      await axiosConfig.post("/customer/tickets", data);
+      
       router.push({
         pathname: "/customer/tickets",
       });
     } catch (err) {
-      console.log(err);
+      // Only one possible error if field is invalid
+      if (err.response.data['non_field_errors'].length > 0) {
+        toast.error(err.response.data['non_field_errors'][0]);
+      } else {
+        toast.error(err.response.data);
+      }
     }
   };
 

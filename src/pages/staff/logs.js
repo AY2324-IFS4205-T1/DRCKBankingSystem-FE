@@ -60,7 +60,7 @@ const log_types_description = {
 }
 
 const log_severity = [
-  { key: "", label: "None" },
+  { key: "", label: "All" },
   { key: "Information", label: "Info" },
   { key: "Low", label: "Low" },
   { key: "Medium", label: "Medium" },

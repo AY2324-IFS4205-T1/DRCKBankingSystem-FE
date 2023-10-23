@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import axiosConfig from "../../../axiosConfig";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export default function Transfer() {
   const router = useRouter();
@@ -10,7 +11,7 @@ export default function Transfer() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [recipient, setRecipient] = useState();
   const [amount, setAmount] = useState();
-  const [message, setMessage] = useState();
+  const [description, setDescription] = useState();
 
   useEffect(() => {
     async function getData() {
@@ -18,7 +19,9 @@ export default function Transfer() {
         // Get accounts
         let response = await axiosConfig.get("/customer/accounts");
         setAccounts(response.data.accounts);
-      } catch (err) {}
+      } catch (err) {
+        toast.error(err.response.data);
+      }
     }
 
     getData();
@@ -29,7 +32,7 @@ export default function Transfer() {
       sender_id: accounts[selectedIndex].account,
       recipient_id: recipient,
       amount: amount,
-      description: message,
+      description: description,
     };
     try {
       let response = await axiosConfig.post("/customer/transfer", data);
@@ -41,7 +44,7 @@ export default function Transfer() {
         "/customer/transfer/confirm",
       );
     } catch (err) {
-      console.log(err);
+      toast.error(err.response.data);
     }
   };
 
@@ -98,14 +101,14 @@ export default function Transfer() {
               </div>
             </div>
             <div className="border-b border-gray-900/10 py-2">
-              <h2 className="text-2xl leading-7">Message</h2>
+              <h2 className="text-2xl leading-7">Description</h2>
               <textarea
-                name="message"
-                id="message"
+                name="description"
+                id="description"
                 rows="4"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500"
-                placeholder="Write your message here"
-                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Write your description here"
+                onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
             <div className="my-3">

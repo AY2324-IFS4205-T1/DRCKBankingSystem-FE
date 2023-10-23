@@ -1,12 +1,13 @@
 import Navbar from "@/components/navbar";
 import axiosConfig from "../../axiosConfig";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default function Deposit() {
   const [accounts, setAccounts] = useState([]);
-  const [balance, setBalance] = useState(null);
-  const [depositAmount, setDepositAmount] = useState(null);
-  const [withdrawAmount, setWithdrawAmount] = useState(null);
+  const [balance, setBalance] = useState("");
+  const [depositAmount, setDepositAmount] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
@@ -16,7 +17,9 @@ export default function Deposit() {
         let response = await axiosConfig.get("/customer/accounts");
         setAccounts(response.data.accounts);
         setBalance(response.data.accounts[0].balance);
-      } catch (err) {}
+      } catch (err) {
+        toast.error("Failed to retrieve balance.")
+      }
     }
 
     getData();
@@ -33,11 +36,17 @@ export default function Deposit() {
       account_id: accounts[selectedIndex].account,
       amount: depositAmount,
     };
+    
     try {
       let response = await axiosConfig.post("/customer/deposit", data);
       setBalance(response.data.new_balance);
       updateAccounts(response.data.new_balance);
-    } catch (err) {}
+      toast.success("Your balance has been updated.");
+    } catch (err) {
+      toast.error("Failed to update balance.");
+    }
+
+    setDepositAmount("");
   };
 
   const withdrawAccount = async function () {
@@ -49,7 +58,12 @@ export default function Deposit() {
       let response = await axiosConfig.post("/customer/withdraw", data);
       setBalance(response.data.new_balance);
       updateAccounts(response.data.new_balance);
-    } catch (err) {}
+      toast.success("Your balance has been updated.");
+    } catch (err) {
+      toast.error("Failed to update balance.");
+    }
+
+    setWithdrawAmount("");
   };
 
   // Updates the balance in accounts array
@@ -95,6 +109,7 @@ export default function Deposit() {
                 onChange={(e) => {
                   setDepositAmount(e.currentTarget.value);
                 }}
+                value={depositAmount}
               />
               <button
                 type="submit"
@@ -114,6 +129,7 @@ export default function Deposit() {
                 onChange={(e) => {
                   setWithdrawAmount(e.currentTarget.value);
                 }}
+                value={withdrawAmount}
               />
               <button
                 type="submit"

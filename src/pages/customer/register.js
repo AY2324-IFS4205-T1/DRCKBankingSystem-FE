@@ -16,7 +16,11 @@ export default function Register() {
       const formData = new FormData(event.target);
       const formValues = Object.fromEntries(formData);
 
-      const response = await axios.post(
+      if (formValues.password !== formValues.password2) {
+        throw { response: { data: { key: ["Passwords do not match. "] } } };
+      }
+
+      await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_API_URL}/customer/register`,
         JSON.stringify(formValues),
         {
@@ -34,11 +38,12 @@ export default function Register() {
       });
       router.push("/customer/login"); // Redirect the user to the login page
     } catch (isError) {
+      console.log(isError);
       const errorMessages = [];
       const data = isError.response.data;
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
-          const errorText = `${key}: ${data[key].join(", ")}`; // Combine multiple error messages for the same field
+          const errorText = `${data[key].join(", ")}`; // Combine multiple error messages for the same field
           errorMessages.push(errorText);
         }
       }
@@ -61,13 +66,13 @@ export default function Register() {
             <div className="border-t-8 border-red-500"> </div>
           </div>
         </div>
-        {isError && (
+        {/* {isError && (
           <div className="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700" role="alert">
             {isError.split("\n").map((errorMessage) => (
               <p key={errorMessage}>{errorMessage}</p>
             ))}
           </div>
-        )}
+        )} */}
         <div className="mx-auto mt-6 bg-white/75 lg:w-2/5">
           <form onSubmit={onSubmit}>
             <div className="border-b border-gray-900/10 pb-5">

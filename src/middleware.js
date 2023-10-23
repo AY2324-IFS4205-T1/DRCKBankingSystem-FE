@@ -16,12 +16,12 @@ export async function middleware(request) {
   upgrade-insecure-requests;
 `;
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-nonce", nonce);
-  requestHeaders.set(
-    "Content-Security-Policy",
-    // Replace newline characters and spaces
-    cspHeader.replace(/\s{2,}/g, " ").trim(),
-  );
+  // requestHeaders.set("x-nonce", nonce);
+  // requestHeaders.set(
+  //   "Content-Security-Policy",
+  //   // Replace newline characters and spaces
+  //   cspHeader.replace(/\s{2,}/g, " ").trim(),
+  // );
 
   return NextResponse.next({
     headers: requestHeaders,
@@ -38,10 +38,9 @@ export const config = {
      * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
      */
     {
-      source: "/((?!api|_next/static|_next/image|favicon.ico).*)",
+      source: "/((?!api|_next/static|_next/image).*)",
       missing: [
         { type: "header", key: "next-router-prefetch" },
         { type: "header", key: "purpose", value: "prefetch" },
