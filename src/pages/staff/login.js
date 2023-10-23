@@ -1,9 +1,21 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios, { HttpStatusCode } from "axios";
 import { toast } from "react-toastify";
 
 export default function StaffLogin() {
+  useEffect(() => {
+    // If there is authorization token in session storage, clear it
+    if (sessionStorage.getItem('token')) {
+      fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/logout`, {
+        method: "POST",
+        headers: {
+          Authorization: `Token ${sessionStorage.getItem('token')}`,
+        },
+      }).finally(() => sessionStorage.clear());
+    }
+  }, []);
+
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(null);
