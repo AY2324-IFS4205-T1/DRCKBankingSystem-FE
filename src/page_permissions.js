@@ -15,10 +15,11 @@ export const page_permissions = {
   '/staff/dashboard': 'Staff',
   '/staff/setup': 'Staff',
   '/staff/verify': 'Staff',
-  '/staff/anon': 'Auditor',
+  '/staff/anon': 'Staff',
   '/staff/logs': 'Auditor',
   '/staff/tickets': 'Ticket Reviewer',
 };
+// /staff/anon is a shared page between Researcher & Anonymity Officer. Access control is handled manually.
 
 /*
   /
