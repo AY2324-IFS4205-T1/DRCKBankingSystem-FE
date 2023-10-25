@@ -69,7 +69,7 @@ export default function Anonymization(props) {
       const href = URL.createObjectURL(new Blob([response.data], { type: "text/csv" }));
       const link = document.createElement('a');
       link.href = href;
-      link.setAttribute('download', 'output.csv');
+      link.setAttribute('download', 'drck_banking_anon_data.csv');
       link.click();
 
       // clean up "a" element & remove ObjectURL
@@ -107,7 +107,7 @@ export default function Anonymization(props) {
                 <h2 className="text-lg font-black">K-Value</h2>
                 <p className="text-sm">
                   If you wish to modify this value, set the k-value below.<br/>
-                  <p>The current k-value is shown when you load the page.</p>
+                  The current k-value is shown when you load the page.
                 </p>
                 <input type="text" name="kvalue" id="kvalue" required
                   className="rounded-md border-0 w-10 py-1.5 px-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

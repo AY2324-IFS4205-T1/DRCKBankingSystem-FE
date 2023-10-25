@@ -20,7 +20,7 @@ export default function Deposit() {
           setBalance(response.data.accounts[0].balance);
         }
       } catch (err) {
-        toast.error("Failed to retrieve balance.")
+        toast.error("Failed to retrieve balance.");
       }
     }
 
@@ -45,7 +45,7 @@ export default function Deposit() {
       updateAccounts(response.data.new_balance);
       toast.success("Your balance has been updated.");
     } catch (err) {
-      toast.error("Failed to update balance.");
+      toast.error(err.response.data);
     }
 
     setDepositAmount("");
@@ -62,7 +62,7 @@ export default function Deposit() {
       updateAccounts(response.data.new_balance);
       toast.success("Your balance has been updated.");
     } catch (err) {
-      toast.error("Failed to update balance.");
+      toast.error(err.response.data);
     }
 
     setWithdrawAmount("");

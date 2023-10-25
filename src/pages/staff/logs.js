@@ -9,7 +9,6 @@ import {
   TableRow,
   TableCell,
   Pagination,
-  getKeyValue,
 } from "@nextui-org/react";
 import moment from 'moment';
 
@@ -36,9 +35,9 @@ const log_types_description = {
     'list': [
       'Login attempt was unsuccessful.',
       'Many unsuccessful attempts were executed within a short timeframe (5 minutes).',
-      'An unsuccessful attempt were made after a successful login from a different IP address.'
     ],
-    'description': "This log aims to identify two situations. The first situation is a bruteforcing attack where an attacker repeatedly attempts to log into a user's account. The other situation is a replay attack where an attacker attempts to log into a user's account relatively immediately after the legitimately login."
+    'description': "This log aims to identify a bruteforcing attack where an attacker repeatedly attempts to log into a user's account.",
+    'columnhelper': ""
   },
 
   "access_control_logs": {
@@ -47,7 +46,8 @@ const log_types_description = {
       'Multiple attempts were made by the same user.',
       'Multiple attempts were made by the same IP address.'
     ],
-    'description': 'This log aims to identify the situation where an unauthorised user attempts to bypass both the frontend and access control by directly accessing APIs that they are not authorised to.'
+    'description': 'This log aims to identify the situation where an unauthorised user attempts to bypass both the frontend and access control by directly accessing APIs that they are not authorised to.',
+    'columnhelper': ""
   },
 
   "conflict_interest_logs": {
@@ -56,7 +56,8 @@ const log_types_description = {
       'The usernames of the customer and staff are the same.',
       'The IP addresses of the customer and staff are the same.'
     ],
-    'description': 'This log aims to identify the misuse of a staff account by a staff who also owns a customer account. Specifically, it identifies the situation where a staff self-approves a ticket that they opened as a customer.'
+    'description': 'This log aims to identify the misuse of a staff account by a staff who also owns a customer account. Specifically, it identifies the situation where a staff self-approves a ticket that they opened as a customer.',
+    'columnhelper': "*Minutes to Approve: Number of minutes after the creation of the ticket before it is approved."
   }
 }
 
@@ -69,9 +70,9 @@ const log_severity = [
 ]
 
 const loginColumns = [
-  { key: "severity", label: "Severity"},
+  { key: "severity", label: "Severity" },
   { key: "login_type", label: "Type" },
-  { key: "username", label: "User" },
+  { key: "username", label: <div>Username<br />(User ID if login success)</div> },
   { key: "timestamp", label: "Timestamp" },
   { key: "is_success", label: "Success" },
   { key: "count", label: "Count" },
@@ -79,25 +80,20 @@ const loginColumns = [
 ];
 
 const accessColumns = [
-  { key: "severity", label: "Severity"},
-  { key: "user_id", label: "User ID" },
-  { key: "user_permission_type", label: "User type" },
-  { key: "api_permission_type", label: "API type" },
-  { key: "api_view_name", label: "View" },
-  { key: "user_violation_count", label: "User violation" },
-  { key: "ip", label: "IP Address" },
-  { key: "ip_violation_count", label: "IP violation" },
+  { key: "severity", label: "Severity" },
+  { key: "api_view_name", label: <div>Page Path & Access Type</div> },
+  { key: "user_id", label: <div>User ID & Type<br />Violation Count</div> },
+  { key: "ip", label: <div>IP Address & Violation Count</div> },
   { key: "timestamp", label: "Date" },
 ];
 
 const conflictColumns = [
   { key: "severity", label: "Severity" },
   { key: "ticket_id", label: "Ticket" },
-  { key: "customer_username", label: "Customer Username" },
-  { key: "customer_ip", label: "IP" },
-  { key: "staff_username", label: "Staff Username" },
-  { key: "staff_ip", label: "IP" },
-  { key: "time_to_approve", label: "Time to Approve" },
+  { key: "customer_username", label: <div>Customer Username & ID<br />IP Address</div> },
+  { key: "staff_username", label: <div>Staff Username & ID<br />IP Address</div> },
+  { key: "time_to_approve", label: "*Minutes to Approve" },
+  { key: "timestamp", label: "Date" },
 ];
 
 export default function Logs(props) {
@@ -112,13 +108,37 @@ export default function Logs(props) {
   const [helpText, setHelpText] = useState(log_types_description[""]);
 
   // Table render settings
-  const renderCell = useCallback((item, columnKey) => {
+  const renderCell = useCallback((item, columnKey, type) => {
     const cellValue = item[columnKey];
 
-    if (columnKey == "is_success") {
-      return cellValue ? "Yes" : "No"
-    } else if (columnKey == "timestamp") {
+    if (columnKey == "timestamp") {
       return moment(cellValue).format('DD/MM/YYYY HH:mm:ss')
+    }
+
+    if (type === "login_logs" && columnKey == "username") {
+      if (columnKey == "username") {
+        return <div>{cellValue}<br />{item["user_id"] && `(${item["user_id"]})`}</div>;
+      } else if (columnKey == "is_success") {
+        return cellValue ? "Yes" : "No"
+      }
+    }
+
+    if (type === "access_control_logs") {
+      if (columnKey == "api_view_name") {
+        return <div>{cellValue}<br />{item["api_permission_type"]}</div>;
+      } else if (columnKey == "user_id") {
+        return <div>{cellValue}<br />{item["user_permission_type"]}<br />{item["user_violation_count"]}</div>
+      } else if (columnKey == "ip") {
+        return <div>{cellValue}<br />{item["ip_violation_count"]}</div>;
+      }
+    }
+
+    if (type === "conflict_interest_logs") {
+      if (columnKey == "customer_username") {
+        return <div>{cellValue}<br />{item["customer_id"]}<br />{item["customer_ip"]}</div>
+      } else if (columnKey == "staff_username") {
+        return <div>{cellValue}<br />{item["staff_id"]}<br />{item["staff_ip"]}</div>
+      }
     }
 
     return cellValue;
@@ -142,11 +162,12 @@ export default function Logs(props) {
       let response = await axiosConfig.get(`/staff/logs/${logType}`, {
         params: {
           severity: severity,
-          start: moment(startDate).format('YYYY-MM-DDTHH:mm'),
-          end: moment(endDate).format('YYYY-MM-DDTHH:mm')
+          start: moment(startDate).set('second', 0).format('YYYY-MM-DDTHH:mm'),
+          end: moment(endDate).set('minute', endDate.getMinutes + 1).set('second', 0).format('YYYY-MM-DDTHH:mm')
         }
       });
       setData(response.data[logType]);
+      console.log(response.data);
     } catch (err) {
       toast.error(err.response.data);
     }
@@ -188,7 +209,7 @@ export default function Logs(props) {
                 <select
                   name="logType"
                   id="logType"
-                  aria-label="log Type"
+                  aria-label="logType"
                   className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   onChange={(e) => { setLogType(e.target.value) }}
                 >
@@ -206,7 +227,7 @@ export default function Logs(props) {
                 <select
                   name="severityType"
                   id="severityType"
-                  aria-label="severity Type"
+                  aria-label="severityType"
                   className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   onChange={(e) => { setSeverity(e.target.value) }}
                 >
@@ -248,9 +269,13 @@ export default function Logs(props) {
             <div>
               <p>{helpText.header}</p>
               {helpText.list.map((desc, index) => (
-                <p key={desc}>{index+1}. {desc}</p> 
+                <p key={desc}>{index + 1}. {desc}</p>
               ))}
               <p>{helpText.description}</p>
+              {
+                helpText.columnhelper &&
+                <p><br/>{helpText.columnhelper}</p>
+              }
             </div>
           </div>
           <Table
@@ -277,7 +302,7 @@ export default function Logs(props) {
             <TableBody items={items}>
               {(item) => (
                 <TableRow key={item.id}>
-                  {(columnKey) => <TableCell>{getKeyValue(renderCell(item, columnKey), columnKey)}</TableCell>}
+                  {(columnKey) => <TableCell>{(renderCell(item, columnKey, logType))}</TableCell>}
                 </TableRow>
               )}
             </TableBody>
