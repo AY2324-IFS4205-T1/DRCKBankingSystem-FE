@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 import axiosConfig from "../../../axiosConfig";
 
-export default function createTicket(props) {
+export default function getTicket(props) {
   const router = useRouter();
   const { ticketid } = router.query;
 
@@ -65,7 +65,7 @@ export default function createTicket(props) {
 
   return (
     <>
-      <Navbar_Staff role={props.role} />
+      <Navbar_Staff role={props} />
       <div className="h-screen bg-gray-200 pt-8">
         <div className="mx-auto max-w-7xl divide-y-2 divide-slate-400 px-2 sm:px-6 lg:px-8">
           <div className="mb-8">
@@ -159,7 +159,7 @@ export default function createTicket(props) {
                 </thead>
                 <tbody>
                   {accounts.map((acct, index) => (
-                    <tr key={acct.index}>
+                    <tr key={index}>
                       <td>{acct.type}</td>
                       <td>{acct.status}</td>
                       <td>{acct.date_created}</td>
