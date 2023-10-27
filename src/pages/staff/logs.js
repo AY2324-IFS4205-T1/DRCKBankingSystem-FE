@@ -25,39 +25,44 @@ const log_types = [
 
 const log_types_description = {
   "": {
-    'header': 'Select a type to show the description.',
+    'header': '',
+    'caption': 'Select a type to show the description.',
     'list': [],
-    'description': ''
+    'description': '',
+    'remark': ""
   },
 
   "login_logs": {
-    'header': 'The Login Logs records all login attempts. Logs are marked with higher severity if:',
+    'header': 'Login Log',
+    'caption': 'The Login Logs records all login attempts. Logs are marked with higher severity if:',
     'list': [
       'Login attempt was unsuccessful.',
-      'Many unsuccessful attempts were executed within a short timeframe (5 minutes).',
+      'Many unsuccessful attempts were executed within a short timeframe (5 minutes) from the same IP address.',
     ],
     'description': "This log aims to identify a bruteforcing attack where an attacker repeatedly attempts to log into a user's account.",
-    'columnhelper': ""
+    'remark': ""
   },
 
   "access_control_logs": {
-    'header': 'The Access Control Logs records all unauthorised attempts to access an API. Logs are marked with higher severity if:',
+    'header': 'Access Control Log',
+    'caption': 'The Access Control Logs records all unauthorised attempts to access an API. Logs are marked with higher severity if:',
     'list': [
       'Multiple attempts were made by the same user.',
       'Multiple attempts were made by the same IP address.'
     ],
     'description': 'This log aims to identify the situation where an unauthorised user attempts to bypass both the frontend and access control by directly accessing APIs that they are not authorised to.',
-    'columnhelper': ""
+    'remark': ""
   },
 
   "conflict_interest_logs": {
-    'header': 'The Conflict of Interest Logs records all approval of customer tickets. Logs are marked with higher severity if for each ticket:',
+    'header': 'Conflict of Interest Log',
+    'caption': 'The Conflict of Interest Logs records all approval of customer tickets. Logs are marked with higher severity if for each ticket:',
     'list': [
       'The usernames of the customer and staff are the same.',
       'The IP addresses of the customer and staff are the same.'
     ],
     'description': 'This log aims to identify the misuse of a staff account by a staff who also owns a customer account. Specifically, it identifies the situation where a staff self-approves a ticket that they opened as a customer.',
-    'columnhelper': "*Minutes to Approve: Number of minutes after the creation of the ticket before it is approved."
+    'remark': "*Minutes to Approve: Number of minutes after the creation of the ticket before it is approved."
   }
 }
 
@@ -265,15 +270,16 @@ export default function Logs(props) {
                 </button>
               </span>
             </div>
-            <div>
-              <p>{helpText.header}</p>
+            <div className="mt-3">
+              <p className="text-3xl">{helpText.header}</p>
+              <p>{helpText.caption}</p>
               {helpText.list.map((desc, index) => (
                 <p key={desc}>{index + 1}. {desc}</p>
               ))}
               <p>{helpText.description}</p>
               {
-                helpText.columnhelper &&
-                <p><br/>{helpText.columnhelper}</p>
+                helpText.remark &&
+                <p><br/>{helpText.remark}</p>
               }
             </div>
           </div>
