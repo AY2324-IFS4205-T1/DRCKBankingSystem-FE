@@ -71,7 +71,7 @@ export default function Register() {
           </div>
         </div>
         {isError && (
-          <div className="relative rounded border border-red-400 bg-red-100 px-4 py-3 mt-3 text-red-700" role="alert">
+          <div className="relative rounded border border-red-400 bg-red-100 px-4 py-3 mt-3 text-red-700 mx-auto lg:w-2/5" role="alert">
             {isError.split("\n").map((errorMessage) => (
               <p key={errorMessage}>{errorMessage}</p>
             ))}

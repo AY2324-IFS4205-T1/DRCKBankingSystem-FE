@@ -16,6 +16,12 @@ async function checkUserAuthentication(pathname, setLoading) {
 
   try {
     const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth_check`, { page_name: pathname });
+    // If the user has already verified 2FA and tries to access verify/setup page again
+    if (pathname == `/${response.data.user_authorisation.toLowerCase()}/setup` || pathname == `/${response.data.user_authorisation.toLowerCase()}/verify`) {
+      window.location.href = `../${response.data.user_authorisation.toLowerCase()}/dashboard`
+      return;
+    }
+
     role = response.data.user_role;
     setLoading(false);
   } catch (err) {
@@ -28,7 +34,7 @@ async function checkUserAuthentication(pathname, setLoading) {
       if (!data.authenticated) {
         // If the page is setup/verify 2FA, allow the user to perform 2FA first
         if ((pathname == `/${data.user_authorisation.toLowerCase()}/setup` && data.authenticated_message === "User does not have 2FA set up.") ||
-          pathname == `/${data.user_authorisation.toLowerCase()}/verify`) {
+          pathname == `/${data.user_authorisation.toLowerCase()}/verify` && data.authenticated_message === "2FA has not been verified.") {
           setLoading(false);
           return;
         }
