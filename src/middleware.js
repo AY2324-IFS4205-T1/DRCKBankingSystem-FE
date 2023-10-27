@@ -40,7 +40,7 @@ export const config = {
      * - _next/image (image optimization files)
      */
     {
-      source: "/((?!api|_next/static|_next/image).*)",
+      source: "/((?!_next/static|_next/image).*)",
       missing: [
         { type: "header", key: "next-router-prefetch" },
         { type: "header", key: "purpose", value: "prefetch" },

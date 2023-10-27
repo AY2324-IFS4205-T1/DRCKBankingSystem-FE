@@ -66,7 +66,7 @@ export default function getTicket(props) {
   return (
     <>
       <Navbar_Staff role={props} />
-      <div className="h-screen bg-gray-200 pt-8">
+      <div className="min-h-screen bg-gray-200 pt-8">
         <div className="mx-auto max-w-7xl divide-y-2 divide-slate-400 px-2 sm:px-6 lg:px-8">
           <div className="mb-8">
             <div>

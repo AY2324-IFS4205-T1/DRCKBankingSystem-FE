@@ -72,7 +72,7 @@ const log_severity = [
 const loginColumns = [
   { key: "severity", label: "Severity" },
   { key: "login_type", label: "Type" },
-  { key: "username", label: <div>Username<br />(User ID if login success)</div> },
+  { key: "username", label: <div>Attempted Username<br />(User ID if login success)</div> },
   { key: "timestamp", label: "Timestamp" },
   { key: "is_success", label: "Success" },
   { key: "count", label: "Count" },
@@ -115,11 +115,11 @@ export default function Logs(props) {
       return moment(cellValue).format('DD/MM/YYYY HH:mm:ss')
     }
 
-    if (type === "login_logs" && columnKey == "username") {
+    if (type === "login_logs") {
       if (columnKey == "username") {
         return <div>{cellValue}<br />{item["user_id"] && `(${item["user_id"]})`}</div>;
       } else if (columnKey == "is_success") {
-        return cellValue ? "Yes" : "No"
+        return cellValue ? "Yes" : "No";
       }
     }
 
@@ -167,7 +167,6 @@ export default function Logs(props) {
         }
       });
       setData(response.data[logType]);
-      console.log(response.data);
     } catch (err) {
       toast.error(err.response.data);
     }

@@ -27,7 +27,7 @@ export default function Anonymization(props) {
       const href = URL.createObjectURL(new Blob([response.data], { type: "text/csv" }));
       const link = document.createElement('a');
       link.href = href;
-      link.setAttribute('download', 'output.csv');
+      link.setAttribute('download', 'drck_banking_anon_data.csv');
       link.click();
 
       // clean up "a" element & remove ObjectURL

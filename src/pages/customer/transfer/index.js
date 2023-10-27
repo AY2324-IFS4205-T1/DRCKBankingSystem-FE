@@ -51,7 +51,7 @@ export default function Transfer() {
   return (
     <>
       <Navbar />
-      <div className="h-screen bg-gray-200">
+      <div className="min-h-screen bg-gray-200">
         <div className="mx-auto max-w-7xl divide-y-2 divide-slate-400 px-2 py-8 sm:px-6 lg:px-8">
           <div className="py-8">
             <h1 className="text-3xl">Transfer</h1>
