@@ -49,6 +49,8 @@ export default function CustomerLogin() {
     } catch (isError) {
       if (isError.response.status == HttpStatusCode.InternalServerError) {
         toast.error("Server error.");
+      } else if (isError.response.status == HttpStatusCode.TooManyRequests) {
+        toast.error("You have too many requests. Please try again in a few minutes.");
       } else {
         setIsError(isError.response.data.error);
         toast.error(isError.response.data.error, {
