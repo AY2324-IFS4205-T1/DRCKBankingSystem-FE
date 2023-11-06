@@ -12,7 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
-    "@nextui-org/react": "^2.1.13",
+    "@nextui-org/react": "^2.2.3",
     "axios": "^1.5.1",
     "cookies-next": "^4.0.0",
     "framer-motion": "^10.16.4",
